@@ -9,17 +9,20 @@ import scalafx.scene.image.ImageView
 import scalafx.scene.layout._
 import scalafx.scene.Scene
 import scalafx.stage.Screen
+import scalafx.scene.paint.Color
 
 
 object Main extends JFXApp {
 
-  val line1 = new HBox {
-    content = List(Label("Hello"),Label("Hello"))
-  }
-
-  val line2 = new HBox {
-    content = List(Label("Hello"),Label("Hello"))
-  }
+  val lines = List.range(1,1000).map(num => new HBox {
+    content = List(new Label {
+      text = s"Hello$num}"
+      minWidth = 100
+      maxWidth = 140
+      prefWidth = 100
+      textFill = Color.BLUE
+    },Label(s"Hello $num"))
+  })
 
   val channelTreeView= new TreeItem[String]("Channels") {
     expanded = true
@@ -28,15 +31,23 @@ object Main extends JFXApp {
 
   val nickPanel = new ScrollPane {
     minWidth = 200
-    maxWidth = 200
-//    minHeight = 200
     minHeight = 200
-    maxHeight = 700
     prefHeight = 200
     fitToWidth = true
     fitToHeight = true
     id = "page-tree"
-    //    content = channelTreeView
+    content = new TreeView[String] {
+      root = new TreeItem[String] {
+        expanded = true
+        children = List[TreeItem[String]](
+          new TreeItem[String]("@Socrates"),
+          new TreeItem[String]("Plato"),
+          new TreeItem[String]("Xenophon"),
+          new TreeItem[String]("Crito")
+        )
+      }
+    }
+
   }
 
   val channelPanel = new ScrollPane {
@@ -46,7 +57,28 @@ object Main extends JFXApp {
       prefHeight = 2000
 
     id = "page-tree"
-  //    content = channelTreeView
+    content = new TreeView[String] {
+      root = new TreeItem[String]() {
+        expanded = true
+        children = List[TreeItem[String]](
+          new TreeItem[String]("freenode") {
+            expanded = true
+            children = List(
+              new TreeItem("#scala"),
+              new TreeItem("#java"),
+              new TreeItem("#javascript")
+            )
+          },
+          new TreeItem[String]("efnet") {
+            expanded = true
+            children = List(
+              new TreeItem("#java"),
+              new TreeItem("#javascript")
+            )
+          }
+        )
+      }
+    }
   }
 
   val sidePanel = new SplitPane {
@@ -62,8 +94,15 @@ object Main extends JFXApp {
     items.addAll(nickPanel,channelPanel)
   }
 
-  val channel = new VBox {
-    content = List(line1,line2)
+  val channel = new ScrollPane {
+    fitToWidth = true
+    fitToHeight = true
+    content = new VBox {
+      fitToWidth = true
+      fitToHeight = true
+//      content = List(line1,line2)
+      content = lines
+    }
   }
 
 
@@ -71,9 +110,6 @@ object Main extends JFXApp {
     title = "IRC Client"
     scene = new Scene(1020, 700) {
       root = new BorderPane {
-        top = new VBox {
-
-        }
         center =  new SplitPane {
           dividerPositions = 0
           id = "page-splitpane"
