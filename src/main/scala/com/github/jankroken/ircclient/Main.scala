@@ -2,19 +2,24 @@ package com.github.jankroken.ircclient
 
 import scalafx.application.JFXApp
 import scalafx.application.JFXApp.PrimaryStage
-import scalafx.geometry.Insets
+import scalafx.geometry.{Orientation, VerticalDirection, Insets}
 import scalafx.scene.control._
 import scalafx.scene.image.Image
 import scalafx.scene.image.ImageView
-import scalafx.scene.layout.BorderPane
-import scalafx.scene.layout.Priority
-import scalafx.scene.layout.Region
-import scalafx.scene.layout.VBox
+import scalafx.scene.layout._
 import scalafx.scene.Scene
 import scalafx.stage.Screen
 
 
 object Main extends JFXApp {
+
+  val line1 = new HBox {
+    content = List(Label("Hello"),Label("Hello"))
+  }
+
+  val line2 = new HBox {
+    content = List(Label("Hello"),Label("Hello"))
+  }
 
   val channelTreeView= new TreeItem[String]("Channels") {
     expanded = true
@@ -24,7 +29,10 @@ object Main extends JFXApp {
   val nickPanel = new ScrollPane {
     minWidth = 200
     maxWidth = 200
-    minHeight = 300
+//    minHeight = 200
+    minHeight = 200
+    maxHeight = 700
+    prefHeight = 200
     fitToWidth = true
     fitToHeight = true
     id = "page-tree"
@@ -32,22 +40,30 @@ object Main extends JFXApp {
   }
 
   val channelPanel = new ScrollPane {
-    minWidth = 200
-    maxWidth = 200
-    minHeight = 400
+      fitToWidth = true
+      fitToHeight = true
+      minHeight = 200
+      prefHeight = 2000
 
-    fitToWidth = true
-    fitToHeight = true
     id = "page-tree"
-//    content = channelTreeView
+  //    content = channelTreeView
   }
 
-  val sidePanel = new VBox {
+  val sidePanel = new SplitPane {
     minWidth = 200
-    maxWidth = 200
+    maxWidth = 300
+    prefWidth = 200
     minHeight = 700
 //    fitToHeight = true
-    content = List(nickPanel,channelPanel)
+    dividerPositions = 1
+    orientation = Orientation.VERTICAL
+
+    id = "list-splitpane"
+    items.addAll(nickPanel,channelPanel)
+  }
+
+  val channel = new VBox {
+    content = List(line1,line2)
   }
 
 
@@ -62,7 +78,7 @@ object Main extends JFXApp {
           dividerPositions = 0
           id = "page-splitpane"
 //          items.addAll(channelPanel)
-          items.addAll(sidePanel)
+          items.addAll(sidePanel,channel)
         }
         bottom = new TextField {
           promptText = "command line"
