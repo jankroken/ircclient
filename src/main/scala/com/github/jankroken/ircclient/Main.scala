@@ -57,27 +57,24 @@ object Main extends JFXApp {
       prefHeight = 2000
 
     id = "page-tree"
-    content = new TreeView[String] {
-      root = new TreeItem[String]() {
-        expanded = true
-        children = List[TreeItem[String]](
-          new TreeItem[String]("freenode") {
-            expanded = true
-            children = List(
-              new TreeItem("#scala"),
-              new TreeItem("#java"),
-              new TreeItem("#javascript")
-            )
-          },
-          new TreeItem[String]("efnet") {
-            expanded = true
-            children = List(
-              new TreeItem("#java"),
-              new TreeItem("#javascript")
-            )
-          }
-        )
-      }
+    content = new VBox {
+//      fitToHeight = false
+      content = List(new TreeView[String]{
+        root = new TreeItem[String]("freenode") {
+          expanded = true
+          children = List(
+            new TreeItem("#scala"),
+            new TreeItem("#java"),
+            new TreeItem("#javascript")
+          )
+        }
+      },
+      new TreeView[String]{
+        root = new TreeItem[String]("efnet") {
+          expanded = true
+          children = List(new TreeItem("#java"),new TreeItem("#javascript"))
+        }
+      })
     }
   }
 
@@ -99,7 +96,7 @@ object Main extends JFXApp {
     fitToHeight = true
     content = new VBox {
       fitToWidth = true
-      fitToHeight = true
+//      fitToHeight = true
 //      content = List(line1,line2)
       content = lines
     }
