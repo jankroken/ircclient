@@ -2,7 +2,7 @@ package com.github.jankroken.ircclient
 
 import scalafx.application.JFXApp
 import scalafx.application.JFXApp.PrimaryStage
-import scalafx.geometry.{Orientation, VerticalDirection, Insets}
+import scalafx.geometry.{Orientation}
 import scalafx.scene.control._
 import scalafx.scene.image.Image
 import scalafx.scene.image.ImageView
@@ -24,30 +24,20 @@ object Main extends JFXApp {
     },Label(s"Hello $num"))
   })
 
-  val channelTreeView= new TreeItem[String]("Channels") {
-    expanded = true
-//    children = EnsembleTree.create().getTree
-  }
-
   val nickPanel = new ScrollPane {
-    minWidth = 200
-    minHeight = 200
+    minWidth = 100
+    minHeight = 100
     prefHeight = 200
     fitToWidth = true
     fitToHeight = true
     id = "page-tree"
-    content = new TreeView[String] {
-      root = new TreeItem[String] {
-        expanded = true
-        children = List[TreeItem[String]](
-          new TreeItem[String]("@Socrates"),
-          new TreeItem[String]("Plato"),
-          new TreeItem[String]("Xenophon"),
-          new TreeItem[String]("Crito")
-        )
-      }
+    content = new VBox {
+      content = List(
+        new Label { text = "@Socrates" },
+        new Label { text = "Plato" },
+        new Label { text = "Xenophon"},
+        new Label { text = "Crito"})
     }
-
   }
 
   val channelPanel = new ScrollPane {
@@ -79,11 +69,9 @@ object Main extends JFXApp {
   }
 
   val sidePanel = new SplitPane {
-    minWidth = 200
+    minWidth = 120
     maxWidth = 300
-    prefWidth = 200
-    minHeight = 700
-//    fitToHeight = true
+    prefWidth = 150
     dividerPositions = 1
     orientation = Orientation.VERTICAL
 
@@ -96,8 +84,6 @@ object Main extends JFXApp {
     fitToHeight = true
     content = new VBox {
       fitToWidth = true
-//      fitToHeight = true
-//      content = List(line1,line2)
       content = lines
     }
   }
@@ -110,7 +96,6 @@ object Main extends JFXApp {
         center =  new SplitPane {
           dividerPositions = 0
           id = "page-splitpane"
-//          items.addAll(channelPanel)
           items.addAll(sidePanel,channel)
         }
         bottom = new TextField {
@@ -124,21 +109,6 @@ object Main extends JFXApp {
 
 
 /*
-
-package scalafx.ensemble
-
-import scala.Some
-import scalafx.Includes._
-import scalafx.application.JFXApp
-import scalafx.application.JFXApp.PrimaryStage
-import scalafx.ensemble.commons.PageDisplayer
-import scalafx.geometry.Insets
-import scalafx.scene.Scene
-import scalafx.scene.control._
-import scalafx.scene.image.Image
-import scalafx.scene.image.ImageView
-import scalafx.scene.layout._
-import scalafx.stage.Screen
 
 /** The main ScalaFX Ensemble application object. */
 object Ensemble extends JFXApp {
