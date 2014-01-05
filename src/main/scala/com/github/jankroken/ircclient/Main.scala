@@ -2,13 +2,10 @@ package com.github.jankroken.ircclient
 
 import scalafx.application.JFXApp
 import scalafx.application.JFXApp.PrimaryStage
-import scalafx.geometry.{Orientation}
+import scalafx.geometry.Orientation
 import scalafx.scene.control._
-import scalafx.scene.image.Image
-import scalafx.scene.image.ImageView
 import scalafx.scene.layout._
 import scalafx.scene.Scene
-import scalafx.stage.Screen
 import scalafx.scene.paint.Color
 import scalafx.collections.ObservableBuffer
 
@@ -17,19 +14,19 @@ object Main extends JFXApp {
 
   val lines = List.range(1,1000).map(num => new HBox {
     content = List(new Label {
-      text = s"Hello$num}"
+      text = s"Hello$num"
       minWidth = 100
       maxWidth = 140
       prefWidth = 100
       textFill = Color.BLUE
-    },Label(s"Hello $num"))
+    }, new Label { text= s"Hello $num"})
   })
 
   val nickPanel = new ScrollPane {
-    minWidth = 100
-    minHeight = 100
-    prefHeight = 200
-    fitToWidth = true
+    minWidth    = 100
+    minHeight   = 100
+    prefHeight  = 200
+    fitToWidth  = true
     fitToHeight = true
     id = "page-tree"
     content = new VBox {
@@ -82,13 +79,14 @@ object Main extends JFXApp {
 
   val ob = ObservableBuffer[HBox]()
 
+  val chatPanel = new GridPane{
+
+  }
+
   val channel = new ScrollPane {
     fitToWidth = true
     fitToHeight = true
-    val panel = new GridPane {
-
-    }
-    content = panel
+    content = chatPanel
 /*
 
     content = new VBox {
@@ -117,7 +115,7 @@ object Main extends JFXApp {
   }
 
   List.range(0,999).foreach{n => {
-    channel.panel.addRow(n,lines(n))
+    chatPanel.addRow(n,lines(n))
   }}
 
 }
