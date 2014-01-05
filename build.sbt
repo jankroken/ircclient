@@ -9,7 +9,7 @@ scalaVersion := "2.10.3"
 assemblySettings
 
 libraryDependencies ++= Seq(
-  "org.scalafx" %% "scalafx" % "1.0.0-M7-SNAPSHOT",
+  "org.scalafx" %% "scalafx" % "1.0.0-M6",
   "org.scalatest" %% "scalatest" % "1.9.2" % "test"
 )
 
@@ -29,3 +29,5 @@ unmanagedJars in Compile += Attributed.blank(file(System.getenv("JAVA_HOME") + "
 fork := true
 
 fork in Test := true
+
+scalacOptions += "-feature"
