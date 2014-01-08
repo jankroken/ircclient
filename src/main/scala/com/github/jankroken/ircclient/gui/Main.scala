@@ -45,27 +45,24 @@ object Main extends JFXApp {
       prefHeight = 2000
 
     id = "page-tree"
-    content = new VBox {
-//      fitToHeight = false
-      content = List(new TreeView[String]{
-        root = new TreeItem[String]("freenode") {
+
+    def networkChannels(network:String,channels:List[String]) = {
+      new TreeView[String]{
+        root = new TreeItem[String](network) {
           expanded = true
-          children = List(
-            new TreeItem("#scala"),
-            new TreeItem("#java"),
-            new TreeItem("#javascript")
-          )
+          children = channels.map(new TreeItem(_))
         }
         selectionModel().selectedItem.onChange { (_,_,newVal) =>
-          println(s"hello $newVal")
+          println(s"$network $newVal")
         }
-      },
-      new TreeView[String]{
-        root = new TreeItem[String]("efnet") {
-          expanded = true
-          children = List(new TreeItem("#java"),new TreeItem("#javascript"))
-        }
-      })
+      }
+    }
+
+
+    content = new VBox {
+//      fitToHeight = false
+      content = List(networkChannels("freenode",List("#scala","#java","#haskell")),
+                     networkChannels("efnet",List("#ocaml","#prolog","#ada")))
     }
   }
 
