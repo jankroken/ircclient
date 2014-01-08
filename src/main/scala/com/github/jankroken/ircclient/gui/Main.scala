@@ -31,11 +31,7 @@ object Main extends JFXApp {
     fitToHeight = true
     id = "page-tree"
     content = new VBox {
-      content = List(
-        new Label { text = "@Socrates" },
-        new Label { text = "Plato" },
-        new Label { text = "Xenophon"},
-        new Label { text = "Crito"})
+      content = List("@Socrates","Plato","Xenophon","Crito").map(nick => new Label { text = nick })
     }
   }
 
@@ -60,7 +56,7 @@ object Main extends JFXApp {
       }
 
     content = new VBox {
-//      fitToHeight = false
+//      fitToHeight = true
       content = List(networkChannels("freenode",List("#scala","#java","#haskell")),
                      networkChannels("efnet",List("#ocaml","#prolog","#ada")),
                      networkChannels("quakenet",List("#quake","#doom#","#wolfenstein","#keen","#doom2","#doom3","quake2")))
