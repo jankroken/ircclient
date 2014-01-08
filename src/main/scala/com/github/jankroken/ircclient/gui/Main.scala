@@ -1,4 +1,4 @@
-package com.github.jankroken.ircclient
+package com.github.jankroken.ircclient.gui
 
 import scalafx.application.JFXApp
 import scalafx.application.JFXApp.PrimaryStage
@@ -8,7 +8,7 @@ import scalafx.scene.layout._
 import scalafx.scene.Scene
 import scalafx.scene.paint.Color
 import scalafx.collections.ObservableBuffer
-
+import scalafx.Includes._
 
 object Main extends JFXApp {
 
@@ -55,6 +55,9 @@ object Main extends JFXApp {
             new TreeItem("#java"),
             new TreeItem("#javascript")
           )
+        }
+        selectionModel().selectedItem.onChange { (_,_,newVal) =>
+          println(s"hello $newVal")
         }
       },
       new TreeView[String]{
