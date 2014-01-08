@@ -9,6 +9,7 @@ import scalafx.scene.Scene
 import scalafx.scene.paint.Color
 import scalafx.collections.ObservableBuffer
 import scalafx.Includes._
+import com.github.jankroken.ircclient.domain.ChannelSelected
 
 object Main extends JFXApp {
 
@@ -46,23 +47,23 @@ object Main extends JFXApp {
 
     id = "page-tree"
 
-    def networkChannels(network:String,channels:List[String]) = {
+    def networkChannels(network:String,channels:List[String]) =
       new TreeView[String]{
         root = new TreeItem[String](network) {
           expanded = true
           children = channels.map(new TreeItem(_))
         }
         selectionModel().selectedItem.onChange { (_,_,newVal) =>
-          println(s"$network $newVal")
+          val channelSelected = ChannelSelected(network,newVal.value.value)
+          println(s"$channelSelected")
         }
       }
-    }
-
 
     content = new VBox {
 //      fitToHeight = false
       content = List(networkChannels("freenode",List("#scala","#java","#haskell")),
-                     networkChannels("efnet",List("#ocaml","#prolog","#ada")))
+                     networkChannels("efnet",List("#ocaml","#prolog","#ada")),
+                     networkChannels("quakenet",List("#quake","#doom#","#wolfenstein","#keen","#doom2","#doom3","quake2")))
     }
   }
 
@@ -87,14 +88,6 @@ object Main extends JFXApp {
     fitToWidth = true
     fitToHeight = true
     content = chatPanel
-/*
-
-    content = new VBox {
-      fitToWidth = true
-//      content = lines
-      content = ob
-    }
-    */
   }
 
   stage = new PrimaryStage {
@@ -108,7 +101,6 @@ object Main extends JFXApp {
         }
         bottom = new TextField {
           promptText = "command line"
-//          maxWidth = 200
         }
       }
     }
