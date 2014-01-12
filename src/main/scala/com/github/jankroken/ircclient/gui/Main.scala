@@ -47,7 +47,8 @@ object Main extends JFXApp {
   val channel = new ScrollPane {
     fitToWidth = true
     fitToHeight = true
-    content = chatPanel
+//    content = chatPanel
+    content = ChatPane(new EventListener)
   }
 
   stage = new PrimaryStage {
