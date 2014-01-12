@@ -61,7 +61,7 @@ object Main extends JFXApp {
       selectionModel().selectedItem.onChange { (_,_,newVal) =>
         val parentValue = newVal.getParent.value.value
         val value = newVal.value.value
-        val isChannel = !newVal.isLeaf
+        val isChannel = newVal.isLeaf
         val selected = if(isChannel) ChannelSelected(parentValue,value) else NetworkSelected(value)
         println(s"$selected")
       }
