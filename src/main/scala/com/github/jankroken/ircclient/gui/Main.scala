@@ -10,6 +10,7 @@ import scalafx.scene.paint.Color
 import scalafx.collections.ObservableBuffer
 import scalafx.Includes._
 import com.github.jankroken.ircclient.domain.ChannelSelected
+import scalafx.scene.image.{Image, ImageView}
 
 object Main extends JFXApp {
 
@@ -26,7 +27,7 @@ object Main extends JFXApp {
   val nickPanel = new ScrollPane {
     minWidth    = 100
     minHeight   = 100
-    prefHeight  = 200
+    prefHeight  = 100
     fitToWidth  = true
     fitToHeight = true
     id = "page-tree"
@@ -34,6 +35,37 @@ object Main extends JFXApp {
       content = List("@Socrates","Plato","Xenophon","Crito").map(nick => new Label { text = nick })
     }
   }
+
+  val channelTrees = new GridPane {
+    //      fitToHeight = true
+  }
+
+  def ncChildren(network:String,channels:List[String]) =
+      new TreeItem[String](network) {
+        expanded = true
+        children = channels.map(new TreeItem(_))
+      }
+
+
+  def networksChannels =
+    new TreeView[String]{
+      root = new TreeItem[String]("networks") {
+        visible = true
+        vgrow = Priority.ALWAYS
+        expanded = true
+        showRoot = false
+        children = List(ncChildren("freenode",List("#scala","#java","#haskell")),
+                        ncChildren("efnet",List("#ocaml","#prolog","#ada")),
+                        ncChildren("quakenet",List("#quake","#doom#","#wolfenstein","#keen","#doom2","#doom3","quake2")))
+      }
+      selectionModel().selectedItem.onChange { (_,_,newVal) =>
+        val network = newVal.getParent.value.value
+        val channelSelected = ChannelSelected(network,newVal.value.value)
+        println(s"$channelSelected")
+      }
+      vgrow = Priority.ALWAYS
+    }
+
 
   val channelPanel = new ScrollPane {
       fitToWidth = true
@@ -43,24 +75,7 @@ object Main extends JFXApp {
 
     id = "page-tree"
 
-    def networkChannels(network:String,channels:List[String]) =
-      new TreeView[String]{
-        root = new TreeItem[String](network) {
-          expanded = true
-          children = channels.map(new TreeItem(_))
-        }
-        selectionModel().selectedItem.onChange { (_,_,newVal) =>
-          val channelSelected = ChannelSelected(network,newVal.value.value)
-          println(s"$channelSelected")
-        }
-      }
-
-    content = new VBox {
-//      fitToHeight = true
-      content = List(networkChannels("freenode",List("#scala","#java","#haskell")),
-                     networkChannels("efnet",List("#ocaml","#prolog","#ada")),
-                     networkChannels("quakenet",List("#quake","#doom#","#wolfenstein","#keen","#doom2","#doom3","quake2")))
-    }
+    content = networksChannels
   }
 
   val sidePanel = new SplitPane {
@@ -77,7 +92,9 @@ object Main extends JFXApp {
   val ob = ObservableBuffer[HBox]()
 
   val chatPanel = new GridPane{
-
+//    val row1 = new RowConstraints()
+//    row1.setVgrow(Priority.ALWAYS)
+//    rowConstraints = List(row1)
   }
 
   val channel = new ScrollPane {
@@ -103,7 +120,14 @@ object Main extends JFXApp {
   }
 
   List.range(0,999).foreach{n => {
-    chatPanel.addRow(n,lines(n))
+
+    if (n != 997)
+      chatPanel.addRow(n,lines(n))
+    else {
+      val url = this.getClass.getClassLoader.getResource("mobius_building.jpeg").toExternalForm
+      val sample1 = new ImageView(new Image(url, requestedWidth = 300, requestedHeight = 120, preserveRatio = true, smooth = true))
+      chatPanel.addRow(n,sample1)
+    }
   }}
 
 }
