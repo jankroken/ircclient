@@ -14,20 +14,11 @@ import scalafx.scene.image.{Image, ImageView}
 
 object Main extends JFXApp {
 
-  val lines = List.range(1,1000).map(num => new HBox {
-    content = List(new Label {
-      text = s"Hello$num"
-      minWidth = 100
-      maxWidth = 140
-      prefWidth = 100
-      textFill = Color.BLUE
-    }, new Label { text= s"Hello $num"})
-  })
 
   val sidePanel = new SplitPane {
     minWidth = 120
     maxWidth = 300
-    prefWidth = 150
+    prefWidth = 200
     dividerPositions = 1
     orientation = Orientation.VERTICAL
 
@@ -38,19 +29,7 @@ object Main extends JFXApp {
 
   val ob = ObservableBuffer[HBox]()
 
-  val chatPanel = new GridPane{
-//    val row1 = new RowConstraints()
-//    row1.setVgrow(Priority.ALWAYS)
-//    rowConstraints = List(row1)
-  }
-
-  val channel = new ScrollPane {
-    fitToWidth = true
-    fitToHeight = true
-//    content = chatPanel
-    content = ChatPane(new EventListener)
-  }
-
+  val chatPane = ChatPane(new EventListener)
   stage = new PrimaryStage {
     title = "IRC Client"
     scene = new Scene(1020, 700) {
@@ -58,7 +37,7 @@ object Main extends JFXApp {
         center =  new SplitPane {
           dividerPositions = 0
           id = "page-splitpane"
-          items.addAll(sidePanel,channel)
+          items.addAll(sidePanel,chatPane)
         }
         bottom = new TextField {
           promptText = "command line"
@@ -67,14 +46,17 @@ object Main extends JFXApp {
     }
   }
 
+  val sampleChatLines = ChatMessageFactory.sampleChatLines
+  val sampleChatLines2 = ChatMessageFactory.sampleChatLines2
+  val sampleImage = ChatMessageFactory.sampleImage
+
   List.range(0,999).foreach{n => {
 
-    if (n != 997)
-      chatPanel.addRow(n,lines(n))
-    else {
-      val url = this.getClass.getClassLoader.getResource("mobius_building.jpeg").toExternalForm
-      val sample1 = new ImageView(new Image(url, requestedWidth = 300, requestedHeight = 120, preserveRatio = true, smooth = true))
-      chatPanel.addRow(n,sample1)
+    if (n != 997) {
+      chatPane.chatPanel.add(sampleChatLines2(n).from,0,n)
+      chatPane.chatPanel.add(sampleChatLines2(n).message,1,n)
+    } else {
+      chatPane.chatPanel.add(sampleImage,0,n,2,1)
     }
   }}
 
