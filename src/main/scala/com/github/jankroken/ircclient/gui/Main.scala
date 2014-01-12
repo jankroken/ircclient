@@ -9,7 +9,7 @@ import scalafx.scene.Scene
 import scalafx.scene.paint.Color
 import scalafx.collections.ObservableBuffer
 import scalafx.Includes._
-import com.github.jankroken.ircclient.domain.{NetworkSelected, ChannelSelected}
+import com.github.jankroken.ircclient.domain.{EventListener}
 import scalafx.scene.image.{Image, ImageView}
 
 object Main extends JFXApp {
@@ -36,50 +36,6 @@ object Main extends JFXApp {
     }
   }
 
-  val channelTrees = new GridPane {
-    //      fitToHeight = true
-  }
-
-  def ncChildren(network:String,channels:List[String]) =
-      new TreeItem[String](network) {
-        expanded = true
-        children = channels.map(new TreeItem(_))
-      }
-
-
-  def networksChannels =
-    new TreeView[String]{
-      root = new TreeItem[String]("networks") {
-        visible = true
-        vgrow = Priority.ALWAYS
-        expanded = true
-        showRoot = false
-        children = List(ncChildren("freenode",List("#scala","#java","#haskell")),
-                        ncChildren("efnet",List("#ocaml","#prolog","#ada")),
-                        ncChildren("quakenet",List("#quake","#doom#","#wolfenstein","#keen","#doom2","#doom3","quake2")))
-      }
-      selectionModel().selectedItem.onChange { (_,_,newVal) =>
-        val parentValue = newVal.getParent.value.value
-        val value = newVal.value.value
-        val isChannel = newVal.isLeaf
-        val selected = if(isChannel) ChannelSelected(parentValue,value) else NetworkSelected(value)
-        println(s"$selected")
-      }
-      vgrow = Priority.ALWAYS
-    }
-
-
-  val channelPanel = new ScrollPane {
-      fitToWidth = true
-      fitToHeight = true
-      minHeight = 200
-      prefHeight = 2000
-
-    id = "page-tree"
-
-    content = networksChannels
-  }
-
   val sidePanel = new SplitPane {
     minWidth = 120
     maxWidth = 300
@@ -88,7 +44,7 @@ object Main extends JFXApp {
     orientation = Orientation.VERTICAL
 
     id = "list-splitpane"
-    items.addAll(nickPanel,channelPanel)
+    items.addAll(nickPanel,new ChannelPane(new EventListener))
   }
 
   val ob = ObservableBuffer[HBox]()
