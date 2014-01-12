@@ -9,7 +9,7 @@ import scalafx.scene.Scene
 import scalafx.scene.paint.Color
 import scalafx.collections.ObservableBuffer
 import scalafx.Includes._
-import com.github.jankroken.ircclient.domain.ChannelSelected
+import com.github.jankroken.ircclient.domain.{NetworkSelected, ChannelSelected}
 import scalafx.scene.image.{Image, ImageView}
 
 object Main extends JFXApp {
@@ -59,9 +59,11 @@ object Main extends JFXApp {
                         ncChildren("quakenet",List("#quake","#doom#","#wolfenstein","#keen","#doom2","#doom3","quake2")))
       }
       selectionModel().selectedItem.onChange { (_,_,newVal) =>
-        val network = newVal.getParent.value.value
-        val channelSelected = ChannelSelected(network,newVal.value.value)
-        println(s"$channelSelected")
+        val parentValue = newVal.getParent.value.value
+        val value = newVal.value.value
+        val isChannel = !newVal.isLeaf
+        val selected = if(isChannel) ChannelSelected(parentValue,value) else NetworkSelected(value)
+        println(s"$selected")
       }
       vgrow = Priority.ALWAYS
     }

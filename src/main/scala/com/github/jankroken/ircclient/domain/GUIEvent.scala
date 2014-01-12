@@ -5,3 +5,4 @@ package com.github.jankroken.ircclient.domain
  */
 abstract class GUIEvent
 case class ChannelSelected(network:String,channel:String) extends GUIEvent
+case class NetworkSelected(network:String) extends GUIEvent
