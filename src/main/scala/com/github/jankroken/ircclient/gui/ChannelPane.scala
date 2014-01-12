@@ -45,3 +45,6 @@ class ChannelPane(val eventListener:EventListener) extends ScrollPane {
 
     content = networksChannels
 }
+object ChannelPane {
+  def apply(eventListener:EventListener) = new ChannelPane(eventListener)
+}

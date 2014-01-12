@@ -24,18 +24,6 @@ object Main extends JFXApp {
     }, new Label { text= s"Hello $num"})
   })
 
-  val nickPanel = new ScrollPane {
-    minWidth    = 100
-    minHeight   = 100
-    prefHeight  = 100
-    fitToWidth  = true
-    fitToHeight = true
-    id = "page-tree"
-    content = new VBox {
-      content = List("@Socrates","Plato","Xenophon","Crito").map(nick => new Label { text = nick })
-    }
-  }
-
   val sidePanel = new SplitPane {
     minWidth = 120
     maxWidth = 300
@@ -44,7 +32,8 @@ object Main extends JFXApp {
     orientation = Orientation.VERTICAL
 
     id = "list-splitpane"
-    items.addAll(nickPanel,new ChannelPane(new EventListener))
+    val eventListener = new EventListener
+    items.addAll(NickPane(eventListener),ChannelPane(eventListener))
   }
 
   val ob = ObservableBuffer[HBox]()
