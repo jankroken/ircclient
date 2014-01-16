@@ -31,14 +31,6 @@ object Main extends JFXApp {
 
   val ob = ObservableBuffer[HBox]()
 
-  val commandLine = new TextField {
-    promptText = "Command line"
-    onKeyTyped = (e:KeyEvent) => {
-      if (e.character == '\n') println("NEWLINE")
-      println(s"keyEvent: ${e.character} $text")
-    }
-  }
-
   val chatPane = ChatPane(new EventListener)
   stage = new PrimaryStage {
     title = "IRC Client"
@@ -49,7 +41,7 @@ object Main extends JFXApp {
           id = "page-splitpane"
           items.addAll(sidePanel,chatPane)
         }
-        bottom = commandLine
+        bottom = new CommandLine(new EventListener)
       }
     }
   }
