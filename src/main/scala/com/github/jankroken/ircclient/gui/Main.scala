@@ -11,6 +11,8 @@ import scalafx.collections.ObservableBuffer
 import scalafx.Includes._
 import com.github.jankroken.ircclient.domain.{EventListener}
 import scalafx.scene.image.{Image, ImageView}
+import scalafx.scene.input.KeyEvent
+import javafx.event.EventHandler
 
 object Main extends JFXApp {
 
@@ -29,6 +31,14 @@ object Main extends JFXApp {
 
   val ob = ObservableBuffer[HBox]()
 
+  val commandLine = new TextField {
+    promptText = "Command line"
+    onKeyTyped = (e:KeyEvent) => {
+      if (e.character == '\n') println("NEWLINE")
+      println(s"keyEvent: ${e.character} $text")
+    }
+  }
+
   val chatPane = ChatPane(new EventListener)
   stage = new PrimaryStage {
     title = "IRC Client"
@@ -39,9 +49,7 @@ object Main extends JFXApp {
           id = "page-splitpane"
           items.addAll(sidePanel,chatPane)
         }
-        bottom = new TextField {
-          promptText = "command line"
-        }
+        bottom = commandLine
       }
     }
   }
@@ -58,6 +66,9 @@ object Main extends JFXApp {
     } else {
       chatPane.chatPanel.add(sampleImage,0,n,2,1)
     }
+
+    if (n > 10 && n < 99) chatPane.chatPanel.children.remove(n)
+
   }}
 
 }
