@@ -8,8 +8,12 @@ import com.github.jankroken.ircclient.domain.{LineEntered, EventListener}
 class CommandLine(eventListener:EventListener) extends TextField {
   promptText = "Command line"
   onKeyTyped = (e:KeyEvent) => {
-      if (e.character == '\n') println("NEWLINE")
-    println(s"keyEvent:  ${e.character} $e ${text.value}")
+    val c = e.character
+    val updatedText = InputModifier.replaceSymbols(text.value)
+    if (text.value != updatedText) {
+      text.value = updatedText
+    }
+    println(s"keyEvent:  $c $e ${text.value}")
   }
   onKeyPressed = (e:KeyEvent) => {
     e.code match {
