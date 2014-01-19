@@ -1,4 +1,4 @@
-package com.googlecode.estuary.sirc.domain
+package com.github.jankroken.ircclient.protocol.domain
 
 case class Quit(origin: Option[Origin], reason: String) extends ServerMessage {
 	override def toString:String = {

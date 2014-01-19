@@ -1,4 +1,4 @@
-package com.googlecode.estuary.sirc.protocol
+package com.github.jankroken.ircclient.protocol
 
 import com.googlecode.estuary.sirc.domain.ServerMessage
 import com.googlecode.estuary.sirc.domain.Origin

@@ -1,4 +1,4 @@
-package com.googlecode.estuary.sirc.domain
+package com.github.jankroken.ircclient.protocol.domain
 
 class ClientServerCount(val clientServerString: String) extends ServerMessage {
 	var clients: Option[Int] = None

@@ -1,4 +1,4 @@
-package com.googlecode.estuary.sirc.domain
+package com.github.jankroken.ircclient.protocol.domain
 
 case class Notice(origin: Option[Origin], targets: Array[Target], message: String ) extends ServerMessage {
   

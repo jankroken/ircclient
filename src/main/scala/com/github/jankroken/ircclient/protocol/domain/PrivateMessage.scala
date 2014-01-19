@@ -1,4 +1,4 @@
-package com.googlecode.estuary.sirc.domain
+package com.github.jankroken.ircclient.protocol.domain
 
 case class PrivateMessage(val origin: Option[Origin],val  targets: Array[Target],val message:String) extends ServerMessage {
   

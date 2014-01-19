@@ -1,4 +1,4 @@
-package com.googlecode.estuary.sirc.protocol
+package com.github.jankroken.ircclient.protocol
 
 import java.io.InputStreamReader
 import java.io.BufferedReader

@@ -1,4 +1,4 @@
-package com.googlecode.estuary.sirc.domain;
+package com.github.jankroken.ircclient.protocol.domain;
 
 class Channel(val name: String, val server: IRCServer) extends Target {
 

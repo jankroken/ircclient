@@ -1,4 +1,4 @@
-package com.googlecode.estuary.sirc.domain
+package com.github.jankroken.ircclient.protocol.domain
 
 case class Part(origin: Option[Origin], val channel: Channel, reason: String) extends ServerMessage {
 	

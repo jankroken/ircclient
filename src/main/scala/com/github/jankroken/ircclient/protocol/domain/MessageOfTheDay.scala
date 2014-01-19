@@ -1,4 +1,4 @@
-package com.googlecode.estuary.sirc.domain
+package com.github.jankroken.ircclient.protocol.domain
 
 class MessageOfTheDay extends ServerMessage {
 	private var lines: List[String] = List[String]()
