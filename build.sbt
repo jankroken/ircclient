@@ -6,14 +6,18 @@ organization := "com.github.jankroken"
 
 scalaVersion := "2.10.3"
 
-assemblySettings
+// assemblySettings
 
 libraryDependencies ++= Seq(
-  "org.scalafx" %% "scalafx" % "1.0.0-M6",
-  "org.scalatest" %% "scalatest" % "1.9.2" % "test"
+  "org.scalafx" %% "scalafx" % "1.0.0-M7", // previously M6
+  "org.scalatest" %% "scalatest" % "2.0" % "test", // previously 1.9.2
+  "com.typesafe.akka" %% "akka-actor" % "2.2.3"
 )
 
-resolvers += "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
+resolvers ++= Seq(
+  "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots",
+  "Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/"
+)
 
 // Sources should also be copied to output, so the sample code, for the viewer,
 // can be loaded from the same file that is used to execute the example
@@ -31,3 +35,4 @@ fork := true
 fork in Test := true
 
 scalacOptions += "-feature"
+
