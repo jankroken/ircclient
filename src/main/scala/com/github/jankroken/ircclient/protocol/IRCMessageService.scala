@@ -6,7 +6,7 @@ import java.io.PrintWriter
 import java.net.Socket
 
 
-import com.googlecode.estuary.sirc.domain.LowLevelMessageListener
+import com.github.jankroken.ircclient.protocol.domain.LowLevelMessageListener
 
 class IRCMessageService(socket: Socket, messageListener: LowLevelMessageListener) {
 	

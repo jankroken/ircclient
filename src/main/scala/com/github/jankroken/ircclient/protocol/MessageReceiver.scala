@@ -1,7 +1,7 @@
 package com.github.jankroken.ircclient.protocol
 
 import java.io.BufferedReader
-import com.googlecode.estuary.sirc.domain.LowLevelMessageListener
+import com.github.jankroken.ircclient.protocol.domain.LowLevelMessageListener
 
 class MessageReceiver(input: BufferedReader, messageListener: LowLevelMessageListener) extends Thread {
 	

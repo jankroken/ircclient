@@ -11,7 +11,8 @@ scalaVersion := "2.10.3"
 libraryDependencies ++= Seq(
   "org.scalafx" %% "scalafx" % "1.0.0-M7", // previously M6
   "org.scalatest" %% "scalatest" % "2.0" % "test", // previously 1.9.2
-  "com.typesafe.akka" %% "akka-actor" % "2.2.3"
+  "com.typesafe.akka" %% "akka-actor" % "2.2.3",
+  "junit" % "junit" % "4.11" % "test"
 )
 
 resolvers ++= Seq(

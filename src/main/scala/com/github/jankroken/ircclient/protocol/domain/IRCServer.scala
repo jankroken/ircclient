@@ -2,9 +2,7 @@ package com.github.jankroken.ircclient.protocol.domain
 
 import java.net.Socket
 
-import com.googlecode.estuary.sirc.protocol.ClientMessage
-import com.googlecode.estuary.sirc.protocol.IRCMessageService
-
+import com.github.jankroken.ircclient.protocol.{ClientMessage, IRCMessageService}
 
 class IRCServer(val name: String, val port: Int) {
 	

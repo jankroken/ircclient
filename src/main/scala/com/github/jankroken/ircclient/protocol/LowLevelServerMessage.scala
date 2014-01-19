@@ -1,10 +1,9 @@
 package com.github.jankroken.ircclient.protocol
 
-import com.googlecode.estuary.sirc.domain.ServerMessage
-import com.googlecode.estuary.sirc.domain.Origin
-import com.googlecode.estuary.sirc.domain.Server
-import com.googlecode.estuary.sirc.domain.NickAtHost
-import com.googlecode.estuary.sirc.domain.NickAndUserAtHost
+import com.github.jankroken.ircclient.protocol.domain._
+import com.github.jankroken.ircclient.protocol.domain.NickAndUserAtHost
+import com.github.jankroken.ircclient.protocol.domain.NickAtHost
+import scala.Some
 
 class LowLevelServerMessage(val origin: Option[Origin], val command: String, val arguments: Array[String]) extends ServerMessage {
     

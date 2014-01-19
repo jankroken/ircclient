@@ -1,6 +1,6 @@
 package com.github.jankroken.ircclient.protocol.domain
 
-import com.googlecode.estuary.sirc.protocol.LowLevelServerMessage
+import com.github.jankroken.ircclient.protocol.LowLevelServerMessage
 
 class MessageConverter(messageListener: MessageListener, val server: IRCServer) extends LowLevelMessageListener{
 

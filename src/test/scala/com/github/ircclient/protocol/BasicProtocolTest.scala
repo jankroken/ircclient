@@ -1,12 +1,8 @@
 package com.googlecode.estuary.sirc
 
 import org.scalatest.junit.AssertionsForJUnit
+import com.github.jankroken.ircclient.protocol.domain.{Channel, User, IRCServer, UserMode}
 import org.junit.Test
-
-import com.googlecode.estuary.sirc.domain.Channel
-import com.googlecode.estuary.sirc.domain.IRCServer
-import com.googlecode.estuary.sirc.domain.User
-import com.googlecode.estuary.sirc.domain.UserMode
 
 object BasicProtocolTest extends AssertionsForJUnit with App {
 

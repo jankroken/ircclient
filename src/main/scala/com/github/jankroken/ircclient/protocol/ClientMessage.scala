@@ -1,7 +1,7 @@
 package com.github.jankroken.ircclient.protocol
 
-import com.googlecode.estuary.sirc.domain.Channel
-import com.googlecode.estuary.sirc.domain.User
+import com.github.jankroken.ircclient.protocol.domain.{Channel, User}
+
 
 class ClientMessage(val commandString: String){
 	
