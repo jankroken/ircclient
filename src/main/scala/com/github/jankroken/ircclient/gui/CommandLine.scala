@@ -11,7 +11,10 @@ class CommandLine(eventListener:EventListener) extends TextField {
     val c = e.character
     val updatedText = InputModifier.replaceSymbols(text.value)
     if (text.value != updatedText) {
+      val pos = caretPosition
+      println(s"position: ${pos.value}")
       text.value = updatedText
+      delegate.positionCaret(pos.value)
     }
     println(s"keyEvent:  $c $e ${text.value}")
   }

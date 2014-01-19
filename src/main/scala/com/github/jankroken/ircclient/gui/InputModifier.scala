@@ -1,7 +1,7 @@
 package com.github.jankroken.ircclient.gui
 
 object InputModifier {
-  def replaceSymbols(s:String) = replaceGreekLetters(replaceArrows(replaceMath(s)))
+  def replaceSymbols(s:String) = replaceGreekLetters(replaceArrows(replaceMath(replaceUnits(s))))
 
   def replaceGreekLetters(s:String) = {
     s .replaceAll("::alpha","α")
@@ -56,7 +56,7 @@ object InputModifier {
     .replaceAll("\\|^-","⤒")
     .replaceAll("\\|v_","⤓")
     .replaceAll("::\\\\-\\\\","⥋")
-    .replaceAll("::/=/","⥊")
+    .replaceAll("::/-/","⥊")
     .replaceAll("::~~->","⥵")
     .replaceAll("::⬄","<=>")
     .replaceAll("::<--","⟵")
@@ -113,8 +113,10 @@ object InputModifier {
     .replaceAll("::subset","⸦")
     .replaceAll("::superset","⸧")
     .replaceAll("::_\\|_","⟂")
-    .replaceAll("::\\(\\(","⟪")
-    .replaceAll("::\\)\\)","⟫")
+    .replaceAll("::<<","⟪")
+    .replaceAll("::>>","⟫")
+    .replaceAll("::\\(\\(","⸨")
+    .replaceAll("::\\)\\)","⸩")
     .replaceAll("::all","∀")
     .replaceAll("::notevery","∄")
     .replaceAll("::empty","∅")
@@ -122,8 +124,22 @@ object InputModifier {
     .replaceAll("::and","∧")
     .replaceAll("::or","∨")
     .replaceAll("::intersection","∩")
-    .replaceAll("::join","∪")
+    .replaceAll("::union","∪")
     .replaceAll("::~=","≈")
     .replaceAll("::\\|-","⊢")
+    .replaceAll("::[[","⟦")
+    .replaceAll("::]]","⟧")
+    .replaceAll("::integers","ℤ")
+    .replaceAll("::reals","ℝ")
+    .replaceAll("::rationals","ℚ")
+    .replaceAll("::naturals","ℕ")
+    .replaceAll("::complex","ℂ")
+    .replaceAll("::elementof","∈")
+    .replaceAll("::notexist","∄")
+    .replaceAll("::/E","∄")
+
+
+  def replaceUnits(s:String) = s
+    .replaceAll("::celsius","℃")
 
 }
