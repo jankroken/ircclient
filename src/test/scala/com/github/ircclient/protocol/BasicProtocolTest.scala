@@ -4,7 +4,7 @@ import org.scalatest.junit.AssertionsForJUnit
 import com.github.jankroken.ircclient.protocol.domain.{Channel, User, IRCServer, UserMode}
 import org.junit.Test
 
-object BasicProtocolTest extends AssertionsForJUnit with App {
+class BasicProtocolTest extends AssertionsForJUnit with App {
 
   override def main(args: Array[String]) {
     testInitialContact

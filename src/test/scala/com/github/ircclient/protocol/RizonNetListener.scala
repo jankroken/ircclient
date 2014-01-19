@@ -1,9 +1,6 @@
-package com.googlecode.estuary.sirc
+package com.github.jankroken.ircclient.protocol
 
-import com.googlecode.estuary.sirc.domain.Channel
-import com.googlecode.estuary.sirc.domain.IRCServer
-import com.googlecode.estuary.sirc.domain.User
-import com.googlecode.estuary.sirc.domain.UserMode
+import com.github.jankroken.ircclient.protocol.domain.{Channel, IRCServer, UserMode, User}
 
 object RizonNetListener extends App {
   testInitialContact

@@ -1,9 +1,6 @@
 package com.googlecode.estuary.sirc
 
-import com.googlecode.estuary.sirc.domain.Channel
-import com.googlecode.estuary.sirc.domain.IRCServer
-import com.googlecode.estuary.sirc.domain.User
-import com.googlecode.estuary.sirc.domain.UserMode
+import com.github.jankroken.ircclient.protocol.domain.{Channel, IRCServer, UserMode, User}
 
 object DalNetListener extends App {
   testInitialContact
@@ -26,7 +23,7 @@ object DalNetListener extends App {
     dalnet.logon
     Thread.sleep(4000)
     var java: Channel = dalnet.join("#java")
-    var norge: Channel = dalnet.join("#norge")
+    var norge: Channel = dalnet.join("##programming")
     Thread.sleep(2000000)
   }
 
