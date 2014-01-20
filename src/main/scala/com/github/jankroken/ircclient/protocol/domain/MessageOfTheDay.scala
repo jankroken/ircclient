@@ -7,13 +7,13 @@ class MessageOfTheDay extends ServerMessage {
 		lines = lines ::: List(line)
 	}
 	
-	override def toString():String = {
+	override def toString = {
 		val sb = new StringBuilder()
 		sb.append("MessageOfTheDay {\n")
-		for (line <- lines) {
+		for (line ← lines) {
 			sb.append("  ").append(line).append('\n')
 		}
 		sb.append("}")
-		return sb.toString()
+		sb.toString()
 	}
 }

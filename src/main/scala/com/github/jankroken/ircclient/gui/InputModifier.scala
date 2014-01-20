@@ -91,7 +91,7 @@ object InputModifier {
 
   def replaceMath(s:String) =
     s.replaceAll("::not","¬")
-    .replaceAll("::+-","±")
+    .replaceAll("::\\+-","±")
     .replaceAll("::pow1","¹")
     .replaceAll("::pow2","²")
     .replaceAll("::pow3","³")

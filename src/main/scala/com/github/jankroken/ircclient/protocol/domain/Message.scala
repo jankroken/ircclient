@@ -4,7 +4,5 @@ case class Message(val text: String) extends ServerMessage {
 	
 	var target: Target = null
 	
-	override def toString(): String = {
-		return "Message {(%s->%s) : %s }" format (null, target, text)
-	}
+	override def toString = "Message {(%s->%s) : %s }" format (null, target, text)
 }

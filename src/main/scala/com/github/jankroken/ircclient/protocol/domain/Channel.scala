@@ -42,7 +42,7 @@ class Channel(val name: String, val server: IRCServer) extends Target {
 		println(this+": Topic set at: "+topicTime)
 	}
   
-	def clearTopic() {
+	def clearTopic {
 		this.topic = None
 	}
 
@@ -56,5 +56,5 @@ class Channel(val name: String, val server: IRCServer) extends Target {
 }
 
 object Channel {
-  def apply(name:String, server: IRCServer):Channel = new Channel(name,server) 
+  def apply(name:String, server: IRCServer) = new Channel(name,server)
 }

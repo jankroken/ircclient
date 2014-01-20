@@ -10,7 +10,7 @@ case class Notice(origin: Option[Origin], targets: Array[Target], message: Strin
     }
     sb.append("<Notice ")
     var first = true
-    for (target <- targets) {
+    for (target ← targets) {
     	if (first) {
     	  sb.append(target.toString)
     	  first = false

@@ -7,13 +7,13 @@ case class NameList(channelType: String, val channel: Channel, nicks: String) ex
   
   val nicklist = nicks.split(" ")
   
-  override def toString:String = {
+  override def toString = {
 	  val secretString = if (secret) "[secret]" else ""
 	  val privateString = if (privateChannel) "[private]" else ""
 	  val sb = new StringBuilder
 	  sb.append("NameList("+channel+secretString+privateString+",")
 	  var first = true
-	  for (nick <- nicklist) {
+	  for (nick ← nicklist) {
 	      if (first) {
 	    	  sb.append(' ')
 	    	  first = false

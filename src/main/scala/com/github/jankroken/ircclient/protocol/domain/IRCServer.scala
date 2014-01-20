@@ -45,7 +45,7 @@ class IRCServer(val name: String, val port: Int) {
 		messageService.start()
 	}
 	
-	def getMessageService():IRCMessageService = messageService
+	def getMessageService = messageService
 
 	def logon = {
 		messageService.sendMessage(ClientMessage.user(user))
@@ -82,7 +82,7 @@ class IRCServer(val name: String, val port: Int) {
 		  case Some(channel) => channel
 		  case None => {
         val channel = new Channel(name,this)
-        channels = channels + (name -> channel)
+        channels = channels + (name → channel)
         channel
       }
     }

@@ -76,5 +76,5 @@ class MessageConverter(messageListener: MessageListener, val server: IRCServer) 
 		}
 	}
  
-	override def toString:String = "IRCServer"
+	override def toString = "IRCServer"
 }
