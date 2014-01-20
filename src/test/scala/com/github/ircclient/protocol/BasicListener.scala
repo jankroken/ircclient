@@ -12,9 +12,10 @@ object BasicListener extends App {
   def testInitialContact() {
 
     val xenobot7 = "xenobot7"
+//    val xenobot7 = "αω"
     object xeno extends User {
       val nick = xenobot7
-      val realName = "Jan Kroken"
+      val realName = "αω" // "Jan Kroken"
       val userName = xenobot7
       val userMode = new UserMode()
     }

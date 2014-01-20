@@ -12,15 +12,15 @@ class WelcomeMessage extends ServerMessage {
 	  setLine(lineNo, message)
   }
  
-	def getLines():Array[String] = lines
+	def getLines = lines
 	
-	override def toString():String = {
+	override def toString = {
     val sb: StringBuilder = new StringBuilder()
 		sb.append("WelcomeMessage {\n")
 		for (line <- lines) {
 			sb.append("  ").append(line).append('\n')
 		}
 		sb.append('}')
-		sb.toString()
+		sb.toString
 	}
 }

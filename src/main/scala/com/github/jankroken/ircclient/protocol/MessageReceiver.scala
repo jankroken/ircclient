@@ -7,9 +7,9 @@ class MessageReceiver(input: BufferedReader, messageListener: LowLevelMessageLis
 
   this.start()
 
-  override def run() {
+  override def run {
     try {
-      readLines()
+      readLines
     } catch {
       case ex: Exception =>
         println("Exception in run: " + ex)
@@ -18,12 +18,12 @@ class MessageReceiver(input: BufferedReader, messageListener: LowLevelMessageLis
   }
 
 
-  def readLines() = {
+  def readLines = {
     var inputLine = input.readLine()
     while (inputLine != null) {
       val message = LowLevelServerMessage(inputLine)
       messageListener.onMessage(message)
-      inputLine = input.readLine()
+      inputLine = input.readLine
     }
     println("END OF INPUT. Exiting")
   }

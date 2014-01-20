@@ -7,7 +7,7 @@ import scala.Some
 
 class LowLevelServerMessage(val origin: Option[Origin], val command: String, val arguments: Array[String]) extends ServerMessage {
 
-  override def toString(): String = {
+  override def toString = {
     val sb: StringBuilder = new StringBuilder(1024)
 
     origin match {
@@ -21,7 +21,7 @@ class LowLevelServerMessage(val origin: Option[Origin], val command: String, val
       sb.append(argument)
       sb.append('"')
     }
-    sb.toString()
+    sb.toString
   }
 
 }

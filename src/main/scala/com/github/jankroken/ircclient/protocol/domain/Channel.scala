@@ -13,16 +13,16 @@ class Channel(val name: String, val server: IRCServer) extends Target {
 	}
 	
 	override def hashCode:Int = name.hashCode
-	
+
+  private def isEmpty(s:String) = s == null || s.length() < 1
+
 	def isAValidName(name: String):Boolean = {
-	    if (name == null || name.length() < 1) {
-			return false
-		}
+	  if (isEmpty(name)) return false
 		if (name.indexOf(' ') >= 0) return false
 		if (name.indexOf(7) >= 0) return false; // check cast, 7 -> char
 		if (name.indexOf(',') >= 0) return false
 		if (name.length() > 50) return false
-  		if (name(0) == '#') return true
+    if (name(0) == '#') return true
 		if (name(0) == '&') return true
 		if (name(0) == '+') return true
 		if (name(0) == '!') return true

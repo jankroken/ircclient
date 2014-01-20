@@ -12,6 +12,7 @@ class BasicProtocolTest extends AssertionsForJUnit with App {
 
   @Test def testInitialContact() {
 
+//    val xenobot5 = "xenobot5"
     val xenobot5 = "xenobot5"
     object xeno extends User {
       val nick = xenobot5

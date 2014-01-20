@@ -19,7 +19,7 @@ class IRCMessageService(socket: Socket, messageListener: LowLevelMessageListener
 		println("Writing: "+message.commandString)
 		output.print(message.commandString)
 		output.print("\r\n")
-		output.flush()
+		output.flush
 	}
 	
 	def start() = {
