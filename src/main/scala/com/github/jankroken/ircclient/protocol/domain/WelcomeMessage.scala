@@ -17,10 +17,10 @@ class WelcomeMessage extends ServerMessage {
 	override def toString = {
     val sb: StringBuilder = new StringBuilder()
 		sb.append("WelcomeMessage {\n")
-		for (line <- lines) {
+		for (line ← lines) {
 			sb.append("  ").append(line).append('\n')
 		}
 		sb.append('}')
-		sb.toString
+		sb.toString()
 	}
 }

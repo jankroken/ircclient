@@ -11,15 +11,13 @@ class ClientServerCount(val clientServerString: String) extends ServerMessage {
 	  case _ =>
 	}
 
-	override def toString:String = {
-		clients match {
-		  	case None => "ClientServerCount(unrecognized, string="+clientServerString+")"
-		  	case Some(clientCount) =>
-		  	  	servers match {
-		  	  	  	case Some(serverCount) => "ClientServerCount("+clients+","+servers+")"
-		  	  	  	case _ => "ClientServerCount(internal error)"
-		  	  	}
+	override def toString = clients match {
+    case None => "ClientServerCount(unrecognized, string="+clientServerString+")"
+    case Some(clientCount) =>
+      servers match {
+        case Some(serverCount) => "ClientServerCount("+clients+","+servers+")"
+        case _ => "ClientServerCount(internal error)"
+      }
 		}
-	}
 
 }

@@ -15,14 +15,11 @@ case class Notice(origin: Option[Origin], targets: Array[Target], message: Strin
     	  sb.append(target.toString)
     	  first = false
     	} else {
-    	  sb.append(',')
-          sb.append(target.toString)
+    	  sb.append(',').append(target.toString)
     	}
     }
-    sb.append(" : ")
-    sb.append(message)
-    sb.append(">")
-    return sb.toString
+    sb.append(" : ").append(message).append(">")
+    sb.toString
   }
   
 }

@@ -4,7 +4,7 @@ import com.github.jankroken.ircclient.protocol.LowLevelServerMessage
 
 class MessageConverter(messageListener: MessageListener, val server: IRCServer) extends LowLevelMessageListener{
 
-	private var welcomeMessage: WelcomeMessage = new WelcomeMessage()
+	private val welcomeMessage = new WelcomeMessage()
 	private var motd: MessageOfTheDay = null
 	
 	def onMessage(message: LowLevelServerMessage) {
@@ -16,26 +16,26 @@ class MessageConverter(messageListener: MessageListener, val server: IRCServer) 
 			  	welcomeMessage.setLine(4, message.arguments(1))
 				messageListener.onMessage(welcomeMessage)
 			case "005" => 
-			  	messageListener.onMessage(new ServerParameters(message.arguments))
+			  	messageListener.onMessage(ServerParameters(message.arguments))
 			case "252" =>
-			  	messageListener.onMessage(new OperatorCount(message.arguments(1)))
+			  	messageListener.onMessage(OperatorCount(message.arguments(1)))
 			case "253" =>
-			  	messageListener.onMessage(new UnknownConnectionCount(message.arguments(1)))
-			case "254" => messageListener.onMessage(new ChannelCount((message.arguments(1)).toInt))
+			  	messageListener.onMessage(UnknownConnectionCount(message.arguments(1)))
+			case "254" => messageListener.onMessage(ChannelCount((message.arguments(1)).toInt))
 			case "255" => messageListener.onMessage(new ClientServerCount(message.arguments(1)))
 			case "332" => 
-			  	messageListener.onMessage(new Topic(server.getChannel(message.arguments(1)), 
-                                          			message.arguments(2)))
+			  	messageListener.onMessage(Topic(server.getChannel(message.arguments(1)),
+                                          message.arguments(2)))
 			case "333" =>
-			  	messageListener.onMessage(new TopicSetBy(server.getChannel(message.arguments(1)),
-                                               			 message.arguments(2),
-                                               			 message.arguments(3)))
+			  	messageListener.onMessage(TopicSetBy(server.getChannel(message.arguments(1)),
+                                               message.arguments(2),
+                                               message.arguments(3)))
 			case "353" =>
-			    messageListener.onMessage(new NameList(message.arguments(1),
+			    messageListener.onMessage(NameList(message.arguments(1),
                                  					   server.getChannel(message.arguments(2)),
                                  					   message.arguments(3)))
 			case "366" =>
-			    messageListener.onMessage(new EndOfNames(server.getChannel(message.arguments(1))))
+			    messageListener.onMessage(EndOfNames(server.getChannel(message.arguments(1))))
 			case "375" => 
 			  	motd = new MessageOfTheDay()
 				motd.addLine(message.arguments(1))

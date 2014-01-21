@@ -6,13 +6,13 @@ class Channel(val name: String, val server: IRCServer) extends Target {
   
 	require(isAValidName(name))
 
-	override def toString:String = name
+	override def toString = name
 	
 	override def equals(o : Any):Boolean = {
 		return ((o.isInstanceOf[Channel]) && name.equals(o.toString()))
 	}
 	
-	override def hashCode:Int = name.hashCode
+	override def hashCode = name.hashCode
 
   private def isEmpty(s:String) = s == null || s.length() < 1
 
@@ -26,7 +26,7 @@ class Channel(val name: String, val server: IRCServer) extends Target {
 		if (name(0) == '&') return true
 		if (name(0) == '+') return true
 		if (name(0) == '!') return true
-		return false
+		false
 	}
 
 	def setTopic(topic: String) = {
