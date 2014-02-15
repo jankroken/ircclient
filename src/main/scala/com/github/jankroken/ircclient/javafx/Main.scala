@@ -15,14 +15,14 @@ class Main extends Application {
   val eventListener = new EventListener
   val nickPane = NickPane(eventListener)
   val channelPane = ChannelPane(eventListener)
-  val sidePanel = new SplitPane()
-  sidePanel.setId("list-splitpane")
-  sidePanel.setDividerPosition(1,0)
-
-  sidePanel.setMinWidth(120)
-  sidePanel.setMaxWidth(300)
-  sidePanel.setPrefWidth(200)
-  sidePanel.setOrientation(Orientation.VERTICAL)
+  val sidePanel = new SplitPane() {
+    setId("list-splitpane")
+    setDividerPosition(1,0)
+    setMinWidth(120)
+    setMaxWidth(300)
+    setPrefWidth(200)
+    setOrientation(Orientation.VERTICAL)
+  }
 
 
 //  val ob = ObservableBuffer[HBox]()
@@ -41,7 +41,8 @@ class Main extends Application {
     center.getItems.addAll(sidePanel,chatPane)
     // SplitPaneBuilder.create().id("page-splitpane").build()
     center.setDividerPosition(0,100)
-
+    borderPane.setCenter(center)
+    borderPane.setBottom(new CommandLine(eventListener))
   }
 
   def start(primaryStage:Stage) {
