@@ -10,30 +10,19 @@ import javafx.scene.{Group, Scene}
 import javafx.scene.layout.BorderPane
 import com.github.jankroken.ircclient.gui.ChatMessageFactory
 
-object Main extends Application {
+class Main extends Application {
 
-
-  //val sidePanel = SplitPaneBuilder.create().id("list-splitpane")   .build()
+  val eventListener = new EventListener
+  val nickPane = NickPane(eventListener)
+  val channelPane = ChannelPane(eventListener)
   val sidePanel = new SplitPane()
   sidePanel.setId("list-splitpane")
-  sidePanel.getItems().addAll(NickPane(eventListener),ChannelPane(eventListener))
   sidePanel.setDividerPosition(1,0)
 
-
-
-    // .items(NickPane(eventListener),ChannelPane(eventListener))
-    // dividerPosition(1).build()
-
-//
-  val eventListener = new EventListener
-
-/*
-    minWidth = 120
-    maxWidth = 300
-    prefWidth = 200
-    dividerPositions = 1
-    orientation = Orientation.VERTICAL
-     */
+  sidePanel.setMinWidth(120)
+  sidePanel.setMaxWidth(300)
+  sidePanel.setPrefWidth(200)
+  sidePanel.setOrientation(Orientation.VERTICAL)
 
 
 //  val ob = ObservableBuffer[HBox]()
@@ -42,22 +31,23 @@ object Main extends Application {
   def init(primaryStage:Stage) {
     primaryStage.setTitle("IRC Client")
     val root = new Group()
-    val scene = new Scene(root)
-    primaryStage.setScene(scene)
     val borderPane = new BorderPane()
     root.getChildren().add(borderPane)
+    val scene = new Scene(root)
+    primaryStage.setScene(scene)
 //    bottom = new CommandLine(new EventListener)
     val center = new SplitPane()
     center.setId("page-splitpane")
     center.getItems.addAll(sidePanel,chatPane)
     // SplitPaneBuilder.create().id("page-splitpane").build()
-    center.setDividerPosition(0,0)
+    center.setDividerPosition(0,100)
 
-  // .items(sidePanel,chatPane).dividerPositions(0)
   }
 
   def start(primaryStage:Stage) {
     init(primaryStage)
+    println("hello")
+    primaryStage.show()
   }
 
   val sampleChatLines = ChatMessageFactory.sampleChatLines
@@ -78,4 +68,10 @@ object Main extends Application {
   }}
 
 
+}
+
+object Main {
+  def main(args: Array[String]) {
+    Application.launch(classOf[Main], args: _*)
+  }
 }
