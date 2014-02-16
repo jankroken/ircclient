@@ -1,9 +1,8 @@
 package com.github.jankroken.ircclient.javafx
 
 import com.github.jankroken.ircclient.domain.{EventListener}
-import javafx.event.EventHandler
 import javafx.application.Application
-import javafx.scene.control.{SplitPane, SplitPaneBuilder}
+import javafx.scene.control.SplitPane
 import javafx.geometry.Orientation
 import javafx.stage.Stage
 import javafx.scene.{Group, Scene}
@@ -22,6 +21,8 @@ class Main extends Application {
     setMaxWidth(300)
     setPrefWidth(200)
     setOrientation(Orientation.VERTICAL)
+    setManaged(true)
+    SplitPane.setResizableWithParent(this,true)
   }
 
 
@@ -33,16 +34,21 @@ class Main extends Application {
     val root = new Group()
     val borderPane = new BorderPane()
     root.getChildren().add(borderPane)
-    val scene = new Scene(root)
-    primaryStage.setScene(scene)
-//    bottom = new CommandLine(new EventListener)
-    val center = new SplitPane()
-    center.setId("page-splitpane")
-    center.getItems.addAll(sidePanel,chatPane)
-    // SplitPaneBuilder.create().id("page-splitpane").build()
-    center.setDividerPosition(0,100)
+    primaryStage.setScene(new Scene(root,1020,700))
+    val center = new SplitPane() {
+      setId("page-splitpane")
+      getItems.addAll(sidePanel,chatPane)
+      setDividerPosition(0,100)
+//      setMaxHeight(10000)
+//      setMaxWidth(10000)
+//      setPrefHeight(10000)
+//      setPrefWidth(10000)
+      setManaged(true)
+    }
     borderPane.setCenter(center)
     borderPane.setBottom(new CommandLine(eventListener))
+    borderPane.setManaged(true)
+    borderPane.setPrefHeight(1000)
   }
 
   def start(primaryStage:Stage) {

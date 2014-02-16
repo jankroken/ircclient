@@ -6,6 +6,8 @@ import javafx.scene.layout.GridPane
 
 class ChatPane(eventListener: EventListener) extends ScrollPane {
   val chatPanel = new GridPane {
+    setFitToWidth(true)
+    setFitToHeight(true)
   }
 
   setFitToWidth(true)

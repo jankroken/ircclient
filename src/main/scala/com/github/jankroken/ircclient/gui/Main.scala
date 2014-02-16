@@ -6,13 +6,9 @@ import scalafx.geometry.Orientation
 import scalafx.scene.control._
 import scalafx.scene.layout._
 import scalafx.scene.Scene
-import scalafx.scene.paint.Color
 import scalafx.collections.ObservableBuffer
 import scalafx.Includes._
 import com.github.jankroken.ircclient.domain.{EventListener}
-import scalafx.scene.image.{Image, ImageView}
-import scalafx.scene.input.KeyEvent
-import javafx.event.EventHandler
 
 object Main extends JFXApp {
 
