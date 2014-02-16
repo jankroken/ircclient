@@ -32,11 +32,11 @@ object Main extends JFXApp {
     title = "IRC Client"
     scene = new Scene(1020, 700) {
       root = new BorderPane {
-        center =  new SplitPane {
-          dividerPositions = 0
-          id = "page-splitpane"
-          items.addAll(sidePanel,chatPane)
-        }
+//        center =  new SplitPane {
+//          dividerPositions = 0
+//          id = "page-splitpane"
+//          items.addAll(sidePanel,chatPane)
+//        }
         bottom = new CommandLine(new EventListener)
       }
     }

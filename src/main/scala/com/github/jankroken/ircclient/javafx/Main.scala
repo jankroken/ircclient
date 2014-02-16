@@ -21,8 +21,8 @@ class Main extends Application {
     setMaxWidth(300)
     setPrefWidth(200)
     setOrientation(Orientation.VERTICAL)
-    setManaged(true)
     SplitPane.setResizableWithParent(this,true)
+    setMaxHeight(10000)
   }
 
 
@@ -30,25 +30,20 @@ class Main extends Application {
   val chatPane = ChatPane(new EventListener)
 
   def init(primaryStage:Stage) {
-    primaryStage.setTitle("IRC Client")
-    val root = new Group()
     val borderPane = new BorderPane()
-    root.getChildren().add(borderPane)
-    primaryStage.setScene(new Scene(root,1020,700))
+    primaryStage.setTitle("IRC Client")
+    primaryStage.setScene(new Scene(borderPane,1020,700))
+
     val center = new SplitPane() {
       setId("page-splitpane")
       getItems.addAll(sidePanel,chatPane)
       setDividerPosition(0,100)
-//      setMaxHeight(10000)
-//      setMaxWidth(10000)
-//      setPrefHeight(10000)
-//      setPrefWidth(10000)
-      setManaged(true)
+//      setManaged(true)
     }
     borderPane.setCenter(center)
     borderPane.setBottom(new CommandLine(eventListener))
     borderPane.setManaged(true)
-    borderPane.setPrefHeight(1000)
+    borderPane.setMaxWidth(10000)
   }
 
   def start(primaryStage:Stage) {

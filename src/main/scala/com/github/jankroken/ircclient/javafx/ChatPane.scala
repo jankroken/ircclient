@@ -8,11 +8,18 @@ class ChatPane(eventListener: EventListener) extends ScrollPane {
   val chatPanel = new GridPane {
     setFitToWidth(true)
     setFitToHeight(true)
+    setManaged(true)
+    setMaxWidth(10000)
+    setMaxHeight(10000)
   }
 
   setFitToWidth(true)
   setFitToHeight(true)
   setContent(chatPanel)
+  setManaged(true)
+  setMaxHeight(10000)
+  setMaxWidth(10000)
+  setMinWidth(100)
 }
 
 object ChatPane {

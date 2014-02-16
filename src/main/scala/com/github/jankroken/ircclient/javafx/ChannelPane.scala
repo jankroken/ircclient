@@ -12,6 +12,8 @@ class ChannelPane(val eventListener:EventListener) extends ScrollPane {
       setExpanded(true)
 //      getChildren.addAll(channels.map(new TreeItem(_)))
     }
+  setFitToHeight(true)
+  setFitToWidth(true)
 
 /*
   def networksChannels =
