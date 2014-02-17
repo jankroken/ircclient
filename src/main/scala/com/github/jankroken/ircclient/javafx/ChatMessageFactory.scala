@@ -1,31 +1,34 @@
 package com.github.jankroken.ircclient.javafx
 
-import scalafx.scene.layout.HBox
-import scalafx.scene.control.Label
+//import scalafx.scene.layout.HBox
+import javafx.scene.control.Label
+import javafx.scene.layout.HBox
+
+//import scalafx.scene.control.Label
 import scalafx.scene.paint.Color
 import scalafx.scene.image.{Image, ImageView}
 
 object ChatMessageFactory {
 
   def sampleChatLines = List.range(1,1000).map(num => new HBox {
-    content = List(new Label {
-      text = s"Hello$num"
-      minWidth = 100
-      maxWidth = 140
-      prefWidth = 100
-      textFill = Color.BLUE
-    }, new Label { text= s"Hello $num"})
+    getChildren.addAll(new Label {
+      setText(s"Hello$num")
+      setMinWidth(100)
+      setMaxWidth(140)
+      setPrefWidth(100)
+      setTextFill(Color.BLUE)
+    }, new Label { setText(s"Hello $num")})
   })
 
   def sampleChatLines2 = List.range(1,1000).map(num =>
 
     SimpleMessage(new Label {
-      text = s"Hello$num"
-      minWidth = 100
-      maxWidth = 140
-      prefWidth = 100
-      textFill = Color.BLUE
-    }, new Label { text= s"Hello $num"})
+      setText(s"Hello$num")
+      setMinWidth(100)
+      setMaxWidth(140)
+      setPrefWidth(100)
+      setTextFill(Color.BLUE)
+    }, new Label { setText(s"Hello $num")})
   )
 
   def sampleImage = {
