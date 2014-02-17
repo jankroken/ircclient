@@ -1,11 +1,9 @@
 package com.github.jankroken.ircclient.javafx
 
-import com.github.jankroken.ircclient.domain.{EventListener, NetworkSelected, ChannelSelected}
+import com.github.jankroken.ircclient.domain.{EventListener}
 import javafx.scene.control.{TreeView, TreeItem, ScrollPane}
 import javafx.scene.layout.Priority
 import javafx.beans.value.{ObservableValue, ChangeListener}
-import javafx.event.{EventType, EventHandler}
-import scalafx.scene.Node
 
 
 class ChannelPane(val eventListener: EventListener) extends ScrollPane {
@@ -33,6 +31,15 @@ class ChannelPane(val eventListener: EventListener) extends ScrollPane {
         setShowRoot(false)
 //        val children = List(freenodeChannels,efnetChannels,quakenetChannels)
         getChildren.addAll(freenodeChannels,efnetChannels,quakenetChannels)
+        println(s"getSelectionModel=>${getSelectionModel()}")
+        println(s"getSelectionModel.getSelectedItem=>${getSelectionModel().getSelectedItem}")
+
+        object channelListener extends ChangeListener[TreeItem[String]] {
+          def changed(v:ObservableValue[_ <: TreeItem[String]], oldValue:TreeItem[String], newValue:TreeItem[String]) {
+            println(s"selected item=$newValue")
+          }
+        }
+        getSelectionModel().selectedItemProperty().addListener(channelListener)
       })}
 
         //        selectionModelProperty.getSelectedItem.onChange { (_,_,newVal) =>
@@ -42,14 +49,14 @@ class ChannelPane(val eventListener: EventListener) extends ScrollPane {
         //        val selected = if(isChannel) ChannelSelected(parentValue,value) else NetworkSelected(value)
         //        eventListener.onEvent(selected)
         //      }
-//        getSelectionModel().getSelectedItem.addEventHandler[Node](EventType[Node], new EventHandler[Node] {
+        // getSelectionModel().getSelectedItem.addEventHandler[Node](EventType[Node], new EventHandler[Node] {
 //        def handle(n: Node) {
 //          println(s"node:${n}")
 //        }
 //      })
-    //}
 
   setFitToWidth(true)
+  setFitToHeight(true)
   setMinHeight(200)
   setPrefHeight(2000)
   setId("page-tree")
