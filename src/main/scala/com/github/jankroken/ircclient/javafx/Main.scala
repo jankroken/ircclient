@@ -5,9 +5,8 @@ import javafx.application.Application
 import javafx.scene.control.SplitPane
 import javafx.geometry.Orientation
 import javafx.stage.Stage
-import javafx.scene.{Group, Scene}
+import javafx.scene.Scene
 import javafx.scene.layout.BorderPane
-import com.github.jankroken.ircclient.gui.ChatMessageFactory
 
 class Main extends Application {
 

@@ -1,7 +1,6 @@
 package com.github.jankroken.ircclient.javafx
 
 import com.github.jankroken.ircclient.domain.{LineEntered, EventListener}
-import com.github.jankroken.ircclient.gui.InputModifier
 import javafx.scene.control.TextField
 import javafx.event.EventHandler
 import javafx.scene.input.{KeyCode, KeyEvent}

@@ -1,4 +1,4 @@
-package com.github.jankroken.ircclient.gui
+package com.github.jankroken.ircclient.javafx
 
 import scalafx.scene.layout.HBox
 import scalafx.scene.control.Label

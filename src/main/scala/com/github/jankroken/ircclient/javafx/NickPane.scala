@@ -5,9 +5,7 @@ import javafx.scene.control.{Label, ScrollPane}
 import javafx.scene.layout.GridPane
 
 class NickPane(eventListener:EventListener) extends ScrollPane {
-  val nickTable = new GridPane {
-
-  }
+  val nickTable = new GridPane
 
   setMinWidth(100)
   setMinHeight(100)

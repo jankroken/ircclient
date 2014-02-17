@@ -1,4 +1,4 @@
-package com.github.jankroken.ircclient.gui
+package com.github.jankroken.ircclient.javafx
 
 object InputModifier {
   def replaceSymbols(s:String) = replaceGreekLetters(replaceArrows(replaceMath(replaceUnits(s))))
