@@ -3,52 +3,59 @@ package com.github.jankroken.ircclient.javafx
 import com.github.jankroken.ircclient.domain.{EventListener, NetworkSelected, ChannelSelected}
 import javafx.scene.control.{TreeView, TreeItem, ScrollPane}
 import javafx.scene.layout.Priority
+import javafx.beans.value.{ObservableValue, ChangeListener}
+import javafx.event.{EventType, EventHandler}
+import scalafx.scene.Node
 
 
-class ChannelPane(val eventListener:EventListener) extends ScrollPane {
+class ChannelPane(val eventListener: EventListener) extends ScrollPane {
 
-  def ncChildren(network:String,channels:List[String]) =
+  def ncChildren(network: String, channels: List[String]) =
     new TreeItem[String](network) {
       setExpanded(true)
-//      getChildren.addAll(channels.map(new TreeItem(_)))
+      //      getChildren.addAll(channels.map(new TreeItem(_)))
+      channels.map(new TreeItem(_)).foreach {
+        getChildren.add(_)
+      }
     }
-  setFitToHeight(true)
-  setFitToWidth(true)
 
-/*
+
+  val freenodeChannels = ncChildren("freenode", List("#scala", "#java", "#haskell"))
+  val efnetChannels = ncChildren("efnet", List("#ocaml", "#prolog", "#ada"))
+  val quakenetChannels = ncChildren("quakenet", List("#quake", "#doom#", "#wolfenstein", "#keen", "#doom2", "#doom3", "quake2"))
+
   def networksChannels =
-    new TreeView[String]{
+    new TreeView[String] {
       setRoot(new TreeItem[String]("networks") {
-        visible = true
-        vgrow = Priority.ALWAYS
-        expanded = true
-        showRoot = false
-        children = List(ncChildren("freenode",List("#scala","#java","#haskell")),
-          ncChildren("efnet",List("#ocaml","#prolog","#ada")),
-          ncChildren("quakenet",List("#quake","#doom#","#wolfenstein","#keen","#doom2","#doom3","quake2")))
-      }
-      selectionModel().selectedItem.onChange { (_,_,newVal) =>
-        val parentValue = newVal.getParent.value.value
-        val value = newVal.value.value
-        val isChannel = newVal.isLeaf
-        val selected = if(isChannel) ChannelSelected(parentValue,value) else NetworkSelected(value)
-        eventListener.onEvent(selected)
-      }
-      setVgrow(Priority.ALWAYS)
-    }
-*/
-  /*
-  fitToWidth = true
-    fitToHeight = true
-    minHeight = 200
-    prefHeight = 2000
+        setVisible(true)
+        getProperties().put("vgrow", Priority.ALWAYS)
+        setExpanded(true)
+        setShowRoot(false)
+//        val children = List(freenodeChannels,efnetChannels,quakenetChannels)
+        getChildren.addAll(freenodeChannels,efnetChannels,quakenetChannels)
+      })}
 
-    id = "page-tree"
+        //        selectionModelProperty.getSelectedItem.onChange { (_,_,newVal) =>
+        //        val parentValue = newVal.getParent.value.value
+        //        val value = newVal.value.value
+        //        val isChannel = newVal.isLeaf
+        //        val selected = if(isChannel) ChannelSelected(parentValue,value) else NetworkSelected(value)
+        //        eventListener.onEvent(selected)
+        //      }
+//        getSelectionModel().getSelectedItem.addEventHandler[Node](EventType[Node], new EventHandler[Node] {
+//        def handle(n: Node) {
+//          println(s"node:${n}")
+//        }
+//      })
+    //}
 
-    content = networksChannels
-    */
+  setFitToWidth(true)
+  setMinHeight(200)
+  setPrefHeight(2000)
+  setId("page-tree")
+  setContent(networksChannels)
 }
 
 object ChannelPane {
-  def apply(eventListener:EventListener) = new ChannelPane(eventListener)
+  def apply(eventListener: EventListener) = new ChannelPane(eventListener)
 }

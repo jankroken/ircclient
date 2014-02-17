@@ -13,7 +13,8 @@ class Main extends Application {
 
   val eventListener = new EventListener
   val nickPane = NickPane(eventListener)
-  val channelPane = ChannelPane(eventListener)
+//  val channelPane = ChannelPane(eventListener)
+  val channelPane = com.github.jankroken.ircclient.gui.ChannelPane(eventListener)
   val sidePanel = new SplitPane() {
     setId("list-splitpane")
     setDividerPosition(1,0)
@@ -21,8 +22,7 @@ class Main extends Application {
     setMaxWidth(300)
     setPrefWidth(200)
     setOrientation(Orientation.VERTICAL)
-    SplitPane.setResizableWithParent(this,true)
-    setMaxHeight(10000)
+    getItems().addAll(nickPane,channelPane)
   }
 
 
@@ -37,8 +37,7 @@ class Main extends Application {
     val center = new SplitPane() {
       setId("page-splitpane")
       getItems.addAll(sidePanel,chatPane)
-      setDividerPosition(0,100)
-//      setManaged(true)
+      setDividerPosition(0,0.5)
     }
     borderPane.setCenter(center)
     borderPane.setBottom(new CommandLine(eventListener))
