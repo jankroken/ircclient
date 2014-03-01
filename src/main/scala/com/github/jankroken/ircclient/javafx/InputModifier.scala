@@ -138,6 +138,7 @@ object InputModifier {
     .replaceAll("::elementof","∈")
     .replaceAll("::notexist","∄")
     .replaceAll("::/E","∄")
+    .replaceAll("::2","²")
 
 
   def replaceUnits(s:String) = s

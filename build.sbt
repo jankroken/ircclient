@@ -9,10 +9,12 @@ scalaVersion := "2.10.3"
 // assemblySettings
 
 libraryDependencies ++= Seq(
-  "org.scalafx" %% "scalafx" % "1.0.0-M7", // previously M6
-  "org.scalatest" %% "scalatest" % "2.0" % "test", // previously 1.9.2
+//   "org.scalafx" %% "scalafx" % "1.0.0-M7",
+  "org.scalatest" %% "scalatest" % "2.0" % "test",
   "com.typesafe.akka" %% "akka-actor" % "2.2.3",
-  "junit" % "junit" % "4.11" % "test"
+  "junit" % "junit" % "4.11" % "test",
+//  "org.parboiled" %% "parboiled" % "2.0-M2"
+  "org.parboiled" %% "parboiled-scala" % "1.1.6"
 )
 
 resolvers ++= Seq(

@@ -31,6 +31,9 @@ class CommandLine(eventListener:EventListener) extends TextField {
         case KeyCode.UP ⇒ {
           setText("UP PRESSED")
         }
+        case KeyCode.DOWN ⇒ {
+          setText("DOWN PRESSED")
+        }
         case _ ⇒ // others are ignored
       }
     }
