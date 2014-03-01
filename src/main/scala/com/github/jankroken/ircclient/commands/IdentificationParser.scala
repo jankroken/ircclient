@@ -8,10 +8,12 @@ class IdentificationParser extends Parser {
   abstract class Command extends ASTNode
   case class ServerCommand(server:String) extends Command
   case class JoinCommand(server:String) extends Command
+  case class TextCommand(server:String) extends Command
 
-  def command: Rule1[ASTNode] = rule { join | server }
+  def command: Rule1[ASTNode] = rule { join | server | text }
   def server: Rule1[ASTNode] = "/server" ~ whiteSpaceSeparator ~ serverName ~> ServerCommand
   def join: Rule1[ASTNode] = "/join" ~ whiteSpaceSeparator ~ channel ~> JoinCommand
+  def text: Rule1[ASTNode] = !("/") ~ zeroOrMore(ANY) ~> TextCommand
 
 
   def whiteSpace: Rule0 = rule { zeroOrMore(anyOf(" \n\r\t\f")) }
@@ -20,6 +22,7 @@ class IdentificationParser extends Parser {
   def channelChar = { "A" - "Z" | "a" - "z" | "0" - "9" }
   def serverName = oneOrMore(serverChar)
   def serverChar = rule { "0" - "9" | "a" - "z" | "A" - "Z" | "." }
+//  def anything = rule { zeroOrMore(EscapedChar | NormalChar)  }
 
   def parseCommand(input: String): ASTNode = {
     val parsingResult = ReportingParseRunner(command).run(input)
