@@ -1,4 +1,4 @@
-package com.googlecode.estuary.sirc
+package com.github.jankroken.ircclient.protocol
 
 import com.github.jankroken.ircclient.protocol.domain.{Channel, User, UserMode, IRCServer}
 

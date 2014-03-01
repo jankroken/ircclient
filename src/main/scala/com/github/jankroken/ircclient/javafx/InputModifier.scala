@@ -58,7 +58,7 @@ object InputModifier {
     .replaceAll("::\\\\-\\\\","⥋")
     .replaceAll("::/-/","⥊")
     .replaceAll("::~~->","⥵")
-    .replaceAll("::⬄","<=>")
+    .replaceAll("::<=>","⬄")
     .replaceAll("::<--","⟵")
     .replaceAll("::-->","⟶")
     .replaceAll("::<-->","⟷")

@@ -1,6 +1,5 @@
-package com.googlecode.estuary.sirc
+package com.github.jankroken.ircclient.protocol
 
-import com.github.jankroken.ircclient.protocol.LowLevelServerMessage
 
 object ParsingTest extends App {
   testParamParser

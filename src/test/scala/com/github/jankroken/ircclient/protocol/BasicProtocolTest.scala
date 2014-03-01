@@ -1,4 +1,4 @@
-package com.googlecode.estuary.sirc
+package com.github.jankroken.ircclient.protocol
 
 import org.scalatest.junit.AssertionsForJUnit
 import com.github.jankroken.ircclient.protocol.domain.{Channel, User, IRCServer, UserMode}
