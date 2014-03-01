@@ -1,7 +1,7 @@
-package com.github.jankroken.ircclient.javafx
+package com.github.jankroken.ircclient.gui
 
 import com.github.jankroken.ircclient.domain.{EventListener}
-import com.github.jankroken.ircclient.javafx.support.JavaFXSupport._
+import com.github.jankroken.ircclient.gui.support.JavaFXSupport._
 import javafx.scene.control.{TreeView, TreeItem, ScrollPane}
 import javafx.scene.layout.Priority
 import javafx.beans.value.{ObservableValue, ChangeListener}

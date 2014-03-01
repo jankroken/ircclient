@@ -1,4 +1,4 @@
-package com.github.jankroken.ircclient.javafx
+package com.github.jankroken.ircclient.gui
 
 import javafx.scene.control.Label
 

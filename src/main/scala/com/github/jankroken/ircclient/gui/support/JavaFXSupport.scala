@@ -1,4 +1,4 @@
-package com.github.jankroken.ircclient.javafx.support
+package com.github.jankroken.ircclient.gui.support
 
 import javafx.scene.control.TreeItem
 
