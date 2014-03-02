@@ -16,7 +16,7 @@ object IRCNetListener extends App {
     }
     val ircnet = new IRCServer("irc.ifi.uio.no")
     ircnet.user = xeno
-    ircnet.connect
+    ircnet.connect(None)
     Thread.sleep(2000)
     ircnet.setNick(xenobot1)
     Thread.sleep(2000)

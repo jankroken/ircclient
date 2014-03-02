@@ -15,18 +15,12 @@ class Main extends Application {
   val chatPanels = new ChatPanels(eventListener)
   val nickPane = NickPane(eventListener)
   val channelPane = ChannelPane(eventListener)
-  val sidePanel = new SplitPane() {
-    setId("list-splitpane")
-//    setDividerPosition(1,0)
-    setMinWidth(120)
-    setMaxWidth(300)
-    setPrefWidth(200)
-    setOrientation(Orientation.VERTICAL)
-    getItems().addAll(nickPane,channelPane)
-  }
+  val sidePanel = new SidePanel
+  sidePanel.getItems.addAll(nickPane,channelPane)
 
 
-//  val ob = ObservableBuffer[HBox]()
+
+  //  val ob = ObservableBuffer[HBox]()
   val testChatPane = chatPanels.getPanel(NetworkTarget("freenode"))
   val doomPane = chatPanels.getPanel(ChannelTarget("quakenet","#doom"))
   val ocamlPane = chatPanels.getPanel(ChannelTarget("efnet","#ocaml"))
@@ -35,7 +29,7 @@ class Main extends Application {
   val center = new SplitPane() {
     setId("page-splitpane")
     getItems.addAll(sidePanel,testChatPane)
-    getItems().set(1,doomPane)
+    getItems.set(1,doomPane)
     setDividerPosition(0,0.2)
   }
 
@@ -53,6 +47,7 @@ class Main extends Application {
     println("hello")
     primaryStage.show()
     IRCActorSystem.main ! "hello to main"
+    IRCActorSystem.main ! chatPanels
   }
 
 //  val sampleChatLines = ChatMessageFactory.sampleChatLines

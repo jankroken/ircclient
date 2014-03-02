@@ -16,7 +16,7 @@ object QuakeNetListener extends App {
     }
     val quakenet = new IRCServer("irc.quakenet.org")
     quakenet.user = xeno
-    quakenet.connect
+    quakenet.connect(None)
     Thread.sleep(2000)
     quakenet.setNick(xenobot1)
     Thread.sleep(2000)

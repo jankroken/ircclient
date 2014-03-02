@@ -16,7 +16,7 @@ object UnderNetListener extends App {
     }
     val undernet = new IRCServer("irc.undernet.org")
     undernet.user = xeno
-    undernet.connect
+    undernet.connect(None)
     Thread.sleep(2000)
     undernet.setNick(xenobot1)
     Thread.sleep(2000)

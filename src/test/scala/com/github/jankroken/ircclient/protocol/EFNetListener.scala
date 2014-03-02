@@ -16,7 +16,7 @@ object EFNetListener extends App {
     }
     val efnet = new IRCServer("irc.efnet.org")
     efnet.user = xeno
-    efnet.connect
+    efnet.connect(None)
     Thread.sleep(2000)
     efnet.setNick(xenobot1)
     Thread.sleep(2000)

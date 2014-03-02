@@ -22,7 +22,7 @@ class BasicProtocolTest extends AssertionsForJUnit with App {
     }
     val freenode = new IRCServer("irc.freenode.org")
     freenode.user = xeno
-    freenode.connect
+    freenode.connect(None)
     Thread.sleep(2000)
     freenode.setNick(xenobot5)
     Thread.sleep(2000)

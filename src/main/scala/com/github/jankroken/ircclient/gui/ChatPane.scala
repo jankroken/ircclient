@@ -5,6 +5,8 @@ import javafx.scene.control.{Label, ScrollPane}
 import javafx.scene.layout.GridPane
 
 class ChatPane(eventListener: EventListener) extends ScrollPane {
+  var row = 1
+
   val chatPanel = new GridPane {
     setFitToWidth(true)
     setFitToHeight(true)
@@ -29,6 +31,9 @@ class ChatPane(eventListener: EventListener) extends ScrollPane {
       setPrefWidth(100)
     }
     val text = new Label { setText(s"$message")}
+    chatPanel.add(nick,0,row)
+    chatPanel.add(text,1,row)
+    row = row + 1
   }
 }
 

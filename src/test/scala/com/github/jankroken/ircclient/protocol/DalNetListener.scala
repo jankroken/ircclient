@@ -16,7 +16,7 @@ object DalNetListener extends App {
     }
     val dalnet = new IRCServer("irc.dal.net")
     dalnet.user = xeno
-    dalnet.connect
+    dalnet.connect(None)
     Thread.sleep(2000)
     dalnet.setNick(xenobot1)
     Thread.sleep(2000)

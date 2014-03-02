@@ -19,9 +19,9 @@ class IRCServer(val name: String, val port: Int) {
 	
 	private var messageService: IRCMessageService = null
 		
-	def connect = {
+	def connect(optionalOnMessage:Option[(ServerMessage) ⇒ Unit]) = {
 		val socket = new Socket(name,port)
-		def onMessage(message: ServerMessage) {
+		def defaultOnMessage(message: ServerMessage) {
 				message match {
 				  case Topic(channel, string) ⇒
 				  	  channel.setTopic(string)
@@ -38,6 +38,7 @@ class IRCServer(val name: String, val port: Int) {
 				  case _ ⇒ println("SERVER: "+message)
 				}
 		}
+    val onMessage = optionalOnMessage match { case Some(onMsg) ⇒ onMsg case None ⇒ defaultOnMessage(_) }
 		val messageConverter: MessageConverter = new MessageConverter(onMessage, this)
 		messageService = new IRCMessageService(socket, messageConverter)
 		messageService.start()

@@ -16,7 +16,7 @@ object RizonNetListener extends App {
     }
     val rizon = new IRCServer("irc.rizon.net")
     rizon.user = xeno
-    rizon.connect
+    rizon.connect(None)
     Thread.sleep(2000)
     rizon.setNick(xenobot1)
     Thread.sleep(2000)
