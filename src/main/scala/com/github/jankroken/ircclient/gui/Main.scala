@@ -1,6 +1,6 @@
 package com.github.jankroken.ircclient.gui
 
-import com.github.jankroken.ircclient.domain.{EventListener}
+import com.github.jankroken.ircclient.domain.{NetworkTarget, ChannelTarget, ChatTarget, EventListener}
 import javafx.application.Application
 import javafx.scene.control.SplitPane
 import javafx.geometry.Orientation
@@ -10,7 +10,8 @@ import javafx.scene.layout.BorderPane
 
 class Main extends Application {
 
-  val eventListener = new EventListener
+  val eventListener = new EventListener(setChatPane(_))
+  val chatPanels = new ChatPanels(eventListener)
   val nickPane = NickPane(eventListener)
   val channelPane = ChannelPane(eventListener)
   val sidePanel = new SplitPane() {
@@ -25,21 +26,23 @@ class Main extends Application {
 
 
 //  val ob = ObservableBuffer[HBox]()
-  val testChatPane = ChatPane(new EventListener)
-  val doomPane = ChatPane(new EventListener)
-  val ocamlPane = ChatPane(new EventListener)
+  val testChatPane = chatPanels.getPanel(NetworkTarget("freenode"))
+  val doomPane = chatPanels.getPanel(ChannelTarget("quakenet","#doom"))
+  val ocamlPane = chatPanels.getPanel(ChannelTarget("efnet","#ocaml"))
+
+  val borderPane = new BorderPane()
+  val center = new SplitPane() {
+    setId("page-splitpane")
+    getItems.addAll(sidePanel,testChatPane)
+    getItems().set(1,doomPane)
+    setDividerPosition(0,0.2)
+  }
 
   def init(primaryStage:Stage) {
-    val borderPane = new BorderPane()
     primaryStage.setTitle("IRC Client")
     primaryStage.setScene(new Scene(borderPane,1020,700))
 
-    val center = new SplitPane() {
-      setId("page-splitpane")
-      getItems.addAll(sidePanel,testChatPane)
-      getItems().set(1,doomPane)
-      setDividerPosition(0,0.2)
-    }
+
     borderPane.setCenter(center)
     borderPane.setBottom(new CommandLine(eventListener))
   }
@@ -68,6 +71,10 @@ class Main extends Application {
   }}
   doomPane.chatPanel.add(sampleImage,0,0,2,1)
 
+  def setChatPane(target:ChatTarget) {
+    center.getItems.set(1,chatPanels.getPanel(target))
+  }
+  def activeChatPane = center.getItems.get(1)
 }
 
 object Main {
