@@ -4,7 +4,7 @@ import akka.actor.{Props, Actor}
 
 class ServerActor(server:String,port:Int) extends Actor {
   def receive = {
-    case _ => println(s"ServerActor($server):hello")
+    case _ ⇒ println(s"ServerActor($server):hello")
   }
 }
 

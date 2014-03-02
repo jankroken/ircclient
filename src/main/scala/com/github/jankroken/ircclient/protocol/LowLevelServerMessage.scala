@@ -11,12 +11,12 @@ class LowLevelServerMessage(val origin: Option[Origin], val command: String, val
     val sb: StringBuilder = new StringBuilder(1024)
 
     origin match {
-      case Some(origin) => sb.append('(').append(origin).append(") ")
-      case None =>
+      case Some(origin) ⇒ sb.append('(').append(origin).append(") ")
+      case None ⇒
     }
 
     sb.append(command)
-    for (argument <- arguments) {
+    for (argument ← arguments) {
       sb.append(" \"")
       sb.append(argument)
       sb.append('"')
@@ -103,11 +103,11 @@ object LowLevelServerMessage {
 
   def sender(senderString: String): Origin =
     senderString.split('@') match {
-      case Array(nickAndPossiblyUser: String, domain: String) =>
+      case Array(nickAndPossiblyUser: String, domain: String) ⇒
         nickAndPossiblyUser.split('!') match {
-          case Array(nick, user) => new NickAndUserAtHost(nick, user, domain)
-          case _ => new NickAtHost(nickAndPossiblyUser, domain)
+          case Array(nick, user) ⇒ new NickAndUserAtHost(nick, user, domain)
+          case _ ⇒ new NickAtHost(nickAndPossiblyUser, domain)
         }
-      case _ => new Server(senderString)
+      case _ ⇒ new Server(senderString)
     }
 }

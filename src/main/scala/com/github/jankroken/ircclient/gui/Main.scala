@@ -7,6 +7,7 @@ import javafx.geometry.Orientation
 import javafx.stage.Stage
 import javafx.scene.Scene
 import javafx.scene.layout.BorderPane
+import com.github.jankroken.ircclient.actors.IRCActorSystem
 
 class Main extends Application {
 
@@ -51,13 +52,14 @@ class Main extends Application {
     init(primaryStage)
     println("hello")
     primaryStage.show()
+    IRCActorSystem.main ! "hello to main"
   }
 
 //  val sampleChatLines = ChatMessageFactory.sampleChatLines
   val sampleChatLines2 = ChatMessageFactory.sampleChatLines2
   val sampleImage = ChatMessageFactory.sampleImage
 
-  List.range(0,999).foreach{n => {
+  List.range(0,999).foreach{n ⇒ {
 
     if (n != 997) {
       testChatPane.chatPanel.add(sampleChatLines2(n).from,0,n)

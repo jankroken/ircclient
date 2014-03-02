@@ -11,7 +11,7 @@ class MessageReceiver(input: BufferedReader, messageListener: LowLevelMessageLis
     try {
       readLines
     } catch {
-      case ex: Exception =>
+      case ex: Exception ⇒
         println("Exception in run: " + ex)
         ex.printStackTrace()
     }

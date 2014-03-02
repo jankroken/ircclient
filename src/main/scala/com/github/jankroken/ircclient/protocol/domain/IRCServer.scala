@@ -21,26 +21,24 @@ class IRCServer(val name: String, val port: Int) {
 		
 	def connect = {
 		val socket = new Socket(name,port)
-		object messageListener extends MessageListener {
-			override def onMessage(message: ServerMessage) {
+		def onMessage(message: ServerMessage) {
 				message match {
-				  case Topic(channel, string) => 
+				  case Topic(channel, string) ⇒
 				  	  channel.setTopic(string)
-				  case TopicSetBy(channel, user, timestamp) => 
+				  case TopicSetBy(channel, user, timestamp) ⇒
 				  	  channel.setTopicSetter(user)
 				  	  channel.setTopicTime(timestamp)
-				  case Authorization(info) =>
+				  case Authorization(info) ⇒
 				  	  println(IRCServer.this+": "+message)
-				  case Join(origin,channel) => 
+				  case Join(origin,channel) ⇒
 				  	  channel.userJoined(origin)
-				  case Ping(server) =>
+				  case Ping(server) ⇒
 				  	  println(message)
 				  	  pong(server)
-				  case _ => println("SERVER: "+message)
+				  case _ ⇒ println("SERVER: "+message)
 				}
-			}
 		}
-		val messageConverter: MessageConverter = new MessageConverter(messageListener, this)
+		val messageConverter: MessageConverter = new MessageConverter(onMessage, this)
 		messageService = new IRCMessageService(socket, messageConverter)
 		messageService.start()
 	}
@@ -79,8 +77,8 @@ class IRCServer(val name: String, val port: Int) {
 
 	def getChannel(name: String):Channel =
 		channels.get(name) match {
-		  case Some(channel) => channel
-		  case None => {
+		  case Some(channel) ⇒ channel
+		  case None ⇒ {
         val channel = new Channel(name,this)
         channels = channels + (name → channel)
         channel

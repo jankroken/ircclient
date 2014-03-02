@@ -15,8 +15,8 @@ class NickPane(eventListener:EventListener) extends ScrollPane {
   setId("page-tree")
   setContent(nickTable)
 
-  val initialNicks = List("@Socrates","Plato","Xenophon","Crito").map(nick => new Label { setText(nick) })
-  (0 to initialNicks.length-1).foreach { n =>
+  val initialNicks = List("@Socrates","Plato","Xenophon","Crito").map(nick ⇒ new Label { setText(nick) })
+  (0 to initialNicks.length-1).foreach { n ⇒
     println(s"Adding nick: ${initialNicks(n)}")
     nickTable.addRow(n,initialNicks(n))
   }

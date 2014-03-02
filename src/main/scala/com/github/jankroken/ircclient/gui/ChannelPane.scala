@@ -27,12 +27,12 @@ class ChannelPane(val eventListener: EventListener) extends ScrollPane {
     new TreeView[String] {
       setRoot(new TreeItem[String]("networks") {
         setVisible(true)
-        getProperties().put("vgrow", Priority.ALWAYS)
+        getProperties.put("vgrow", Priority.ALWAYS)
         setExpanded(true)
         setShowRoot(false)
         getChildren.addAll(freenodeChannels,efnetChannels,quakenetChannels)
-        println(s"getSelectionModel=>${getSelectionModel()}")
-        println(s"getSelectionModel.getSelectedItem=>${getSelectionModel().getSelectedItem}")
+        println(s"getSelectionModel⇒$getSelectionModel")
+        println(s"getSelectionModel.getSelectedItem⇒${getSelectionModel.getSelectedItem}")
 
 
         object channelListener extends ChangeListener[TreeItem[String]] {
@@ -43,7 +43,7 @@ class ChannelPane(val eventListener: EventListener) extends ScrollPane {
               eventListener.onEvent(NetworkSelected(newValue.getValue))
           }
         }
-        getSelectionModel().selectedItemProperty().addListener(channelListener)
+        getSelectionModel.selectedItemProperty().addListener(channelListener)
       })}
 
   setFitToWidth(true)

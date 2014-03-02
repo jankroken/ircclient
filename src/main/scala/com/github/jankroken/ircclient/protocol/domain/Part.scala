@@ -4,8 +4,8 @@ case class Part(origin: Option[Origin], val channel: Channel, reason: String) ex
 
   override def toString: String = {
     val originString: String = origin match {
-      case Some(origin) => "(" + origin + ")"
-      case None => ""
+      case Some(origin) ⇒ "(" + origin + ")"
+      case None ⇒ ""
     }
     val reasonString = if ("".equals(reason)) "" else " " + reason
     s"$originString Part($channel$reasonString)"

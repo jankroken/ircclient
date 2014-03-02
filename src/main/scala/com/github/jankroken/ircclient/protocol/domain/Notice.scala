@@ -5,8 +5,8 @@ case class Notice(origin: Option[Origin], targets: Array[Target], message: Strin
   override def toString:String = {
     val sb = new StringBuffer(100)
     origin match {
-      case Some(origin) => sb.append('(').append(origin).append(") ")
-      case None =>
+      case Some(origin) ⇒ sb.append('(').append(origin).append(") ")
+      case None ⇒
     }
     sb.append("<Notice ")
     var first = true

@@ -1,4 +1,4 @@
-package com.github.jankroken.ircclient.protocol.domain;
+package com.github.jankroken.ircclient.protocol.domain
 
 class Channel(val name: String, val server: IRCServer) extends Target {
 
@@ -8,8 +8,8 @@ class Channel(val name: String, val server: IRCServer) extends Target {
 
 	override def toString = name
 	
-	override def equals(o : Any):Boolean = {
-		return ((o.isInstanceOf[Channel]) && name.equals(o.toString()))
+	override def equals(o : Any) = {
+		o.isInstanceOf[Channel] && name.equals(o.toString)
 	}
 	
 	override def hashCode = name.hashCode
@@ -19,7 +19,7 @@ class Channel(val name: String, val server: IRCServer) extends Target {
 	def isAValidName(name: String):Boolean = {
 	  if (isEmpty(name)) return false
 		if (name.indexOf(' ') >= 0) return false
-		if (name.indexOf(7) >= 0) return false; // check cast, 7 -> char
+		if (name.indexOf(7) >= 0) return false; // check cast, 7 → char
 		if (name.indexOf(',') >= 0) return false
 		if (name.length() > 50) return false
     if (name(0) == '#') return true

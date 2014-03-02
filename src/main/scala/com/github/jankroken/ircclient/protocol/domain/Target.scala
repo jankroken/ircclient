@@ -12,7 +12,7 @@ object Target {
 	def getTargets(targetString: String, server: IRCServer): Array[Target] = {
 		val targets = targetString.split(',').map(getTarget(_,server))
 //		print("Targets:")
-//		for (val target <- targets) print(" "+target)
+//		for (val target ← targets) print(" "+target)
 //		println
 		targets
 	}
@@ -26,13 +26,13 @@ object Target {
         val Nickname = "^(.*$)".r
 
         targetString match {
-          case ChannelMatch(channelString) => println("match:ChannelMatch: "+targetString)
-          case UserHostServerMatch(user,host,nick) => println("match:UserHostServerMatch: "+targetString)
-          case UserNickHostMatch => println("match:UserNickHostMatch: "+targetString)
-          case UserHost => println("match:UserHost: "+targetString)
-          case TargetMask => println("match:TargetMatch: "+targetString)
-          case Nickname(nickname) => return new Nick(targetString)
-          case _ => println("match: no match: "+targetString)
+          case ChannelMatch(channelString) ⇒ println("match:ChannelMatch: "+targetString)
+          case UserHostServerMatch(user,host,nick) ⇒ println("match:UserHostServerMatch: "+targetString)
+          case UserNickHostMatch ⇒ println("match:UserNickHostMatch: "+targetString)
+          case UserHost ⇒ println("match:UserHost: "+targetString)
+          case TargetMask ⇒ println("match:TargetMatch: "+targetString)
+          case Nickname(nickname) ⇒ return new Nick(targetString)
+          case _ ⇒ println("match: no match: "+targetString)
         }
           
           
@@ -78,9 +78,9 @@ object Target {
                                      */
   
 		val target:Target = targetString match {
-		  case ChannelMatch(channelString) => new Channel(channelString, server)
-		  case UserNickHostMatch(nickString,userString,hostString) => new UnknownTarget(targetString)
-		  case _ => new UnknownTarget(targetString)
+		  case ChannelMatch(channelString) ⇒ new Channel(channelString, server)
+		  case UserNickHostMatch(nickString,userString,hostString) ⇒ new UnknownTarget(targetString)
+		  case _ ⇒ new UnknownTarget(targetString)
 		}
      
 		target
