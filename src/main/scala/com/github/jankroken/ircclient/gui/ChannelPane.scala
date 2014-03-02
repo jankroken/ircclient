@@ -1,6 +1,6 @@
 package com.github.jankroken.ircclient.gui
 
-import com.github.jankroken.ircclient.domain.{EventListener}
+import com.github.jankroken.ircclient.domain.{NetworkSelected, ChannelSelected, EventListener}
 import com.github.jankroken.ircclient.gui.support.JavaFXSupport._
 import javafx.scene.control.{TreeView, TreeItem, ScrollPane}
 import javafx.scene.layout.Priority
@@ -37,7 +37,10 @@ class ChannelPane(val eventListener: EventListener) extends ScrollPane {
 
         object channelListener extends ChangeListener[TreeItem[String]] {
           def changed(v:ObservableValue[_ <: TreeItem[String]], oldValue:TreeItem[String], newValue:TreeItem[String]) {
-            println(s"selected item=$newValue channel=${newValue.hasGrandParent} network=${!newValue.hasGrandParent}")
+            if(newValue.hasGrandParent)
+              eventListener.onEvent(ChannelSelected(newValue.getParent.getValue,newValue.getValue))
+            else
+              eventListener.onEvent(NetworkSelected(newValue.getValue))
           }
         }
         getSelectionModel().selectedItemProperty().addListener(channelListener)

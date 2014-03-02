@@ -19,4 +19,14 @@ class IdentificationParserTest extends FlatSpec with Matchers {
     ip.parseCommand("I am a happy little duckling") should equal (ip.TextCommand("I am a happy little duckling"))
   }
 
+  "/help" should "result in HelpCommand(None)" in {
+    val ip = new IdentificationParser
+    ip.parseCommand("/help") should equal (ip.HelpCommand(None))
+  }
+
+  "/help topic" should "result in HelpCommand(Some(topic))" in {
+    val ip = new IdentificationParser
+    ip.parseCommand("/help topic") should equal (ip.HelpCommand(Some("topic")))
+  }
+
 }

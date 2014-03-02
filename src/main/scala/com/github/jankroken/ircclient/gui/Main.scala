@@ -25,7 +25,9 @@ class Main extends Application {
 
 
 //  val ob = ObservableBuffer[HBox]()
-  val chatPane = ChatPane(new EventListener)
+  val testChatPane = ChatPane(new EventListener)
+  val doomPane = ChatPane(new EventListener)
+  val ocamlPane = ChatPane(new EventListener)
 
   def init(primaryStage:Stage) {
     val borderPane = new BorderPane()
@@ -34,7 +36,8 @@ class Main extends Application {
 
     val center = new SplitPane() {
       setId("page-splitpane")
-      getItems.addAll(sidePanel,chatPane)
+      getItems.addAll(sidePanel,testChatPane)
+      getItems().set(1,doomPane)
       setDividerPosition(0,0.2)
     }
     borderPane.setCenter(center)
@@ -47,23 +50,23 @@ class Main extends Application {
     primaryStage.show()
   }
 
-  val sampleChatLines = ChatMessageFactory.sampleChatLines
+//  val sampleChatLines = ChatMessageFactory.sampleChatLines
   val sampleChatLines2 = ChatMessageFactory.sampleChatLines2
   val sampleImage = ChatMessageFactory.sampleImage
 
   List.range(0,999).foreach{n => {
 
     if (n != 997) {
-      chatPane.chatPanel.add(sampleChatLines2(n).from,0,n)
-      chatPane.chatPanel.add(sampleChatLines2(n).message,1,n)
+      testChatPane.chatPanel.add(sampleChatLines2(n).from,0,n)
+      testChatPane.chatPanel.add(sampleChatLines2(n).message,1,n)
     } else {
-      chatPane.chatPanel.add(sampleImage,0,n,2,1)
+      testChatPane.chatPanel.add(sampleImage,0,n,2,1)
     }
 
-    if (n > 10 && n < 99) chatPane.chatPanel.getChildren.remove(n)
+    if (n > 10 && n < 99) testChatPane.chatPanel.getChildren.remove(n)
 
   }}
-
+  doomPane.chatPanel.add(sampleImage,0,0,2,1)
 
 }
 
