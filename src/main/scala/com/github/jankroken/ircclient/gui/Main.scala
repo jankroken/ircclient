@@ -54,18 +54,18 @@ class Main extends Application {
   val sampleChatLines2 = ChatMessageFactory.sampleChatLines2
   val sampleImage = ChatMessageFactory.sampleImage
 
-  List.range(0,999).foreach{n ⇒ {
-
-    if (n != 997) {
-      testChatPane.chatPanel.add(sampleChatLines2(n).from,0,n)
-      testChatPane.chatPanel.add(sampleChatLines2(n).message,1,n)
-    } else {
-      testChatPane.chatPanel.add(sampleImage,0,n,2,1)
-    }
-
-    if (n > 10 && n < 99) testChatPane.chatPanel.getChildren.remove(n)
-
-  }}
+//  List.range(0,999).foreach{n ⇒ {
+//
+//    if (n != 997) {
+//      testChatPane.chatPanel.add(sampleChatLines2(n).from,0,n)
+//      testChatPane.chatPanel.add(sampleChatLines2(n).message,1,n)
+//    } else {
+//      testChatPane.chatPanel.add(sampleImage,0,n,2,1)
+//    }
+//
+//    if (n > 10 && n < 99) testChatPane.chatPanel.getChildren.remove(n)
+//
+//  }}
   doomPane.chatPanel.add(sampleImage,0,0,2,1)
 
   def setChatPane(target:ChatTarget) {
