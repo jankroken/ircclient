@@ -8,12 +8,6 @@ class MessageOfTheDay extends ServerMessage {
 	}
 	
 	override def toString = {
-		val sb = new StringBuilder()
-		sb.append("MessageOfTheDay {\n")
-		for (line ← lines) {
-			sb.append("  ").append(line).append('\n')
-		}
-		sb.append("}")
-		sb.toString()
+		s"MessageOfTheDay{\n${lines.map(line => s"  $line").mkString("\n")}}"
 	}
 }

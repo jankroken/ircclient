@@ -1,7 +1,7 @@
 package com.github.jankroken.ircclient.gui
 
 import com.github.jankroken.ircclient.domain.EventListener
-import javafx.scene.control.{Label, ScrollPane}
+import javafx.scene.control.{Button, Label, ScrollPane}
 import javafx.scene.layout.GridPane
 
 class ChatPane(eventListener: EventListener) extends ScrollPane {
@@ -22,6 +22,13 @@ class ChatPane(eventListener: EventListener) extends ScrollPane {
   setMaxHeight(10000)
   setMaxWidth(10000)
   setMinWidth(100)
+
+  def sendTextInfoBlock(title:String,message:String) {
+    println(s"Making button of: $message")
+    val button = new Button(message)
+    chatPanel.add(button,1,row)
+    row = row + 1
+  }
 
   def sendSimpleMessage(from:String,message:String) {
     val nick = new Label {

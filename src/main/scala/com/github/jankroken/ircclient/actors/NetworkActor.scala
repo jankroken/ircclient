@@ -29,7 +29,18 @@ class NetworkActor(server:String) extends Actor with ActorLogging {
     case chatPanels:ChatPanels ⇒ {
       this.chatPanels = Some(chatPanels)
     }
-    case serverMessage:ServerMessage => {
+    case motd:MessageOfTheDay ⇒ {
+      chatPanels match {
+        case None ⇒ {
+          println(s"onMessage: $motd")
+        }
+        case Some(cp) ⇒ {
+          val panel = cp.getPanel(NetworkTarget("freenode"))
+          panel.sendTextInfoBlock("Message of the day",motd.toString)
+        }
+      }
+    }
+    case serverMessage:ServerMessage ⇒  {
       chatPanels match {
         case None ⇒ {
           println(s"onMessage: $serverMessage")
