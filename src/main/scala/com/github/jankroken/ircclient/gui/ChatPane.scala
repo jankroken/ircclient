@@ -25,7 +25,11 @@ class ChatPane(eventListener: EventListener) extends ScrollPane {
 
   def sendTextInfoBlock(title:String,message:String) {
     println(s"Making button of: $message")
-    val button = new Button(message)
+    val button = new Label(message) {
+      // setWrapText(true)
+      setMinHeight(100)
+    }
+//    val button = new Button(message)
     chatPanel.add(button,1,row)
     row = row + 1
   }

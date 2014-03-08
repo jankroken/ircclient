@@ -27,9 +27,11 @@ class NetworkActor(server:String) extends Actor with ActorLogging {
 
   def receive = {
     case chatPanels:ChatPanels ⇒ {
+      println(s"thread=${Thread.currentThread()}")
       this.chatPanels = Some(chatPanels)
     }
     case motd:MessageOfTheDay ⇒ {
+      println(s"thread=${Thread.currentThread()}")
       chatPanels match {
         case None ⇒ {
           println(s"onMessage: $motd")
