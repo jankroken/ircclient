@@ -2,7 +2,7 @@ package com.github.jankroken.ircclient.gui
 
 import com.github.jankroken.ircclient.domain.EventListener
 import javafx.scene.control.{Button, Label, ScrollPane}
-import javafx.scene.layout.GridPane
+import javafx.scene.layout.{VBox, GridPane}
 
 class ChatPane(eventListener: EventListener) extends ScrollPane {
   var row = 1
@@ -24,24 +24,29 @@ class ChatPane(eventListener: EventListener) extends ScrollPane {
   setMinWidth(100)
 
   def sendTextInfoBlock(title:String,message:String) {
-    println(s"Making button of: $message")
-    val button = new Label(message) {
-      // setWrapText(true)
-      setMinHeight(100)
-    }
-//    val button = new Button(message)
-    chatPanel.add(button,1,row)
+    println(s"Making text block of: $message")
+//    val button = new Label(message) {
+//      // setWrapText(true)
+//      setMinHeight(100)
+//    }
+    val text = new VBox();
+    message.split("\n").map(t => new Label { setText(t) }).foreach(text.getChildren().add)
+
+    //    val button = new Button(message)
+    chatPanel.add(text,1,row)
     row = row + 1
   }
 
   def sendSimpleMessage(from:String,message:String) {
+    println(s"sendSimpleMessage:from=$from message=$message")
     val nick = new Label {
       setText(s"$from")
       setMinWidth(100)
       setMaxWidth(140)
       setPrefWidth(100)
     }
-    val text = new Label { setText(s"$message")}
+    val text = new VBox();
+    message.split("\n").map(t => new Label { setText(t) }).foreach(text.getChildren().add)
     chatPanel.add(nick,0,row)
     chatPanel.add(text,1,row)
     row = row + 1
