@@ -29,7 +29,13 @@ class ChatPane(eventListener: EventListener) extends ScrollPane {
 //      // setWrapText(true)
 //      setMinHeight(100)
 //    }
-    val text = new VBox();
+    val text = new VBox()
+    text.getStyleClass().add("infomessage")
+    val titleLabel = new Label {
+      setText(title)
+      getStyleClass().add("infomessageHeader")
+    }
+    text.getChildren().add(titleLabel)
     message.split("\n").map(t => new Label { setText(t) }).foreach(text.getChildren().add)
 
     //    val button = new Button(message)

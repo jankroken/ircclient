@@ -36,6 +36,7 @@ class Main extends Application {
   def init(primaryStage:Stage) {
     primaryStage.setTitle("IRC Client")
     primaryStage.setScene(new Scene(borderPane,1020,700))
+    primaryStage.getScene().getStylesheets().add("ircclient.css");
 
 
     borderPane.setCenter(center)

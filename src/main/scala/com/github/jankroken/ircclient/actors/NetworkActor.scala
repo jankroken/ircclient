@@ -42,6 +42,20 @@ class NetworkActor(server:String) extends Actor with ActorLogging {
         }
       }
     }
+
+    case welcome:WelcomeMessage ⇒ {
+      println(s"thread=${Thread.currentThread()}")
+      chatPanels match {
+        case None ⇒ {
+          println(s"onMessage: $welcome")
+        }
+        case Some(cp) ⇒ {
+          val panel = cp.getPanel(NetworkTarget("freenode"))
+          panel.sendTextInfoBlock("Welcome Message",welcome.toString)
+        }
+      }
+    }
+
     case serverMessage:ServerMessage ⇒  {
       chatPanels match {
         case None ⇒ {
@@ -54,6 +68,7 @@ class NetworkActor(server:String) extends Actor with ActorLogging {
         }
       }
     }
+
     case foo ⇒ {
       println(s"NetworkActor: $foo")
     }

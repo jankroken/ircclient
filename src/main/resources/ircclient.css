@@ -1,0 +1,11 @@
+.infomessage {
+    -fx-background-color: #dddddd;
+    -fx-border-radius: 10 10 10 10;
+    -fx-background-radius: 10 10 10 10;
+    -fx-padding: 5px;
+}
+
+.infomessageHeader {
+    -fx-font: 10px Times-Roman;
+    -fx-text-fill: darkblue;
+}
