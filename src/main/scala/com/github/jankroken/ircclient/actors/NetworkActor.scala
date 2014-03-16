@@ -38,7 +38,7 @@ class NetworkActor(server:String) extends Actor with ActorLogging {
         }
         case Some(cp) ⇒ {
           val panel = cp.getPanel(NetworkTarget("freenode"))
-          panel.sendTextInfoBlock("Message of the day",motd.toString)
+          panel.sendTextInfoBlock("Message of the day",motd.getText)
         }
       }
     }
@@ -51,7 +51,7 @@ class NetworkActor(server:String) extends Actor with ActorLogging {
         }
         case Some(cp) ⇒ {
           val panel = cp.getPanel(NetworkTarget("freenode"))
-          panel.sendTextInfoBlock("Welcome Message",welcome.toString)
+          panel.sendTextInfoBlock("Welcome Message",welcome.getText)
         }
       }
     }

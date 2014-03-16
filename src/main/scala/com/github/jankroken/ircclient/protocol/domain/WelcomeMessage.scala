@@ -23,4 +23,8 @@ class WelcomeMessage extends ServerMessage {
 		sb.append('}')
 		sb.toString()
 	}
+
+  def getText = {
+    lines.mkString("\n")
+  }
 }

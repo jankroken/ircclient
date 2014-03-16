@@ -10,4 +10,8 @@ class MessageOfTheDay extends ServerMessage {
 	override def toString = {
 		s"MessageOfTheDay{\n${lines.map(line => s"  $line").mkString("\n")}}"
 	}
+
+  def getText = {
+    lines.mkString("\n")
+  }
 }
