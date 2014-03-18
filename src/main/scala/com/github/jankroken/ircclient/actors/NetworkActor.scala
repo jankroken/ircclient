@@ -1,13 +1,15 @@
 package com.github.jankroken.ircclient.actors
 
-import akka.actor.{Actor, ActorLogging}
+import akka.actor.{Props, Actor, ActorLogging}
 import com.github.jankroken.ircclient.protocol.domain._
 import com.github.jankroken.ircclient.gui.ChatPanels
-import com.github.jankroken.ircclient.domain.NetworkTarget
+import com.github.jankroken.ircclient.domain.{NicksForChannel, NetworkTarget}
 
 class NetworkActor(server:String) extends Actor with ActorLogging {
 
   var chatPanels:Option[ChatPanels] = None
+
+  val nickAccumulator = IRCActorSystem.system.actorOf(Props(new NickAccumulatorActor),"nickAcc")
 
   def onMessage(serverMessage:ServerMessage) = {
     self ! serverMessage
@@ -22,13 +24,20 @@ class NetworkActor(server:String) extends Actor with ActorLogging {
   freenode.logon
   Thread.sleep(4000)
   var fealdia: Channel = freenode.join("#fealdia")
-  var digitalgunfire: Channel = freenode.join("#digitalgunfire")
+//  var digitalgunfire: Channel = freenode.join("#digitalgunfire")
+  var xenotest = freenode.join("#xenotest")
   var scala: Channel = freenode.join("#scala")
 
   def receive = {
     case chatPanels:ChatPanels ⇒ {
       println(s"thread=${Thread.currentThread()}")
       this.chatPanels = Some(chatPanels)
+    }
+    case nameList:NameList ⇒ {
+      nickAccumulator ! nameList
+    }
+    case endOfNames:EndOfNames ⇒ {
+      nickAccumulator ! endOfNames
     }
     case motd:MessageOfTheDay ⇒ {
       println(s"thread=${Thread.currentThread()}")
@@ -39,6 +48,18 @@ class NetworkActor(server:String) extends Actor with ActorLogging {
         case Some(cp) ⇒ {
           val panel = cp.getPanel(NetworkTarget("freenode"))
           panel.sendTextInfoBlock("Message of the day",motd.getText)
+        }
+      }
+    }
+    case ping:Ping ⇒ {
+      println(s"ping $ping")
+      chatPanels match {
+        case None ⇒ {
+          println(s"onMessage: $ping")
+        }
+        case Some(cp) ⇒ {
+          val panel = cp.getPanel(NetworkTarget("freenode"))
+          panel.sendTextInfoBlock("ping",ping.toString)
         }
       }
     }
@@ -56,7 +77,7 @@ class NetworkActor(server:String) extends Actor with ActorLogging {
       }
     }
 
-    case serverMessage:ServerMessage ⇒  {
+    case serverMessage:ServerMessage ⇒ {
       chatPanels match {
         case None ⇒ {
           println(s"onMessage: $serverMessage")
@@ -68,7 +89,18 @@ class NetworkActor(server:String) extends Actor with ActorLogging {
         }
       }
     }
-
+    case nicksForChannel:NicksForChannel ⇒ {
+      chatPanels match {
+        case None ⇒ {
+          println(s"onMessage: $nicksForChannel")
+        }
+        case Some(cp) ⇒ {
+          println("sending to chatpanels")
+          val panel = cp.getPanel(NetworkTarget("freenode"))
+          panel.sendTextInfoBlock(s"nicks for ${nicksForChannel.channel.name}",nicksForChannel.nicks.toString)
+        }
+      }
+    }
     case foo ⇒ {
       println(s"NetworkActor: $foo")
     }

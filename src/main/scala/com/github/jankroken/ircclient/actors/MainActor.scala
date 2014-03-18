@@ -8,7 +8,7 @@ class MainActor(server:String) extends Actor with ActorLogging {
 //  val freenode = IRCActorSystem.system.actorOf(Props[NetworkActor].withDispatcher("javafx-dispatcher"), name = "freenode")
 
 
-  val freenode = IRCActorSystem.system.actorOf(Props(new NetworkActor("freenode")).withDispatcher("javafx-dispatcher"))
+  val freenode = IRCActorSystem.system.actorOf(Props(new NetworkActor("freenode")).withDispatcher("javafx-dispatcher"),"freenode")
 
   def receive = {
     case chatPanels:ChatPanels ⇒ {
