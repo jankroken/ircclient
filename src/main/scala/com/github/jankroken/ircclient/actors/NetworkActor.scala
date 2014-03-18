@@ -1,13 +1,20 @@
 package com.github.jankroken.ircclient.actors
 
-import akka.actor.{Props, Actor, ActorLogging}
+import akka.actor.{ActorRef, Props, Actor, ActorLogging}
 import com.github.jankroken.ircclient.protocol.domain._
 import com.github.jankroken.ircclient.gui.ChatPanels
-import com.github.jankroken.ircclient.domain.{NicksForChannel, NetworkTarget}
+import com.github.jankroken.ircclient.domain._
+import com.github.jankroken.ircclient.domain.InfoBlock
+import com.github.jankroken.ircclient.protocol.domain.Ping
+import com.github.jankroken.ircclient.domain.NetworkTarget
+import com.github.jankroken.ircclient.protocol.domain.EndOfNames
+import com.github.jankroken.ircclient.domain.NicksForChannel
+import scala.Some
+import com.github.jankroken.ircclient.protocol.domain.NameList
 
-class NetworkActor(server:String) extends Actor with ActorLogging {
+class NetworkActor(gui:ActorRef,server:String) extends Actor with ActorLogging {
 
-  var chatPanels:Option[ChatPanels] = None
+//  var chatPanels:Option[ChatPanels] = None
 
   val nickAccumulator = IRCActorSystem.system.actorOf(Props(new NickAccumulatorActor),"nickAcc")
 
@@ -15,23 +22,29 @@ class NetworkActor(server:String) extends Actor with ActorLogging {
     self ! serverMessage
   }
 
-  val xeno = TestUser
-  val freenode = new IRCServer("irc.freenode.org")
-  freenode.user = xeno
-  freenode.connect(Some(onMessage(_)))
-  Thread.sleep(2000)
-  freenode.setNick(xeno.xenobot7)
-  freenode.logon
-  Thread.sleep(4000)
-  var fealdia: Channel = freenode.join("#fealdia")
-//  var digitalgunfire: Channel = freenode.join("#digitalgunfire")
-  var xenotest = freenode.join("#xenotest")
-  var scala: Channel = freenode.join("#scala")
+  def connect() {
+    val xeno = TestUser
+    val freenode = new IRCServer("irc.freenode.org")
+    freenode.user = xeno
+    freenode.connect(Some(onMessage(_)))
+    Thread.sleep(2000)
+    freenode.setNick(xeno.xenobot7)
+    freenode.logon
+    Thread.sleep(2000)
+    var fealdia: Channel = freenode.join("#fealdia")
+    //  var digitalgunfire: Channel = freenode.join("#digitalgunfire")
+    var xenotest = freenode.join("#xenotest")
+    var scala: Channel = freenode.join("#scala")
+  }
 
   def receive = {
+    case Init ⇒ {
+      connect
+    }
     case chatPanels:ChatPanels ⇒ {
       println(s"thread=${Thread.currentThread()}")
-      this.chatPanels = Some(chatPanels)
+      gui ! chatPanels
+//      this.chatPanels = Some(chatPanels)
     }
     case nameList:NameList ⇒ {
       nickAccumulator ! nameList
@@ -40,66 +53,21 @@ class NetworkActor(server:String) extends Actor with ActorLogging {
       nickAccumulator ! endOfNames
     }
     case motd:MessageOfTheDay ⇒ {
-      println(s"thread=${Thread.currentThread()}")
-      chatPanels match {
-        case None ⇒ {
-          println(s"onMessage: $motd")
-        }
-        case Some(cp) ⇒ {
-          val panel = cp.getPanel(NetworkTarget("freenode"))
-          panel.sendTextInfoBlock("Message of the day",motd.getText)
-        }
-      }
+      gui ! InfoBlock("Message of the day",motd.getText)
     }
     case ping:Ping ⇒ {
-      println(s"ping $ping")
-      chatPanels match {
-        case None ⇒ {
-          println(s"onMessage: $ping")
-        }
-        case Some(cp) ⇒ {
-          val panel = cp.getPanel(NetworkTarget("freenode"))
-          panel.sendTextInfoBlock("ping",ping.toString)
-        }
-      }
+      gui ! InfoBlock("ping",ping.toString)
     }
 
     case welcome:WelcomeMessage ⇒ {
-      println(s"thread=${Thread.currentThread()}")
-      chatPanels match {
-        case None ⇒ {
-          println(s"onMessage: $welcome")
-        }
-        case Some(cp) ⇒ {
-          val panel = cp.getPanel(NetworkTarget("freenode"))
-          panel.sendTextInfoBlock("Welcome Message",welcome.getText)
-        }
-      }
+      gui ! InfoBlock("@Welcome Message",welcome.getText)
     }
 
     case serverMessage:ServerMessage ⇒ {
-      chatPanels match {
-        case None ⇒ {
-          println(s"onMessage: $serverMessage")
-        }
-        case Some(cp) ⇒ {
-          println("sending to chatpanels")
-          val panel = cp.getPanel(NetworkTarget("freenode"))
-          panel.sendSimpleMessage("xxx",serverMessage.toString)
-        }
-      }
+      gui ! SimpleMessage("xxx",serverMessage.toString)
     }
     case nicksForChannel:NicksForChannel ⇒ {
-      chatPanels match {
-        case None ⇒ {
-          println(s"onMessage: $nicksForChannel")
-        }
-        case Some(cp) ⇒ {
-          println("sending to chatpanels")
-          val panel = cp.getPanel(NetworkTarget("freenode"))
-          panel.sendTextInfoBlock(s"nicks for ${nicksForChannel.channel.name}",nicksForChannel.nicks.toString)
-        }
-      }
+      gui ! InfoBlock(s"nicks for ${nicksForChannel.channel.name}",nicksForChannel.nicks.toString)
     }
     case foo ⇒ {
       println(s"NetworkActor: $foo")
