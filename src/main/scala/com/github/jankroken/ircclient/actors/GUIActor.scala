@@ -28,7 +28,7 @@ class GUIActor(server:String) extends Actor with ActorLogging {
           println(s"onMessage: $info")
         }
         case Some(cp) ⇒ {
-          val panel = cp.getPanel(NetworkTarget("freenode"))
+          val panel = cp.getPanel(info.target)
           panel.sendTextInfoBlock(info.header,info.content)
         }
       }

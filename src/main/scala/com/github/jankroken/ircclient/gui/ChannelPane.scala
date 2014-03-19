@@ -19,7 +19,7 @@ class ChannelPane(val eventListener: EventListener) extends ScrollPane {
     }
 
 
-  val freenodeChannels = ncChildren("freenode", List("#scala", "#java", "#haskell"))
+  val freenodeChannels = ncChildren("freenode", List("#scala", "#java", "#haskell","#xenotest"))
   val efnetChannels = ncChildren("efnet", List("#ocaml", "#prolog", "#ada"))
   val quakenetChannels = ncChildren("quakenet", List("#quake", "#doom", "#wolfenstein", "#keen", "#doom2", "#doom3", "quake2"))
 

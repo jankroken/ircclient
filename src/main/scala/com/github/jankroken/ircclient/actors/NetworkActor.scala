@@ -2,7 +2,6 @@ package com.github.jankroken.ircclient.actors
 
 import akka.actor.{ActorRef, Props, Actor, ActorLogging}
 import com.github.jankroken.ircclient.protocol.domain._
-import com.github.jankroken.ircclient.gui.ChatPanels
 import com.github.jankroken.ircclient.domain._
 import com.github.jankroken.ircclient.domain.InfoBlock
 import com.github.jankroken.ircclient.protocol.domain.Ping
@@ -38,12 +37,6 @@ class NetworkActor(gui:ActorRef,server:String) extends Actor with ActorLogging {
     case Init ⇒ {
       connect
     }
-//    case chatPanels:ChatPanels ⇒ {
-//      gui ! chatPanels
-//    }
-//    case chatPanels:ChatPanels ⇒ {
-//      gui ! chatPanels
-//    }
     case nameList:NameList ⇒ {
       nickAccumulator ! nameList
     }
@@ -51,24 +44,27 @@ class NetworkActor(gui:ActorRef,server:String) extends Actor with ActorLogging {
       nickAccumulator ! endOfNames
     }
     case motd:MessageOfTheDay ⇒ {
-      gui ! InfoBlock("Message of the day",motd.getText)
+      gui ! InfoBlock(NetworkTarget("freenode"),"Message of the day",motd.getText)
     }
     case ping:Ping ⇒ {
-      gui ! InfoBlock("ping",ping.toString)
+      gui ! InfoBlock(NetworkTarget("freenode"),"ping",ping.toString)
     }
 
     case welcome:WelcomeMessage ⇒ {
-      gui ! InfoBlock("@Welcome Message",welcome.getText)
+      gui ! InfoBlock(NetworkTarget("freenode"),"@Welcome Message",welcome.getText)
     }
-
-    case serverMessage:ServerMessage ⇒ {
-      gui ! SimpleMessage("xxx",serverMessage.toString)
+    case topic:Topic ⇒ {
+      val target = ChannelTarget("freenode",topic.channel.name)
+      gui ! InfoBlock(target,s"Topic",topic.topic)
     }
     case nicksForChannel:NicksForChannel ⇒ {
       // gui ! InfoBlock(s"nicks for ${nicksForChannel.channel.name}",nicksForChannel.nicks.toString)
       val target = ChannelTarget("freenode",nicksForChannel.channel.name)
       gui ! NickList(target,nicksForChannel.nicks)
-//      gui ! NickList(nicksForChannel.channel.)
+      //      gui ! NickList(nicksForChannel.channel.)
+    }
+    case serverMessage:ServerMessage ⇒ {
+      gui ! SimpleMessage("xxx",serverMessage.toString)
     }
     case foo ⇒ {
       println(s"NetworkActor: $foo")
