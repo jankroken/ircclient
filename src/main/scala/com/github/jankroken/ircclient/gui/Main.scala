@@ -3,7 +3,6 @@ package com.github.jankroken.ircclient.gui
 import com.github.jankroken.ircclient.domain.{NetworkTarget, ChannelTarget, ChatTarget, EventListener}
 import javafx.application.Application
 import javafx.scene.control.SplitPane
-import javafx.geometry.Orientation
 import javafx.stage.Stage
 import javafx.scene.Scene
 import javafx.scene.layout.BorderPane
@@ -13,6 +12,7 @@ class Main extends Application {
 
   val eventListener = new EventListener(setChatPane(_))
   val chatPanels = new ChatPanels(eventListener)
+  val nickPanes = new NickPanes(eventListener)
   val nickPane = NickPane(eventListener)
   val channelPane = ChannelPane(eventListener)
   val sidePanel = new SidePanel
@@ -47,30 +47,19 @@ class Main extends Application {
     init(primaryStage)
     println("hello")
     primaryStage.show()
-    IRCActorSystem.main ! "hello to main"
     IRCActorSystem.main ! chatPanels
+    IRCActorSystem.main ! nickPanes
   }
 
 //  val sampleChatLines = ChatMessageFactory.sampleChatLines
   val sampleChatLines2 = ChatMessageFactory.sampleChatLines2
   val sampleImage = ChatMessageFactory.sampleImage
 
-//  List.range(0,999).foreach{n ⇒ {
-//
-//    if (n != 997) {
-//      testChatPane.chatPanel.add(sampleChatLines2(n).from,0,n)
-//      testChatPane.chatPanel.add(sampleChatLines2(n).message,1,n)
-//    } else {
-//      testChatPane.chatPanel.add(sampleImage,0,n,2,1)
-//    }
-//
-//    if (n > 10 && n < 99) testChatPane.chatPanel.getChildren.remove(n)
-//
-//  }}
   doomPane.chatPanel.add(sampleImage,0,0,2,1)
 
   def setChatPane(target:ChatTarget) {
     center.getItems.set(1,chatPanels.getPanel(target))
+    sidePanel.getItems.set(0,nickPanes.getPanel(target))
   }
   def activeChatPane = center.getItems.get(1)
 }

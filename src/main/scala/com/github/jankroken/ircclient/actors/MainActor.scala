@@ -1,7 +1,7 @@
 package com.github.jankroken.ircclient.actors
 
 import akka.actor.{Props, Actor, ActorLogging}
-import com.github.jankroken.ircclient.gui.ChatPanels
+import com.github.jankroken.ircclient.gui.{NickPanes, ChatPanels}
 import com.github.jankroken.ircclient.domain.Init
 
 class MainActor(server:String) extends Actor with ActorLogging {
@@ -16,7 +16,10 @@ class MainActor(server:String) extends Actor with ActorLogging {
 
   def receive = {
     case chatPanels:ChatPanels ⇒ {
-      freenode ! chatPanels
+      gui ! chatPanels
+    }
+    case nickPanels:NickPanes ⇒ {
+      gui ! nickPanels
     }
     case foo ⇒ {
       println(s"NetworkActor: $foo")

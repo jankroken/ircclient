@@ -6,15 +6,12 @@ import com.github.jankroken.ircclient.gui.ChatPanels
 import com.github.jankroken.ircclient.domain._
 import com.github.jankroken.ircclient.domain.InfoBlock
 import com.github.jankroken.ircclient.protocol.domain.Ping
-import com.github.jankroken.ircclient.domain.NetworkTarget
 import com.github.jankroken.ircclient.protocol.domain.EndOfNames
 import com.github.jankroken.ircclient.domain.NicksForChannel
 import scala.Some
 import com.github.jankroken.ircclient.protocol.domain.NameList
 
 class NetworkActor(gui:ActorRef,server:String) extends Actor with ActorLogging {
-
-//  var chatPanels:Option[ChatPanels] = None
 
   val nickAccumulator = IRCActorSystem.system.actorOf(Props(new NickAccumulatorActor),"nickAcc")
 
@@ -41,11 +38,12 @@ class NetworkActor(gui:ActorRef,server:String) extends Actor with ActorLogging {
     case Init ⇒ {
       connect
     }
-    case chatPanels:ChatPanels ⇒ {
-      println(s"thread=${Thread.currentThread()}")
-      gui ! chatPanels
-//      this.chatPanels = Some(chatPanels)
-    }
+//    case chatPanels:ChatPanels ⇒ {
+//      gui ! chatPanels
+//    }
+//    case chatPanels:ChatPanels ⇒ {
+//      gui ! chatPanels
+//    }
     case nameList:NameList ⇒ {
       nickAccumulator ! nameList
     }
@@ -67,7 +65,10 @@ class NetworkActor(gui:ActorRef,server:String) extends Actor with ActorLogging {
       gui ! SimpleMessage("xxx",serverMessage.toString)
     }
     case nicksForChannel:NicksForChannel ⇒ {
-      gui ! InfoBlock(s"nicks for ${nicksForChannel.channel.name}",nicksForChannel.nicks.toString)
+      // gui ! InfoBlock(s"nicks for ${nicksForChannel.channel.name}",nicksForChannel.nicks.toString)
+      val target = ChannelTarget("freenode",nicksForChannel.channel.name)
+      gui ! NickList(target,nicksForChannel.nicks)
+//      gui ! NickList(nicksForChannel.channel.)
     }
     case foo ⇒ {
       println(s"NetworkActor: $foo")
