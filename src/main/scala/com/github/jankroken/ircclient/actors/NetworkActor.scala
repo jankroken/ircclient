@@ -81,6 +81,28 @@ class NetworkActor(gui:ActorRef,server:String) extends Actor with ActorLogging {
       }
       gui ! SimpleMessage(target,"",s"$joiner has joined")
     }
+    case notice:Notice ⇒ {
+      gui ! SimpleMessage(NetworkTarget("freenode"),"",notice.message)
+    }
+    case UnknownConnectionCount(count) ⇒ {
+      gui ! SimpleMessage(NetworkTarget("freenode"),"",s"$count unknown connection(s)")
+    }
+    case OperatorCount(count) ⇒ {
+      gui ! SimpleMessage(NetworkTarget("freenode"),"",s"$count IRC Operators online")
+    }
+    case ChannelCount(count) ⇒ {
+      gui ! SimpleMessage(NetworkTarget("freenode"), "", s"$count channels")
+    }
+    case csc:ClientServerCount => {
+      gui ! SimpleMessage(NetworkTarget("freenode"),"",csc.clientServerString)
+    }
+    case unidentified:Unidentified => {
+      gui ! SimpleMessage(NetworkTarget("freenode"),"",unidentified.message.toString)
+    }
+    case params:ServerParameters => {
+      gui ! SimpleMessage(NetworkTarget("freenode"),"",params.arguments.mkString(" "))
+    }
+
     case privateMessage:PrivateMessage ⇒ {
       val origin = privateMessage.origin
       val message = privateMessage.message
