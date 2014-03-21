@@ -41,7 +41,7 @@ class GUIActor(server:String) extends Actor with ActorLogging {
         }
         case Some(cp) ⇒ {
           println("sending to chatpanels")
-          val panel = cp.getPanel(NetworkTarget("freenode"))
+          val panel = cp.getPanel(message.target)
           panel.sendSimpleMessage(message.from,message.message)
         }
       }

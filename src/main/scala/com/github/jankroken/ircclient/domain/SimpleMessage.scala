@@ -1,3 +1,3 @@
 package com.github.jankroken.ircclient.domain
 
-case class SimpleMessage(from:String,message:String)
+case class SimpleMessage(target:ChatTarget,from:String,message:String)
