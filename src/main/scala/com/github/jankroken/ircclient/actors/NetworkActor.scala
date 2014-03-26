@@ -18,10 +18,12 @@ import com.github.jankroken.ircclient.domain.SimpleMessage
 import com.github.jankroken.ircclient.domain.NetworkTarget
 import com.github.jankroken.ircclient.domain.NickList
 import com.github.jankroken.ircclient.domain.NicksForChannel
+import com.github.jankroken.ircclient.gui.AddChannelToTreeView
 
-class NetworkActor(gui:ActorRef,server:String) extends Actor with ActorLogging {
+class NetworkActor(gui:ActorRef,network:String,server:String) extends Actor with ActorLogging {
 
   val nickAccumulator = IRCActorSystem.system.actorOf(Props(new NickAccumulatorActor),"nickAcc")
+  val networkTarget = NetworkTarget(network)
 
   def onMessage(serverMessage:ServerMessage) = {
     self ! serverMessage
@@ -29,7 +31,7 @@ class NetworkActor(gui:ActorRef,server:String) extends Actor with ActorLogging {
 
   def connect() {
     val xeno = TestUser
-    val freenode = new IRCServer("irc.freenode.org")
+    val freenode = new IRCServer(server)
     freenode.user = xeno
     freenode.connect(Some(onMessage(_)))
     Thread.sleep(2000)
@@ -53,14 +55,14 @@ class NetworkActor(gui:ActorRef,server:String) extends Actor with ActorLogging {
       nickAccumulator ! endOfNames
     }
     case motd:MessageOfTheDay ⇒ {
-      gui ! InfoBlock(NetworkTarget("freenode"),"Message of the day",motd.getText)
+      gui ! InfoBlock(networkTarget,"Message of the day",motd.getText)
     }
     case ping:Ping ⇒ {
-      gui ! InfoBlock(NetworkTarget("freenode"),"ping",ping.toString)
+      gui ! InfoBlock(networkTarget,"ping",ping.toString)
     }
 
     case welcome:WelcomeMessage ⇒ {
-      gui ! InfoBlock(NetworkTarget("freenode"),"@Welcome Message",welcome.getText)
+      gui ! InfoBlock(networkTarget,"@Welcome Message",welcome.getText)
     }
     case topic:Topic ⇒ {
       val target = ChannelTarget("freenode",topic.channel.name)
@@ -69,6 +71,7 @@ class NetworkActor(gui:ActorRef,server:String) extends Actor with ActorLogging {
     case nicksForChannel:NicksForChannel ⇒ {
       // gui ! InfoBlock(s"nicks for ${nicksForChannel.channel.name}",nicksForChannel.nicks.toString)
       val target = ChannelTarget("freenode",nicksForChannel.channel.name)
+      gui ! AddChannelToTreeView(target)
       gui ! NickList(target,nicksForChannel.nicks)
       //      gui ! NickList(nicksForChannel.channel.)
     }
@@ -79,28 +82,29 @@ class NetworkActor(gui:ActorRef,server:String) extends Actor with ActorLogging {
         case Some(nickUser:NickAndUserAtHost) => nickUser.nick
         case Some(x) => s"unknown=$x"
       }
+      gui ! AddChannelToTreeView(target)
       gui ! SimpleMessage(target,"",s"$joiner has joined")
     }
     case notice:Notice ⇒ {
-      gui ! SimpleMessage(NetworkTarget("freenode"),"",notice.message)
+      gui ! SimpleMessage(networkTarget,"",notice.message)
     }
     case UnknownConnectionCount(count) ⇒ {
-      gui ! SimpleMessage(NetworkTarget("freenode"),"",s"$count unknown connection(s)")
+      gui ! SimpleMessage(networkTarget,"",s"$count unknown connection(s)")
     }
     case OperatorCount(count) ⇒ {
-      gui ! SimpleMessage(NetworkTarget("freenode"),"",s"$count IRC Operators online")
+      gui ! SimpleMessage(networkTarget,"",s"$count IRC Operators online")
     }
     case ChannelCount(count) ⇒ {
-      gui ! SimpleMessage(NetworkTarget("freenode"), "", s"$count channels")
+      gui ! SimpleMessage(networkTarget, "", s"$count channels")
     }
     case csc:ClientServerCount => {
-      gui ! SimpleMessage(NetworkTarget("freenode"),"",csc.clientServerString)
+      gui ! SimpleMessage(networkTarget,"",csc.clientServerString)
     }
     case unidentified:Unidentified => {
-      gui ! SimpleMessage(NetworkTarget("freenode"),"",unidentified.message.toString)
+      gui ! SimpleMessage(networkTarget,"",unidentified.message.toString)
     }
     case params:ServerParameters => {
-      gui ! SimpleMessage(NetworkTarget("freenode"),"",params.arguments.mkString(" "))
+      gui ! SimpleMessage(networkTarget,"",params.arguments.mkString(" "))
     }
 
     case privateMessage:PrivateMessage ⇒ {
@@ -109,11 +113,12 @@ class NetworkActor(gui:ActorRef,server:String) extends Actor with ActorLogging {
       privateMessage.targets.foreach { target ⇒
         target match {
           case Nick(nick) ⇒ {
-            gui ! SimpleMessage(NetworkTarget("freenode"),"xxx",s"target=$target origin=$origin message=$message")
+            gui ! SimpleMessage(networkTarget,"xxx",s"target=$target origin=$origin message=$message")
 
           }
           case channel:Channel => {
             val target = ChannelTarget("freenode",channel.name)
+            gui ! AddChannelToTreeView(target)
             origin match {
               case Some(nick:NickAndUserAtHost) => {
                 gui ! SimpleMessage(target,nick.nick,message)
@@ -127,13 +132,13 @@ class NetworkActor(gui:ActorRef,server:String) extends Actor with ActorLogging {
             }
           }
           case other ⇒ {
-            gui ! SimpleMessage(NetworkTarget("freenode"),"xxx",s"target=$target:${target.getClass.getSimpleName} origin=$origin message=$message")
+            gui ! SimpleMessage(networkTarget,"xxx",s"target=$target:${target.getClass.getSimpleName} origin=$origin message=$message")
           }
         }
       }
     }
     case serverMessage:ServerMessage ⇒ {
-      gui ! SimpleMessage(NetworkTarget("freenode"),"xxx",s"${serverMessage.getClass.getSimpleName}${serverMessage.toString})")
+      gui ! SimpleMessage(networkTarget,"xxx",s"${serverMessage.getClass.getSimpleName}${serverMessage.toString})")
     }
     case foo ⇒ {
       println(s"NetworkActor: $foo")

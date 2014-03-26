@@ -1,7 +1,7 @@
 package com.github.jankroken.ircclient.actors
 
 import akka.actor.{Props, Actor, ActorLogging}
-import com.github.jankroken.ircclient.gui.{NickPanes, ChatPanels}
+import com.github.jankroken.ircclient.gui.{ChannelPane, AddChannelToTreeView, NickPanes, ChatPanels}
 import com.github.jankroken.ircclient.domain._
 import com.github.jankroken.ircclient.domain.InfoBlock
 import scala.Some
@@ -11,15 +11,17 @@ class GUIActor(server:String) extends Actor with ActorLogging {
 
   var chatPanels:Option[ChatPanels] = None
   var nickPanels:Option[NickPanes] = None
+  var channelPane:Option[ChannelPane] = None
 
   def receive = {
     case chatPanels:ChatPanels ⇒ {
-      println(s"thread=${Thread.currentThread()}")
       this.chatPanels = Some(chatPanels)
     }
     case nickPanes:NickPanes ⇒ {
-      println(s"thread=${Thread.currentThread()}")
       this.nickPanels = Some(nickPanes)
+    }
+    case channelPane:ChannelPane ⇒ {
+      this.channelPane = Some(channelPane)
     }
     case info:InfoBlock ⇒ {
       println(s"thread=${Thread.currentThread()}")
@@ -56,6 +58,19 @@ class GUIActor(server:String) extends Actor with ActorLogging {
           println("sending to chatpanels")
           val panel = cp.getPanel(nickList.chatTarget)
           panel.setNicks(nickList.nicks)
+        }
+      }
+    }
+
+    case AddChannelToTreeView(target) ⇒ {
+      channelPane match {
+        case None  ⇒ {
+          println(s"addChannelToTreeView: $target")
+        }
+        case Some(cp) ⇒ {
+          println("sending to channelPane")
+          cp.addOrModifyChannel(target)
+          println("/")
         }
       }
     }

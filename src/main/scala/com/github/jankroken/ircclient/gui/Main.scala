@@ -49,6 +49,7 @@ class Main extends Application {
     primaryStage.show()
     IRCActorSystem.main ! chatPanels
     IRCActorSystem.main ! nickPanes
+    IRCActorSystem.main ! channelPane
   }
 
 //  val sampleChatLines = ChatMessageFactory.sampleChatLines

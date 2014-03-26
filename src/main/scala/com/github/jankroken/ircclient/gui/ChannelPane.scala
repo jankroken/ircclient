@@ -1,10 +1,12 @@
 package com.github.jankroken.ircclient.gui
 
-import com.github.jankroken.ircclient.domain.{NetworkSelected, ChannelSelected, EventListener}
+import com.github.jankroken.ircclient.domain.{ChannelTarget, NetworkSelected, ChannelSelected, EventListener}
 import com.github.jankroken.ircclient.gui.support.JavaFXSupport._
 import javafx.scene.control.{TreeView, TreeItem, ScrollPane}
 import javafx.scene.layout.Priority
 import javafx.beans.value.{ObservableValue, ChangeListener}
+import java.util.function.{Predicate, Consumer}
+import javafx.scene.Node
 
 
 class ChannelPane(val eventListener: EventListener) extends ScrollPane {
@@ -52,6 +54,14 @@ class ChannelPane(val eventListener: EventListener) extends ScrollPane {
   setPrefHeight(2000)
   setId("page-tree")
   setContent(networksChannels)
+
+  def addOrModifyChannel(target:ChannelTarget) {
+    println(s"** addOrModifyChannel($target)")
+    for (n <- networksChannels.getRoot.getChildren.toArray) {
+      println(s"Element: $n")
+    }
+  }
+
 }
 
 object ChannelPane {
