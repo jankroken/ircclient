@@ -21,7 +21,7 @@ class ChannelPane(val eventListener: EventListener) extends ScrollPane {
     }
 
 
-  val freenodeChannels = ncChildren("freenode", List("#scala", "#java", "#haskell","#xenotest"))
+  val freenodeChannels = ncChildren("freenodex", List("#scalax", "#javax", "#haskellx","#xenotestx"))
   val efnetChannels = ncChildren("efnet", List("#ocaml", "#prolog", "#ada"))
   val quakenetChannels = ncChildren("quakenet", List("#quake", "#doom", "#wolfenstein", "#keen", "#doom2", "#doom3", "quake2"))
 
@@ -55,9 +55,66 @@ class ChannelPane(val eventListener: EventListener) extends ScrollPane {
   setId("page-tree")
   setContent(networksChannels)
 
+
+  def networkEntries = networksChannels.getRoot.getChildren.toArray
+    .filter(_.isInstanceOf[TreeItem[String]])
+    .map(_.asInstanceOf[TreeItem[String]])
+  def networkEntry(network:String):Option[TreeItem[String]] = networkEntries.find(_.getValue == network)
+
+
+  def addNetwork(networkName:String) = {
+    val item = new TreeItem[String](networkName)
+    println(s"Adding network: $networkName $item ${networksChannels.getRoot}")
+    networksChannels.getRoot.getChildren.addAll(item)
+//    Thread.sleep(50)
+    println(s"Added network: $item")
+    networksChannels.getRoot.getChildren.toArray.foreach { network =>
+      println(s"## after add network: $network")
+    }
+    item
+  }
+
+  def findOrAddNetworkEntry(network:String):TreeItem[String] = {
+    val networkEntry:Option[TreeItem[String]] = networkEntries.find(_.getValue == network)
+//    val networkNode = networkEntry(network)
+    networkEntry match {
+      case None => addNetwork(network)
+      case Some(treeItem) => treeItem.asInstanceOf[TreeItem[String]]
+    }
+  }
+
+  def channelEntries(networkEntry:TreeItem[String]) = networkEntry.getChildren.toArray
+    .filter(_.isInstanceOf[TreeItem[String]])
+    .map(_.asInstanceOf[TreeItem[String]])
+  def channelEntry(networkEntry:TreeItem[String],channel:String):Option[TreeItem[String]] =
+      channelEntries(networkEntry).find(_.getValue == channel)
+
+  def addChannel(networkEntry:TreeItem[String],channelName:String) {
+    println(s"Adding channel: $channelName")
+    val item = new TreeItem[String](channelName)
+    networkEntry.getChildren.addAll(item)
+    item
+  }
+
+
+  def findOrAddChannelEntry(networkEntry:TreeItem[String],channel:String) = {
+    println(s"findOrAddChannelEntry $networkEntry $channel")
+    val channelEntry = channelEntries(networkEntry).find(_.getValue == channel)
+    //    val networkNode = networkEntry(network)
+    channelEntry match {
+      case None => addChannel(networkEntry,channel)
+      case Some(treeItem) => treeItem
+    }
+  }
+
+
   def addOrModifyChannel(target:ChannelTarget) {
     println(s"** addOrModifyChannel($target)")
-    for (n <- networksChannels.getRoot.getChildren.toArray) {
+    val networkEntry = findOrAddNetworkEntry(target.network)
+    val channelEntry = findOrAddChannelEntry(networkEntry,target.channel)
+    println(s"++ channelEntry=$channelEntry")
+    println(s"entry $networkEntry $target")
+    for (n <- networkEntries) {
       println(s"Element: $n")
     }
   }

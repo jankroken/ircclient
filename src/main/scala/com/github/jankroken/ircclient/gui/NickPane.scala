@@ -23,7 +23,7 @@ class NickPane(eventListener:EventListener) extends ScrollPane {
 
   def setNicks(nicks:List[String]) {
     val nickLabels = nicks.map(nick ⇒ new Label { setText(nick) })
-    nickTable.getChildren().removeAll()
+    nickTable.getChildren.removeAll()
     (0 to nicks.length-1).foreach { n ⇒
       nickTable.addRow(n,nickLabels(n))
     }

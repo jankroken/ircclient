@@ -120,13 +120,13 @@ class NetworkActor(gui:ActorRef,network:String,server:String) extends Actor with
             val target = ChannelTarget("freenode",channel.name)
             gui ! AddChannelToTreeView(target)
             origin match {
-              case Some(nick:NickAndUserAtHost) => {
+              case Some(nick:NickAndUserAtHost) ⇒ {
                 gui ! SimpleMessage(target,nick.nick,message)
               }
-              case Some(nick:NickAtHost) => {
+              case Some(nick:NickAtHost) ⇒ {
                 gui ! SimpleMessage(target,nick.nick,message)
               }
-              case _ => {
+              case _ ⇒ {
                 gui ! SimpleMessage(target,"xxx",s"origin=$origin message=$message")
               }
             }
