@@ -14,39 +14,43 @@ class ChannelPane(val eventListener: EventListener) extends ScrollPane {
   def ncChildren(network: String, channels: List[String]) =
     new TreeItem[String](network) {
       setExpanded(true)
-      //      getChildren.addAll(channels.map(new TreeItem(_)))
       channels.map(new TreeItem(_)).foreach {
         getChildren.add(_)
       }
     }
 
 
-  val freenodeChannels = ncChildren("freenodex", List("#scalax", "#javax", "#haskellx","#xenotestx"))
-  val efnetChannels = ncChildren("efnet", List("#ocaml", "#prolog", "#ada"))
-  val quakenetChannels = ncChildren("quakenet", List("#quake", "#doom", "#wolfenstein", "#keen", "#doom2", "#doom3", "quake2"))
+//  val freenodeChannels = ncChildren("freenodex", List("#scalax", "#javax", "#haskellx","#xenotestx"))
+//  val efnetChannels = ncChildren("efnet", List("#ocaml", "#prolog", "#ada"))
+//  val quakenetChannels = ncChildren("quakenet", List("#quake", "#doom", "#wolfenstein", "#keen", "#doom2", "#doom3", "quake2"))
 
+  val networksRoot = new TreeItem[String]("networks") {
+    setVisible(true)
+    getProperties.put("vgrow", Priority.ALWAYS)
+    setExpanded(true)
+//    getChildren.addAll(freenodeChannels,efnetChannels,quakenetChannels)
+  }
   def networksChannels =
     new TreeView[String] {
-      setRoot(new TreeItem[String]("networks") {
-        setVisible(true)
-        getProperties.put("vgrow", Priority.ALWAYS)
-        setExpanded(true)
-        setShowRoot(false)
-        getChildren.addAll(freenodeChannels,efnetChannels,quakenetChannels)
-        println(s"getSelectionModel⇒$getSelectionModel")
-        println(s"getSelectionModel.getSelectedItem⇒${getSelectionModel.getSelectedItem}")
+      setShowRoot(false)
+      setRoot(networksRoot)
+      getSelectionModel.selectedItemProperty().addListener(channelListener)
+      println(s"getSelectionModel⇒$getSelectionModel")
+      println(s"getSelectionModel.getSelectedItem⇒${getSelectionModel.getSelectedItem}")
 
 
-        object channelListener extends ChangeListener[TreeItem[String]] {
-          def changed(v:ObservableValue[_ <: TreeItem[String]], oldValue:TreeItem[String], newValue:TreeItem[String]) {
-            if(newValue.hasGrandParent)
-              eventListener.onEvent(ChannelSelected(newValue.getParent.getValue,newValue.getValue))
+      object channelListener extends ChangeListener[TreeItem[String]] {
+        def changed(v:ObservableValue[_ <: TreeItem[String]], oldValue:TreeItem[String], newValue:TreeItem[String]) {
+          println(s"channelListener v=$v oldValue=$oldValue newValue=$newValue")
+          if (newValue != null) {
+            if (newValue.hasGrandParent)
+              eventListener.onEvent(ChannelSelected(newValue.getParent.getValue, newValue.getValue))
             else
               eventListener.onEvent(NetworkSelected(newValue.getValue))
           }
         }
-        getSelectionModel.selectedItemProperty().addListener(channelListener)
-      })}
+      }
+    }
 
   setFitToWidth(true)
   setFitToHeight(true)
@@ -63,7 +67,10 @@ class ChannelPane(val eventListener: EventListener) extends ScrollPane {
 
 
   def addNetwork(networkName:String) = {
-    val item = new TreeItem[String](networkName)
+    val item = new TreeItem[String](networkName) {
+      setExpanded(true)
+      getChildren.add(new TreeItem[String]("#bogus"))
+    }
     println(s"Adding network: $networkName $item ${networksChannels.getRoot}")
     networksChannels.getRoot.getChildren.addAll(item)
 //    Thread.sleep(50)
@@ -75,12 +82,11 @@ class ChannelPane(val eventListener: EventListener) extends ScrollPane {
   }
 
   def findOrAddNetworkEntry(network:String):TreeItem[String] = {
-    val networkEntry:Option[TreeItem[String]] = networkEntries.find(_.getValue == network)
-//    val networkNode = networkEntry(network)
-    networkEntry match {
+    networkEntry(network) match {
       case None => addNetwork(network)
       case Some(treeItem) => treeItem.asInstanceOf[TreeItem[String]]
     }
+    new TreeItem[String](network)
   }
 
   def channelEntries(networkEntry:TreeItem[String]) = networkEntry.getChildren.toArray
@@ -90,7 +96,8 @@ class ChannelPane(val eventListener: EventListener) extends ScrollPane {
       channelEntries(networkEntry).find(_.getValue == channel)
 
   def addChannel(networkEntry:TreeItem[String],channelName:String) {
-    println(s"Adding channel: $channelName")
+    println(s"+++ Adding channel: $channelName $networkEntry")
+    Thread.sleep(50)
     val item = new TreeItem[String](channelName)
     networkEntry.getChildren.addAll(item)
     item
@@ -112,11 +119,12 @@ class ChannelPane(val eventListener: EventListener) extends ScrollPane {
     println(s"** addOrModifyChannel($target)")
     val networkEntry = findOrAddNetworkEntry(target.network)
     val channelEntry = findOrAddChannelEntry(networkEntry,target.channel)
-    println(s"++ channelEntry=$channelEntry")
-    println(s"entry $networkEntry $target")
-    for (n <- networkEntries) {
-      println(s"Element: $n")
-    }
+//    println(s"++ channelEntry=$channelEntry")
+//    println(s"entry $networkEntry $target")
+//    for (n <- networkEntries) {
+//      println(s"Element: $n")
+//    }
+    println(s"Done $target")
   }
 
 }
