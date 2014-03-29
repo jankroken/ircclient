@@ -4,16 +4,15 @@ version := "1.0-SNAPSHOT"
 
 organization := "com.github.jankroken"
 
-scalaVersion := "2.10.3"
+scalaVersion := "2.10.4"
 
 // assemblySettings
 
 libraryDependencies ++= Seq(
 //   "org.scalafx" %% "scalafx" % "1.0.0-M7",
-  "org.scalatest" %% "scalatest" % "2.0" % "test",
-  "com.typesafe.akka" %% "akka-actor" % "2.2.3",
+  "org.scalatest" %% "scalatest" % "2.1.0" % "test",
+  "com.typesafe.akka" %% "akka-actor" % "2.3.1",
   "junit" % "junit" % "4.11" % "test",
-//  "org.parboiled" %% "parboiled" % "2.0-M2"
   "org.parboiled" %% "parboiled-scala" % "1.1.6"
 )
 
@@ -27,10 +26,10 @@ resolvers ++= Seq(
 unmanagedResourceDirectories in Compile <+= baseDirectory { _/"src/main/scala"}
 
 // Set the prompt (for this build) to include the project id.
-shellPrompt := { state => System.getProperty("user.name") + ":" + Project.extract(state).currentRef.project + "> " }
+shellPrompt := { state ⇒ System.getProperty("user.name") + ":" + Project.extract(state).currentRef.project + "> " }
 
 // Add JavaFX 2.0 to classpath
-unmanagedJars in Compile += Attributed.blank(file(System.getenv("JAVA_HOME") + "/jre/lib/jfxrt.jar"))
+// unmanagedJars in Compile += Attributed.blank(file(System.getenv("JAVA_HOME") + "/jre/lib/jfxrt.jar"))
 
 // Run in separate VM, so there are no issues with double initialization of JavaFX
 fork := true
