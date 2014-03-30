@@ -3,21 +3,6 @@ package com.github.jankroken.ircclient.actors
 import akka.actor.{ActorRef, Props, Actor, ActorLogging}
 import com.github.jankroken.ircclient.protocol.domain._
 import com.github.jankroken.ircclient.domain._
-import com.github.jankroken.ircclient.domain.InfoBlock
-import com.github.jankroken.ircclient.protocol.domain.Ping
-import com.github.jankroken.ircclient.protocol.domain.Nick
-import com.github.jankroken.ircclient.domain.ChannelTarget
-import com.github.jankroken.ircclient.protocol.domain.NickAndUserAtHost
-import com.github.jankroken.ircclient.protocol.domain.Join
-import com.github.jankroken.ircclient.protocol.domain.EndOfNames
-import com.github.jankroken.ircclient.protocol.domain.PrivateMessage
-import scala.Some
-import com.github.jankroken.ircclient.protocol.domain.NameList
-import com.github.jankroken.ircclient.protocol.domain.Topic
-import com.github.jankroken.ircclient.domain.SimpleMessage
-import com.github.jankroken.ircclient.domain.NetworkTarget
-import com.github.jankroken.ircclient.domain.NickList
-import com.github.jankroken.ircclient.domain.NicksForChannel
 import com.github.jankroken.ircclient.gui.{AddNetworkToTreeView, AddChannelToTreeView}
 import com.github.jankroken.ircclient.commands.IdentifiedCommand
 
@@ -27,6 +12,8 @@ class NetworkActor(gui:ActorRef,network:String,server:String) extends Actor with
   val networkTarget = NetworkTarget(network)
   var ircServer = new IRCServer(server)
   var xenotest:Channel = null
+  var fealdia:Channel = null
+  var politics:Channel = null
 
   def onMessage(serverMessage:ServerMessage) = {
     self ! serverMessage
@@ -40,10 +27,12 @@ class NetworkActor(gui:ActorRef,network:String,server:String) extends Actor with
     ircServer.setNick(xeno.xenobot7)
     ircServer.logon
     Thread.sleep(2000)
-    val fealdia = ircServer.join("#fealdia")
+    fealdia = ircServer.join("#fealdia")
     //  freenode.join("#digitalgunfire")
     xenotest = ircServer.join("#xenotest")
     val scala = ircServer.join("#scala")
+    politics = ircServer.join("##politics")
+
   }
 
   def receive = {
@@ -156,7 +145,8 @@ class NetworkActor(gui:ActorRef,network:String,server:String) extends Actor with
       gui ! SimpleMessage(networkTarget,"",s"${serverMessage.getClass.getSimpleName}${serverMessage.toString})")
     }
     case text:IdentifiedCommand.Text => {
-      ircServer.message(xenotest,text.param)
+      ircServer.message(fealdia,text.param)
+//      ircServer.message(politics,text.param)
       gui ! text
     }
     case join:IdentifiedCommand.Join => {
