@@ -29,7 +29,7 @@ class GUIActor(server:String) extends Actor with ActorLogging {
       this.channelPane = Some(channelPane)
     }
     case info:InfoBlock ⇒ {
-      println(s"thread=${Thread.currentThread()}")
+//      println(s"thread=${Thread.currentThread()}")
       chatPanels match {
         case None ⇒ {
           println(s"onMessage: $info")
@@ -47,7 +47,7 @@ class GUIActor(server:String) extends Actor with ActorLogging {
           println(s"onMessage: $message")
         }
         case Some(cp) ⇒ {
-          println("sending to chatpanels")
+//          println("sending to chatpanels")
           val panel = cp.getPanel(message.target)
           panel.sendSimpleMessage(message.from,message.message)
         }
@@ -60,7 +60,7 @@ class GUIActor(server:String) extends Actor with ActorLogging {
           println(s"onMessage: $nickList")
         }
         case Some(cp) ⇒ {
-          println("sending to chatpanels")
+//          println("sending to chatpanels")
           val panel = cp.getPanel(nickList.chatTarget)
           panel.setNicks(nickList.nicks)
         }
@@ -69,31 +69,19 @@ class GUIActor(server:String) extends Actor with ActorLogging {
 
     case AddChannelToTreeView(target) ⇒ {
       channelPane match {
-        case None  ⇒ {
-          println(s"addChannelToTreeView: $target")
-        }
-        case Some(cp) ⇒ {
-          println("sending to channelPane")
-          cp.addOrModifyChannel(target)
-          println("/")
-        }
+        case None ⇒ println(s"addChannelToTreeView: $target")
+        case Some(cp) ⇒ cp.addOrModifyChannel(target)
       }
     }
     case AddNetworkToTreeView(target) ⇒ {
       channelPane match {
-        case None  ⇒ {
-          println(s"addChannelToTreeView: $target")
-        }
-        case Some(cp) ⇒ {
-          println("sending to channelPane")
-          cp.addOrModifyNetwork(target)
-          println("/")
-        }
+        case None ⇒ println(s"addChannelToTreeView: $target")
+        case Some(cp) ⇒ cp.addOrModifyNetwork(target)
       }
     }
 
-    case foo ⇒ {
-      println(s"GUIActor: $foo")
+    case unknown ⇒ {
+      println(s"GUIActor: $unknown")
     }
   }
 }

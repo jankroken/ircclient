@@ -20,7 +20,6 @@ class NickAccumulatorActor extends Actor with ActorLogging {
       val nicks = if (nicksByChannel.contains(channel)) nicksByChannel(channel) else List()
       val nicksForChannel = NicksForChannel(channel,nicks)
       nicksByChannel = nicksByChannel - channel
-      println(s":::NL::: $channel $nicks $sender")
       sender ! nicksForChannel
     }
   }

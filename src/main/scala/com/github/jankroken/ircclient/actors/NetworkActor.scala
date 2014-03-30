@@ -24,6 +24,8 @@ class NetworkActor(gui:ActorRef,network:String,server:String) extends Actor with
 
   val nickAccumulator = IRCActorSystem.system.actorOf(Props(new NickAccumulatorActor),"nickAcc")
   val networkTarget = NetworkTarget(network)
+  var ircServer = new IRCServer(server)
+
 
   def onMessage(serverMessage:ServerMessage) = {
     self ! serverMessage
@@ -31,17 +33,16 @@ class NetworkActor(gui:ActorRef,network:String,server:String) extends Actor with
 
   def connect() {
     val xeno = TestUser
-    val freenode = new IRCServer(server)
-    freenode.user = xeno
-    freenode.connect(Some(onMessage(_)))
+    ircServer.user = xeno
+    ircServer.connect(Some(onMessage(_)))
     Thread.sleep(2000)
-    freenode.setNick(xeno.xenobot7)
-    freenode.logon
+    ircServer.setNick(xeno.xenobot7)
+    ircServer.logon
     Thread.sleep(2000)
-    freenode.join("#fealdia")
+    ircServer.join("#fealdia")
     //  freenode.join("#digitalgunfire")
-    freenode.join("#xenotest")
-    freenode.join("#scala")
+    ircServer.join("#xenotest")
+    ircServer.join("#scala")
   }
 
   def receive = {
@@ -59,6 +60,7 @@ class NetworkActor(gui:ActorRef,network:String,server:String) extends Actor with
       gui ! InfoBlock(networkTarget,"Message of the day",motd.getText)
     }
     case ping:Ping ⇒ {
+      ircServer.pong(ping.servername)
       gui ! InfoBlock(networkTarget,"ping",ping.toString)
     }
 
@@ -124,7 +126,7 @@ class NetworkActor(gui:ActorRef,network:String,server:String) extends Actor with
         target match {
           case Nick(nick) ⇒ {
             gui ! AddNetworkToTreeView(networkTarget)
-            gui ! SimpleMessage(networkTarget,"xxx",s"target=$target origin=$origin message=$message")
+            gui ! SimpleMessage(networkTarget,"",s"target=$target origin=$origin message=$message")
           }
           case channel:Channel => {
             val target = ChannelTarget("freenode",channel.name)
@@ -137,23 +139,23 @@ class NetworkActor(gui:ActorRef,network:String,server:String) extends Actor with
                 gui ! SimpleMessage(target,nick.nick,message)
               }
               case _ ⇒ {
-                gui ! SimpleMessage(target,"xxx",s"origin=$origin message=$message")
+                gui ! SimpleMessage(target,"",s"origin=$origin message=$message")
               }
             }
           }
           case other ⇒ {
             gui ! AddNetworkToTreeView(networkTarget)
-            gui ! SimpleMessage(networkTarget,"xxx",s"target=$target:${target.getClass.getSimpleName} origin=$origin message=$message")
+            gui ! SimpleMessage(networkTarget,"",s"target=$target:${target.getClass.getSimpleName} origin=$origin message=$message")
           }
         }
       }
     }
     case serverMessage:ServerMessage ⇒ {
       gui ! AddNetworkToTreeView(networkTarget)
-      gui ! SimpleMessage(networkTarget,"xxx",s"${serverMessage.getClass.getSimpleName}${serverMessage.toString})")
+      gui ! SimpleMessage(networkTarget,"",s"${serverMessage.getClass.getSimpleName}${serverMessage.toString})")
     }
-    case foo ⇒ {
-      println(s"NetworkActor: $foo")
+    case other ⇒ {
+      println(s"NetworkActor: $other")
     }
   }
 }

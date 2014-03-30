@@ -6,9 +6,6 @@ import com.github.jankroken.ircclient.domain.Init
 
 class MainActor(server:String) extends Actor with ActorLogging {
 
-//  val freenode = IRCActorSystem.system.actorOf(Props[NetworkActor].withDispatcher("javafx-dispatcher"), name = "freenode")
-
-
   val gui = IRCActorSystem.system.actorOf(Props(new GUIActor("freenode")).withDispatcher("javafx-dispatcher"),"gui")
   val freenode = IRCActorSystem.system.actorOf(Props(new NetworkActor(gui,"freenode","irc.freenode.net")),"freenode") //.withDispatcher("javafx-dispatcher"),"freenode")
 
@@ -24,9 +21,9 @@ class MainActor(server:String) extends Actor with ActorLogging {
     case channelPane:ChannelPane ⇒ {
       gui ! channelPane
     }
-    case foo ⇒ {
-      println(s"NetworkActor: $foo")
-      freenode ! foo
+    case other ⇒ {
+      println(s"MainActor: $other")
+      freenode ! other
     }
   }
 }

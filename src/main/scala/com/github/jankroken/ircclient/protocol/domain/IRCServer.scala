@@ -50,7 +50,7 @@ class IRCServer(val name: String, val port: Int) {
 		messageService.sendMessage(ClientMessage.user(user))
 	}
 	
-	private def pong(server: String) {
+	def pong(server: String) {
 		messageService.sendMessage(ClientMessage.pong(server))
 	}
  
