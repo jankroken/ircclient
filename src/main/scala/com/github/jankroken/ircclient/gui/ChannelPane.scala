@@ -86,7 +86,7 @@ class ChannelPane(val eventListener: EventListener) extends ScrollPane {
       case None => addNetwork(network)
       case Some(treeItem) => treeItem.asInstanceOf[TreeItem[String]]
     }
-    new TreeItem[String](network)
+//    new TreeItem[String](network)
   }
 
   def channelEntries(networkEntry:TreeItem[String]) = networkEntry.getChildren.toArray
