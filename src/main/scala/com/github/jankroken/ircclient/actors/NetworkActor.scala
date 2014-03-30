@@ -18,7 +18,7 @@ import com.github.jankroken.ircclient.domain.SimpleMessage
 import com.github.jankroken.ircclient.domain.NetworkTarget
 import com.github.jankroken.ircclient.domain.NickList
 import com.github.jankroken.ircclient.domain.NicksForChannel
-import com.github.jankroken.ircclient.gui.AddChannelToTreeView
+import com.github.jankroken.ircclient.gui.{AddNetworkToTreeView, AddChannelToTreeView}
 
 class NetworkActor(gui:ActorRef,network:String,server:String) extends Actor with ActorLogging {
 
@@ -38,10 +38,10 @@ class NetworkActor(gui:ActorRef,network:String,server:String) extends Actor with
     freenode.setNick(xeno.xenobot7)
     freenode.logon
     Thread.sleep(2000)
-    var fealdia: Channel = freenode.join("#fealdia")
-    //  var digitalgunfire: Channel = freenode.join("#digitalgunfire")
-    var xenotest = freenode.join("#xenotest")
-    var scala: Channel = freenode.join("#scala")
+    freenode.join("#fealdia")
+    //  freenode.join("#digitalgunfire")
+    freenode.join("#xenotest")
+    freenode.join("#scala")
   }
 
   def receive = {
@@ -55,6 +55,7 @@ class NetworkActor(gui:ActorRef,network:String,server:String) extends Actor with
       nickAccumulator ! endOfNames
     }
     case motd:MessageOfTheDay ⇒ {
+      gui ! AddNetworkToTreeView(networkTarget)
       gui ! InfoBlock(networkTarget,"Message of the day",motd.getText)
     }
     case ping:Ping ⇒ {
@@ -62,10 +63,12 @@ class NetworkActor(gui:ActorRef,network:String,server:String) extends Actor with
     }
 
     case welcome:WelcomeMessage ⇒ {
+      gui ! AddNetworkToTreeView(networkTarget)
       gui ! InfoBlock(networkTarget,"@Welcome Message",welcome.getText)
     }
     case topic:Topic ⇒ {
       val target = ChannelTarget("freenode",topic.channel.name)
+      gui ! AddChannelToTreeView(target)
       gui ! InfoBlock(target,s"Topic",topic.topic)
     }
     case nicksForChannel:NicksForChannel ⇒ {
@@ -86,24 +89,31 @@ class NetworkActor(gui:ActorRef,network:String,server:String) extends Actor with
       gui ! SimpleMessage(target,"",s"$joiner has joined")
     }
     case notice:Notice ⇒ {
+      gui ! AddNetworkToTreeView(networkTarget)
       gui ! SimpleMessage(networkTarget,"",notice.message)
     }
     case UnknownConnectionCount(count) ⇒ {
+      gui ! AddNetworkToTreeView(networkTarget)
       gui ! SimpleMessage(networkTarget,"",s"$count unknown connection(s)")
     }
     case OperatorCount(count) ⇒ {
+      gui ! AddNetworkToTreeView(networkTarget)
       gui ! SimpleMessage(networkTarget,"",s"$count IRC Operators online")
     }
     case ChannelCount(count) ⇒ {
+      gui ! AddNetworkToTreeView(networkTarget)
       gui ! SimpleMessage(networkTarget, "", s"$count channels")
     }
     case csc:ClientServerCount => {
+      gui ! AddNetworkToTreeView(networkTarget)
       gui ! SimpleMessage(networkTarget,"",csc.clientServerString)
     }
     case unidentified:Unidentified => {
+      gui ! AddNetworkToTreeView(networkTarget)
       gui ! SimpleMessage(networkTarget,"",unidentified.message.toString)
     }
     case params:ServerParameters => {
+      gui ! AddNetworkToTreeView(networkTarget)
       gui ! SimpleMessage(networkTarget,"",params.arguments.mkString(" "))
     }
 
@@ -113,8 +123,8 @@ class NetworkActor(gui:ActorRef,network:String,server:String) extends Actor with
       privateMessage.targets.foreach { target ⇒
         target match {
           case Nick(nick) ⇒ {
+            gui ! AddNetworkToTreeView(networkTarget)
             gui ! SimpleMessage(networkTarget,"xxx",s"target=$target origin=$origin message=$message")
-
           }
           case channel:Channel => {
             val target = ChannelTarget("freenode",channel.name)
@@ -132,12 +142,14 @@ class NetworkActor(gui:ActorRef,network:String,server:String) extends Actor with
             }
           }
           case other ⇒ {
+            gui ! AddNetworkToTreeView(networkTarget)
             gui ! SimpleMessage(networkTarget,"xxx",s"target=$target:${target.getClass.getSimpleName} origin=$origin message=$message")
           }
         }
       }
     }
     case serverMessage:ServerMessage ⇒ {
+      gui ! AddNetworkToTreeView(networkTarget)
       gui ! SimpleMessage(networkTarget,"xxx",s"${serverMessage.getClass.getSimpleName}${serverMessage.toString})")
     }
     case foo ⇒ {

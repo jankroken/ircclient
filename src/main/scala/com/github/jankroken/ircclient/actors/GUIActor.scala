@@ -1,11 +1,16 @@
 package com.github.jankroken.ircclient.actors
 
 import akka.actor.{Props, Actor, ActorLogging}
-import com.github.jankroken.ircclient.gui.{ChannelPane, AddChannelToTreeView, NickPanes, ChatPanels}
+import com.github.jankroken.ircclient.gui._
 import com.github.jankroken.ircclient.domain._
 import com.github.jankroken.ircclient.domain.InfoBlock
 import scala.Some
 import com.github.jankroken.ircclient.domain.NetworkTarget
+import com.github.jankroken.ircclient.domain.InfoBlock
+import com.github.jankroken.ircclient.domain.SimpleMessage
+import com.github.jankroken.ircclient.domain.NickList
+import com.github.jankroken.ircclient.gui.AddChannelToTreeView
+import scala.Some
 
 class GUIActor(server:String) extends Actor with ActorLogging {
 
@@ -74,6 +79,19 @@ class GUIActor(server:String) extends Actor with ActorLogging {
         }
       }
     }
+    case AddNetworkToTreeView(target) ⇒ {
+      channelPane match {
+        case None  ⇒ {
+          println(s"addChannelToTreeView: $target")
+        }
+        case Some(cp) ⇒ {
+          println("sending to channelPane")
+          cp.addOrModifyNetwork(target)
+          println("/")
+        }
+      }
+    }
+
     case foo ⇒ {
       println(s"GUIActor: $foo")
     }

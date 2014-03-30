@@ -1,12 +1,16 @@
 package com.github.jankroken.ircclient.gui
 
-import com.github.jankroken.ircclient.domain.{ChannelTarget, NetworkSelected, ChannelSelected, EventListener}
+import com.github.jankroken.ircclient.domain._
 import com.github.jankroken.ircclient.gui.support.JavaFXSupport._
 import javafx.scene.control.{TreeView, TreeItem, ScrollPane}
 import javafx.scene.layout.Priority
 import javafx.beans.value.{ObservableValue, ChangeListener}
 import java.util.function.{Predicate, Consumer}
 import javafx.scene.Node
+import com.github.jankroken.ircclient.domain.ChannelTarget
+import com.github.jankroken.ircclient.domain.NetworkSelected
+import scala.Some
+import com.github.jankroken.ircclient.domain.ChannelSelected
 
 
 class ChannelPane(val eventListener: EventListener) extends ScrollPane {
@@ -116,16 +120,17 @@ class ChannelPane(val eventListener: EventListener) extends ScrollPane {
 
 
   def addOrModifyChannel(target:ChannelTarget) {
-    println(s"** addOrModifyChannel($target)")
+    println(s"addOrModifyChannel($target)")
     val networkEntry = findOrAddNetworkEntry(target.network)
     val channelEntry = findOrAddChannelEntry(networkEntry,target.channel)
-//    println(s"++ channelEntry=$channelEntry")
-//    println(s"entry $networkEntry $target")
-//    for (n <- networkEntries) {
-//      println(s"Element: $n")
-//    }
+  }
+
+  def addOrModifyNetwork(target:NetworkTarget) {
+    println(s"addOrModifyNetwork($target)")
+    val networkEntry = findOrAddNetworkEntry(target.name)
     println(s"Done $target")
   }
+
 
 }
 
