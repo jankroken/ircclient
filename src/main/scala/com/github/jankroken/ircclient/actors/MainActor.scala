@@ -3,6 +3,7 @@ package com.github.jankroken.ircclient.actors
 import akka.actor.{Props, Actor, ActorLogging}
 import com.github.jankroken.ircclient.gui.{ChannelPane, NickPanes, ChatPanels}
 import com.github.jankroken.ircclient.domain.Init
+import com.github.jankroken.ircclient.commands.IdentifiedCommand
 
 class MainActor(server:String) extends Actor with ActorLogging {
 
@@ -20,6 +21,9 @@ class MainActor(server:String) extends Actor with ActorLogging {
     }
     case channelPane:ChannelPane ⇒ {
       gui ! channelPane
+    }
+    case text:IdentifiedCommand.Text => {
+      freenode ! text
     }
     case other ⇒ {
       println(s"MainActor: $other")

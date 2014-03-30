@@ -28,7 +28,8 @@ class BasicProtocolTest extends AssertionsForJUnit with App {
     Thread.sleep(2000)
     freenode.logon
     Thread.sleep(4000)
-    val xenotest: Channel = freenode.join("#xenotest")
+//    val xenotest: Channel = freenode.join("#xenotest")
+    val xenotest: Channel = freenode.join("#fealdia")
     Thread.sleep(2000)
     freenode.message(xenotest, "hello world")
     Thread.sleep(2000)

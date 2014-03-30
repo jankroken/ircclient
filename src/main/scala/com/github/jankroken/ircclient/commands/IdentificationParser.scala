@@ -2,14 +2,13 @@ package com.github.jankroken.ircclient.commands
 
 import org.parboiled.scala._
 import org.parboiled.errors.{ErrorUtils, ParsingException}
+import com.github.jankroken.ircclient.commands.IdentificationParser._
+import com.github.jankroken.ircclient.commands.IdentificationParser.TextCommand
+import com.github.jankroken.ircclient.commands.IdentificationParser.HelpCommand
+import com.github.jankroken.ircclient.commands.IdentificationParser.JoinCommand
+import scala.Some
 
 class IdentificationParser extends Parser {
-  sealed abstract class ASTNode
-  abstract class Command extends ASTNode
-  case class ServerCommand(server:String) extends Command
-  case class JoinCommand(channel:String) extends Command
-  case class TextCommand(server:String) extends Command
-  case class HelpCommand(topic:Option[String]) extends Command
 
   def command: Rule1[ASTNode] = rule { join | server | text | help }
   def server: Rule1[ASTNode] = "/server" ~ whiteSpaceSeparator ~ serverName ~> ServerCommand
@@ -22,7 +21,7 @@ class IdentificationParser extends Parser {
   def whiteSpace: Rule0 = rule { zeroOrMore(anyOf(" \n\r\t\f")) }
   def whiteSpaceSeparator = rule { oneOrMore(anyOf(" \n\r\t\f")) }
   def channel = "#" ~ oneOrMore(channelChar)
-  def channelChar = { "A" - "Z" | "a" - "z" | "0" - "9" }
+  def channelChar = { "A" - "Z" | "a" - "z" | "0" - "9" | "#" }
   def serverName = oneOrMore(serverChar)
   def serverChar = rule { "0" - "9" | "a" - "z" | "A" - "Z" | "." }
   def topic = oneOrMore(topicChar)
@@ -37,6 +36,14 @@ class IdentificationParser extends Parser {
         ErrorUtils.printParseErrors(parsingResult))
     }
   }
+}
 
+object IdentificationParser {
+  sealed abstract class ASTNode
+  abstract class Command extends ASTNode
+  case class ServerCommand(server:String) extends Command
+  case class JoinCommand(channel:String) extends Command
+  case class TextCommand(server:String) extends Command
+  case class HelpCommand(topic:Option[String]) extends Command
 
 }

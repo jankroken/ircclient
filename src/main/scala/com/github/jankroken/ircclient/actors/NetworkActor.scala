@@ -19,13 +19,14 @@ import com.github.jankroken.ircclient.domain.NetworkTarget
 import com.github.jankroken.ircclient.domain.NickList
 import com.github.jankroken.ircclient.domain.NicksForChannel
 import com.github.jankroken.ircclient.gui.{AddNetworkToTreeView, AddChannelToTreeView}
+import com.github.jankroken.ircclient.commands.IdentifiedCommand
 
 class NetworkActor(gui:ActorRef,network:String,server:String) extends Actor with ActorLogging {
 
   val nickAccumulator = IRCActorSystem.system.actorOf(Props(new NickAccumulatorActor),"nickAcc")
   val networkTarget = NetworkTarget(network)
   var ircServer = new IRCServer(server)
-
+  var xenotest:Channel = null
 
   def onMessage(serverMessage:ServerMessage) = {
     self ! serverMessage
@@ -39,10 +40,10 @@ class NetworkActor(gui:ActorRef,network:String,server:String) extends Actor with
     ircServer.setNick(xeno.xenobot7)
     ircServer.logon
     Thread.sleep(2000)
-    ircServer.join("#fealdia")
+    val fealdia = ircServer.join("#fealdia")
     //  freenode.join("#digitalgunfire")
-    ircServer.join("#xenotest")
-    ircServer.join("#scala")
+    xenotest = ircServer.join("#xenotest")
+    val scala = ircServer.join("#scala")
   }
 
   def receive = {
@@ -153,6 +154,14 @@ class NetworkActor(gui:ActorRef,network:String,server:String) extends Actor with
     case serverMessage:ServerMessage ⇒ {
       gui ! AddNetworkToTreeView(networkTarget)
       gui ! SimpleMessage(networkTarget,"",s"${serverMessage.getClass.getSimpleName}${serverMessage.toString})")
+    }
+    case text:IdentifiedCommand.Text => {
+      ircServer.message(xenotest,text.param)
+      gui ! text
+    }
+    case join:IdentifiedCommand.Join => {
+      gui ! AddChannelToTreeView(ChannelTarget(network,join.channel))
+      ircServer.join(join.channel)
     }
     case other ⇒ {
       println(s"NetworkActor: $other")
