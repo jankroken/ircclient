@@ -152,7 +152,7 @@ class NetworkActor(gui:ActorRef,network:String,server:String) extends Actor with
     case TextCommand(channelTarget,message) ⇒ {
       gui ! AddChannelToTreeView(channelTarget)
       ircServer.message(Channel(channelTarget.channel,ircServer),message)
-      gui ! SimpleMessage(ChannelTarget(network,fealdia.name),xeno.nick,message)
+      gui ! SimpleMessage(channelTarget,xeno.nick,message)
     }
     case JoinCommand(channelTarget) ⇒ {
       gui ! AddChannelToTreeView(channelTarget)
