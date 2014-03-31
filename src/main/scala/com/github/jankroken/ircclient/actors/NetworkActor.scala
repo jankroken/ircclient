@@ -14,13 +14,13 @@ class NetworkActor(gui:ActorRef,network:String,server:String) extends Actor with
   var xenotest:Channel = null
   var fealdia:Channel = null
   var politics:Channel = null
+  val xeno = TestUser
 
   def onMessage(serverMessage:ServerMessage) = {
     self ! serverMessage
   }
 
   def connect() {
-    val xeno = TestUser
     ircServer.user = xeno
     ircServer.connect(Some(onMessage(_)))
     Thread.sleep(2000)
@@ -145,9 +145,9 @@ class NetworkActor(gui:ActorRef,network:String,server:String) extends Actor with
       gui ! SimpleMessage(networkTarget,"",s"${serverMessage.getClass.getSimpleName}${serverMessage.toString})")
     }
     case text:IdentifiedCommand.Text => {
+      gui ! AddChannelToTreeView(ChannelTarget(network,fealdia.name))
       ircServer.message(fealdia,text.param)
-//      ircServer.message(politics,text.param)
-      gui ! text
+      gui ! SimpleMessage(ChannelTarget(network,fealdia.name),xeno.nick,text.param)
     }
     case join:IdentifiedCommand.Join => {
       gui ! AddChannelToTreeView(ChannelTarget(network,join.channel))
