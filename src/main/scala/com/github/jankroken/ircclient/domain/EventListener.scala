@@ -12,9 +12,11 @@ class EventListener(setActiveTarget:(ChatTarget) ⇒ Unit) {
       IRCActorSystem.main ! command
     }
     case NetworkSelected(network) ⇒ {
+      IRCActorSystem.main ! NetworkTarget(network)
       setActiveTarget(NetworkTarget(network))
     }
     case ChannelSelected(network,channel) ⇒ {
+      IRCActorSystem.main ! ChannelTarget(network,channel)
       setActiveTarget(ChannelTarget(network,channel))
     }
     case _ ⇒ println(s"event:: $event")

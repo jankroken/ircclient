@@ -71,8 +71,8 @@ class ChannelPane(val eventListener: EventListener) extends ScrollPane {
 
   def findOrAddNetworkEntry(network:String):TreeItem[String] = {
     networkEntry(network) match {
-      case None => addNetwork(network)
-      case Some(treeItem) => treeItem.asInstanceOf[TreeItem[String]]
+      case None ⇒ addNetwork(network)
+      case Some(treeItem) ⇒ treeItem.asInstanceOf[TreeItem[String]]
     }
   }
 
@@ -93,8 +93,8 @@ class ChannelPane(val eventListener: EventListener) extends ScrollPane {
   def findOrAddChannelEntry(networkEntry:TreeItem[String],channel:String) = {
     val channelEntry = channelEntries(networkEntry).find(_.getValue == channel)
     channelEntry match {
-      case None => addChannel(networkEntry,channel)
-      case Some(treeItem) => treeItem
+      case None ⇒ addChannel(networkEntry,channel)
+      case Some(treeItem) ⇒ treeItem
     }
   }
 

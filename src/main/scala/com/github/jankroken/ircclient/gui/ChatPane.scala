@@ -36,7 +36,7 @@ class ChatPane(eventListener: EventListener) extends ScrollPane {
       getStyleClass().add("infomessageHeader")
     }
     text.getChildren().add(titleLabel)
-    message.split("\n").map(t => new Label { setText(t);getStyleClass().add("infomessageLine") }).foreach(text.getChildren().add)
+    message.split("\n").map(t ⇒ new Label { setText(t);getStyleClass().add("infomessageLine") }).foreach(text.getChildren().add)
 
     //    val button = new Button(message)
     chatPanel.add(text,1,row)
@@ -52,7 +52,7 @@ class ChatPane(eventListener: EventListener) extends ScrollPane {
       setPrefWidth(100)
     }
     val text = new VBox();
-    message.split("\n").map(t => new Label { setText(t) }).foreach(text.getChildren().add)
+    message.split("\n").map(t ⇒ new Label { setText(t) }).foreach(text.getChildren().add)
     chatPanel.add(nick,0,row)
     chatPanel.add(text,1,row)
     row = row + 1

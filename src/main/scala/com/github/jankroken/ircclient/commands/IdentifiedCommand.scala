@@ -11,9 +11,9 @@ object IdentifiedCommand {
   case class Text(param:String) extends IdentifiedCommand
   case class Unknown(o:Object) extends IdentifiedCommand
   def from(o:Object) = o match {
-    case TextCommand(line) => Text(line)
-    case JoinCommand(channel) => Join(channel)
-    case ServerCommand(server) => Server(server)
-    case other => Unknown(other)
+    case IdentificationParser.TextCommand(line) ⇒ Text(line)
+    case IdentificationParser.JoinCommand(channel) ⇒ Join(channel)
+    case IdentificationParser.ServerCommand(server) ⇒ Server(server)
+    case other ⇒ Unknown(other)
   }
 }
