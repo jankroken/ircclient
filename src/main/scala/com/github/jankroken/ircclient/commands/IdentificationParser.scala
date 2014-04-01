@@ -3,20 +3,17 @@ package com.github.jankroken.ircclient.commands
 import org.parboiled.scala._
 import org.parboiled.errors.{ErrorUtils, ParsingException}
 import com.github.jankroken.ircclient.commands.IdentificationParser._
-import com.github.jankroken.ircclient.commands.IdentificationParser.TextCommand
-import com.github.jankroken.ircclient.commands.IdentificationParser.HelpCommand
-import com.github.jankroken.ircclient.commands.IdentificationParser.JoinCommand
 import scala.Some
 
 class IdentificationParser extends Parser {
 
   def command: Rule1[ASTNode] = rule { join | server | text | help }
   def server: Rule1[ASTNode] = "/server" ~ whiteSpaceSeparator ~ serverName ~> ServerCommand
-  def join: Rule1[ASTNode] = "/join" ~ whiteSpaceSeparator ~ channel ~> JoinCommand
-  def text: Rule1[ASTNode] = !("/") ~ zeroOrMore(ANY) ~> TextCommand
+  def join: Rule1[ASTNode] = "/join" ~ whiteSpaceSeparator ~ channel ~> IdentificationParser.JoinCommand
+  def text: Rule1[ASTNode] = !("/") ~ zeroOrMore(ANY) ~> IdentificationParser.TextCommand
   def help :Rule1[ASTNode] = { topicHelp | globalHelp }
-  def topicHelp = "/help" ~ whiteSpaceSeparator ~ topic ~> ((s:String) ⇒ HelpCommand(Some(s)))
-  def globalHelp = "/help" ~> ((s) ⇒ HelpCommand(None))
+  def topicHelp = "/help" ~ whiteSpaceSeparator ~ topic ~> ((s:String) ⇒ IdentificationParser.HelpCommand(Some(s)))
+  def globalHelp = "/help" ~> ((s) ⇒ IdentificationParser.HelpCommand(None))
 
   def whiteSpace: Rule0 = rule { zeroOrMore(anyOf(" \n\r\t\f")) }
   def whiteSpaceSeparator = rule { oneOrMore(anyOf(" \n\r\t\f")) }

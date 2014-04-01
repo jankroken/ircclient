@@ -5,20 +5,16 @@ import com.github.jankroken.ircclient.actors.IRCActorSystem
 
 class EventListener(setActiveTarget:(ChatTarget) ⇒ Unit) {
   def onEvent(event: Event) = event match {
-    case LineEntered(line) ⇒ {
+    case LineEntered(line) ⇒
       val ip = new IdentificationParser
       val command = IdentifiedCommand.from(ip.parseCommand(line))
-//      println(s"command entered: $command")
       IRCActorSystem.main ! command
-    }
-    case NetworkSelected(network) ⇒ {
+    case NetworkSelected(network) ⇒
       IRCActorSystem.main ! NetworkTarget(network)
       setActiveTarget(NetworkTarget(network))
-    }
-    case ChannelSelected(network,channel) ⇒ {
+    case ChannelSelected(network,channel) ⇒
       IRCActorSystem.main ! ChannelTarget(network,channel)
       setActiveTarget(ChannelTarget(network,channel))
-    }
     case _ ⇒ println(s"event:: $event")
   }
 }

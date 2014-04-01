@@ -1,7 +1,5 @@
 package com.github.jankroken.ircclient.commands
 
-import com.github.jankroken.ircclient.commands.IdentificationParser.{ServerCommand, JoinCommand, TextCommand}
-
 sealed class IdentifiedCommand
 
 object IdentifiedCommand {

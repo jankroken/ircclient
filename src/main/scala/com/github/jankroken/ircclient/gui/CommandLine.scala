@@ -24,16 +24,13 @@ class CommandLine(eventListener:EventListener) extends TextField {
   setOnKeyPressed(new EventHandler[KeyEvent] {
     def handle(e:KeyEvent) {
       e.getCode match {
-        case KeyCode.ENTER ⇒ {
+        case KeyCode.ENTER ⇒
           eventListener.onEvent(LineEntered(getText))
           setText("")
-        }
-        case KeyCode.UP ⇒ {
+        case KeyCode.UP ⇒
           setText("UP PRESSED")
-        }
-        case KeyCode.DOWN ⇒ {
+        case KeyCode.DOWN ⇒
           setText("DOWN PRESSED")
-        }
         case _ ⇒ // others are ignored
       }
     }

@@ -18,7 +18,7 @@ object ClientMessage {
   }
 
   def privmsg(channel: Channel, message: String): ClientMessage = {
-    new ClientMessage(s"PRIVMSG $channel : $message")
+    new ClientMessage(s"PRIVMSG $channel :$message")
   }
 
   def nick(name: String): ClientMessage = {

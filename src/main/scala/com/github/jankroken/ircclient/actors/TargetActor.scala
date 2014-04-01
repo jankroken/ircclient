@@ -1,9 +1,8 @@
 package com.github.jankroken.ircclient.actors
 
 import akka.actor.{ActorLogging, Actor}
-import com.github.jankroken.ircclient.domain.{SimpleMessage, ChannelTarget, NetworkTarget, ChatTarget}
+import com.github.jankroken.ircclient.domain.{ChannelTarget, NetworkTarget}
 import com.github.jankroken.ircclient.commands.{TextCommand, JoinCommand, IdentifiedCommand}
-import com.github.jankroken.ircclient.gui.AddChannelToTreeView
 
 class TargetActor  extends Actor with ActorLogging {
 
@@ -16,23 +15,15 @@ class TargetActor  extends Actor with ActorLogging {
   def addressing(target:NetworkTarget):Receive = {
     case target:NetworkTarget ⇒ context.become(addressing(target))
     case target:ChannelTarget ⇒ context.become(addressing(target))
-    case text:IdentifiedCommand.Text ⇒ {
-      println(s"no channel selectet, can't send $text")
-    }
-    case join:IdentifiedCommand.Join ⇒ {
-      sender ! JoinCommand(new ChannelTarget(target.name,join.channel))
-    }
+    case text:IdentifiedCommand.Text ⇒ println(s"no channel selectet, can't send $text")
+    case join:IdentifiedCommand.Join ⇒ sender ! JoinCommand(new ChannelTarget(target.name,join.channel))
     case other ⇒ println(s"TargetActor.addressing[Network] $other")
   }
   def addressing(target:ChannelTarget):Receive = {
     case target:NetworkTarget ⇒ context.become(addressing(target))
     case target:ChannelTarget ⇒ context.become(addressing(target))
-    case text:IdentifiedCommand.Text ⇒ {
-      sender ! TextCommand(target,text.param)
-    }
-    case join:IdentifiedCommand.Join ⇒ {
-      sender ! JoinCommand(ChannelTarget(target.network,join.channel))
-    }
+    case text:IdentifiedCommand.Text ⇒ sender ! TextCommand(target,text.param)
+    case join:IdentifiedCommand.Join ⇒ sender ! JoinCommand(ChannelTarget(target.network,join.channel))
     case other ⇒ println(s"TargetActor.addressing[Channel] $other")
   }
 }

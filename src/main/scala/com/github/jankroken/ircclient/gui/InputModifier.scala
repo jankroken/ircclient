@@ -1,7 +1,9 @@
 package com.github.jankroken.ircclient.gui
 
 object InputModifier {
-  def replaceSymbols(s:String) = replaceGreekLetters(replaceArrows(replaceMath(replaceUnits(s))))
+  def replaceSymbols(s:String) =
+    if(s.indexOf("::") >= 0) replaceGreekLetters(replaceArrows(replaceMath(replaceUnits(s))))
+    else s
 
   def replaceGreekLetters(s:String) = {
      s.replaceAll("::alpha","α")
