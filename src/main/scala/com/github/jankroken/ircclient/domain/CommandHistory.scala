@@ -17,16 +17,16 @@ class CommandHistory {
   }
   def jumpForward:Option[String] = {
     after match {
-      case head::tail =>
+      case head :: tail =>
         val retval = head
-        before = head::before
+        before = head :: before
         after = tail
         Some(retval)
-      case _ => before match {
-        case head :: tail =>
-          Some(head)
+      case _ =>
+        before match {
+          case head :: tail => Some(head)
+          case _ => None
         }
-      case _ => None
     }
   }
 

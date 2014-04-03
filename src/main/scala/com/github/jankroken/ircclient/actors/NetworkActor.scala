@@ -119,10 +119,10 @@ class NetworkActor(gui:ActorRef,network:String,server:String) extends Actor with
     case serverMessage:ServerMessage ⇒
       gui ! AddNetworkToTreeView(networkTarget)
       gui ! SimpleMessage(networkTarget,"",s"${serverMessage.getClass.getSimpleName}${serverMessage.toString})")
-    case text:IdentifiedCommand.Text ⇒
-      gui ! AddChannelToTreeView(ChannelTarget(network,fealdia.name))
-      ircServer.message(fealdia,text.param)
-      gui ! SimpleMessage(ChannelTarget(network,fealdia.name),xeno.nick,text.param)
+//    case text:IdentifiedCommand.Text ⇒
+//      gui ! AddChannelToTreeView(ChannelTarget(network,fealdia.name))
+//      ircServer.message(fealdia,text.param)
+//      gui ! SimpleMessage(ChannelTarget(network,fealdia.name),xeno.nick,text.param)
     case TextCommand(channelTarget,message) ⇒
       gui ! AddChannelToTreeView(channelTarget)
       ircServer.message(Channel(channelTarget.channel,ircServer),message)

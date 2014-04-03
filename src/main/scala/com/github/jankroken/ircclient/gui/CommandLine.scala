@@ -1,12 +1,13 @@
 package com.github.jankroken.ircclient.gui
 
-import com.github.jankroken.ircclient.domain.{LineEntered, EventListener}
+import com.github.jankroken.ircclient.domain.{CommandHistory, LineEntered, EventListener}
 import javafx.scene.control.TextField
 import javafx.event.EventHandler
 import javafx.scene.input.{KeyCode, KeyEvent}
 
 class CommandLine(eventListener:EventListener) extends TextField {
   setPromptText("Command line")
+  val history = new CommandHistory
   setOnKeyTyped(new EventHandler[KeyEvent] {
     def handle(e:KeyEvent) {
         val c = e.getCharacter
@@ -25,12 +26,20 @@ class CommandLine(eventListener:EventListener) extends TextField {
     def handle(e:KeyEvent) {
       e.getCode match {
         case KeyCode.ENTER ⇒
-          eventListener.onEvent(LineEntered(getText))
+          val text = getText
+          eventListener.onEvent(LineEntered(text))
+          history.add(text)
           setText("")
         case KeyCode.UP ⇒
-          setText("UP PRESSED")
+          history.jumpBack match {
+            case Some(text) ⇒ setText(text)
+            case None ⇒
+          }
         case KeyCode.DOWN ⇒
-          setText("DOWN PRESSED")
+          history.jumpForward match {
+            case Some(text) ⇒ setText(text)
+            case None ⇒
+          }
         case _ ⇒ // others are ignored
       }
     }
