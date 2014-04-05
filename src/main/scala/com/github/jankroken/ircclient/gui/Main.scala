@@ -10,6 +10,8 @@ import com.github.jankroken.ircclient.actors.IRCActorSystem
 
 class Main extends Application {
 
+  new clojure.lang.RT // initializes the clojure runtime
+
   val eventListener = new EventListener(setChatPane(_))
   val chatPanels = new ChatPanels(eventListener)
   val nickPanes = new NickPanes(eventListener)
@@ -18,23 +20,18 @@ class Main extends Application {
   val sidePanel = new SidePanel
   sidePanel.getItems.addAll(nickPane,channelPane)
 
-
-
-  //  val ob = ObservableBuffer[HBox]()
   val testChatPane = chatPanels.getPanel(NetworkTarget("freenode"))
-//  val doomPane = chatPanels.getPanel(ChannelTarget("quakenet","#doom"))
   val ocamlPane = chatPanels.getPanel(ChannelTarget("efnet","#ocaml"))
 
   val borderPane = new BorderPane()
   val center = new SplitPane() {
     setId("page-splitpane")
     getItems.addAll(sidePanel,testChatPane)
-//    getItems.set(1,doomPane)
     setDividerPosition(0,0.2)
   }
 
   def init(primaryStage:Stage) {
-    primaryStage.setTitle("IRC Client")
+    primaryStage.setTitle("Glazed")
     primaryStage.setScene(new Scene(borderPane,1020,700))
     primaryStage.getScene().getStylesheets().add("ircclient.css");
 

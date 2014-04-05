@@ -10,8 +10,11 @@ class MainActor(server:String) extends Actor with ActorLogging {
   val gui = IRCActorSystem.system.actorOf(Props(new GUIActor("freenode")).withDispatcher("javafx-dispatcher"),"gui")
   val freenode = IRCActorSystem.system.actorOf(Props(new NetworkActor(gui,"freenode","irc.freenode.net")),"freenode") //.withDispatcher("javafx-dispatcher"),"freenode")
   val target = IRCActorSystem.system.actorOf(Props(new TargetActor), name = "activeTarget")
+  val script = IRCActorSystem.system.actorOf(Props(new ScriptActor), name = "script")
 
   freenode ! Init
+  script ! "init"
+  script ! "reload"
 
   def receive = {
     case chatPanels:ChatPanels ⇒
