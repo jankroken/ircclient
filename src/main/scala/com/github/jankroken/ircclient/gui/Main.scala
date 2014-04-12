@@ -33,7 +33,7 @@ class Main extends Application {
   def init(primaryStage:Stage) {
     primaryStage.setTitle("Glazed")
     primaryStage.setScene(new Scene(borderPane,1020,700))
-    primaryStage.getScene().getStylesheets().add("ircclient.css");
+    primaryStage.getScene.getStylesheets.add("ircclient.css");
 
 
     borderPane.setCenter(center)

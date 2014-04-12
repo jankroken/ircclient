@@ -45,7 +45,6 @@ class GUIActor(server:String) extends Actor with ActorLogging {
         case None ⇒
           println(s"onMessage: $nickList")
         case Some(cp) ⇒
-//          println("sending to chatpanels")
           val panel = cp.getPanel(nickList.chatTarget)
           panel.setNicks(nickList.nicks)
       }

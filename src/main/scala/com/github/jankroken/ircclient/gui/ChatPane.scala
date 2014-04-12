@@ -33,13 +33,11 @@ class ChatPane(eventListener: EventListener) extends ScrollPane {
     text.getChildren.add(titleLabel)
     message.split("\n").map(t ⇒ new Label { setText(t);setWrapText(true); getStyleClass.add("infomessageLine") }).foreach(text.getChildren.add)
 
-    //    val button = new Button(message)
     chatPanel.add(text,1,row)
     row = row + 1
   }
 
   def sendSimpleMessage(from:String,message:String) {
-//    println(s"sendSimpleMessage:from=$from message=$message")
     val nick = new Label {
       setText(s"$from")
       setMinWidth(100)
@@ -51,6 +49,7 @@ class ChatPane(eventListener: EventListener) extends ScrollPane {
     chatPanel.add(nick,0,row)
     chatPanel.add(text,1,row)
     row = row + 1
+    setVvalue(getVmin)
   }
 }
 
