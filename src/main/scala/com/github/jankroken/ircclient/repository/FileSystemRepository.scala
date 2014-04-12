@@ -12,7 +12,7 @@ object FileSystemRepository {
   }
 
   def initFS {
-    println(s"ensureExists($ircFolder)=>${ensureFolderExist(ircFolder)}")
+    println(s"ensureExists($ircFolder)⇒${ensureFolderExist(ircFolder)}")
   }
 
   def getReaderFromClassPath(file:String):Option[Reader] = try {
@@ -20,7 +20,7 @@ object FileSystemRepository {
     println(s"Loading $initScript")
     Some(new InputStreamReader(getClass.getClassLoader.getResourceAsStream(file)))
   } catch {
-    case t: Throwable =>
+    case t: Throwable ⇒
       println(s"error during init: $t")
       None
   }

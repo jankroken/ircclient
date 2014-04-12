@@ -9,7 +9,7 @@ class CommandHistory {
   def jumpBack:Option[String] = {
     val retValue = before.headOption
     before match {
-      case head::tail =>
+      case head::tail ⇒
         before = tail
         after = head::after
     }
@@ -17,15 +17,15 @@ class CommandHistory {
   }
   def jumpForward:Option[String] = {
     after match {
-      case head :: tail =>
+      case head :: tail ⇒
         val retval = head
         before = head :: before
         after = tail
         Some(retval)
-      case _ =>
+      case _ ⇒
         before match {
-          case head :: tail => Some(head)
-          case _ => None
+          case head :: tail ⇒ Some(head)
+          case _ ⇒ None
         }
     }
   }

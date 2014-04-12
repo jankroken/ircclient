@@ -37,6 +37,8 @@ class ChatPane(eventListener: EventListener) extends ScrollPane {
     row = row + 1
   }
 
+  def scrollToBottom = setVvalue(getVmax)
+
   def sendSimpleMessage(from:String,message:String) {
     val nick = new Label {
       setText(s"$from")
@@ -49,7 +51,7 @@ class ChatPane(eventListener: EventListener) extends ScrollPane {
     chatPanel.add(nick,0,row)
     chatPanel.add(text,1,row)
     row = row + 1
-    setVvalue(getVmin)
+    scrollToBottom
   }
 }
 

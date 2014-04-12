@@ -14,7 +14,8 @@ class MainActor(server:String) extends Actor with ActorLogging {
 
   freenode ! Init
   script ! "init"
-  script ! "reload"
+  script ! "unload"
+  script ! "init"
 
   def receive = {
     case chatPanels:ChatPanels ⇒

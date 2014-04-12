@@ -27,11 +27,8 @@ class NetworkActor(gui:ActorRef,network:String,server:String) extends Actor with
     ircServer.setNick(xeno.xenobot7)
     ircServer.logon
     Thread.sleep(2000)
-//    fealdia = ircServer.join("#fealdia")
-    //  freenode.join("#digitalgunfire")
     xenotest = ircServer.join("#xenotest")
     val scala = ircServer.join("#scala")
-//    politics = ircServer.join("##politics")
 
   }
 

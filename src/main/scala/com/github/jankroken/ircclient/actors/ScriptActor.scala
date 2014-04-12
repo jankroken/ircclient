@@ -12,29 +12,29 @@ class ScriptActor extends Actor with ActorLogging {
 
   def runInitScript(engine:ScriptEngine) = {
     FileSystemRepository.getReaderFromClassPath("init.clj") match {
-      case Some(script) =>
+      case Some(script) ⇒
         engine.load(script)
         val init = clojure.lang.RT.`var`("ircclient","initiate-callbacks")
         init.invoke(new Callback)
-      case None =>
+      case None ⇒
         println("Failed to load init script")
     }
   }
 
   def receive = {
-    case "init" =>
+    case "init" ⇒
       FileSystemRepository.initFS
       val engine = ScriptEngineFactory.getScriptEngine
       runInitScript(engine)
       context.become(initiated(engine))
-    case _ => println("Not initiated")
+    case _ ⇒ println("Not initiated")
   }
 
   def initiated(engine:ScriptEngine):Receive = {
-    case "reload" =>
+    case "unload" ⇒
       println(s"eval: ${engine.load("(+ 1 2)")}")
-      context.become(receive)
-    case _ =>
+      context.unbecome()
+    case _ ⇒
       println("Hi, Script")
   }
 
