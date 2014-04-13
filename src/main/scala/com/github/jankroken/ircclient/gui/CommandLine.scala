@@ -14,11 +14,9 @@ class CommandLine(eventListener:EventListener) extends TextField {
         val updatedText = InputModifier.replaceSymbols(getText)
         if (getText != updatedText) {
           val pos = getCaretPosition
-//          println(s"position: ${pos}")
           setText(updatedText)
           positionCaret(pos)
         }
-//        println(s"keyEvent:  $c $e ${getText}")
     }
   })
 

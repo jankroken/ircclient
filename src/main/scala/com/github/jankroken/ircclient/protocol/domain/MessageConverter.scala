@@ -7,6 +7,12 @@ class MessageConverter(onMessage: (ServerMessage) ⇒ Unit, val server: IRCServe
   private val welcomeMessage = new WelcomeMessage()
   private var motd: MessageOfTheDay = null
 
+  def isCTCPMessage(message: LowLevelServerMessage) = {
+    (message.command == "PRIVMSG" || message.command == "NOTICE") &&
+    message.arguments.length > 1 &&
+    message.arguments(1).charAt(0) == 1
+  }
+
   def onMessage(message: LowLevelServerMessage) {
     message.command match {
       case "001" ⇒ welcomeMessage.setLine(1, message.arguments(1))
@@ -48,7 +54,10 @@ class MessageConverter(onMessage: (ServerMessage) ⇒ Unit, val server: IRCServe
       case "ERROR" ⇒ onMessage(new Error(message.arguments(0)))
       case "JOIN" ⇒ onMessage(new Join(message.origin, server.getChannel(message.arguments(0))))
       case "NICK" ⇒ onMessage(new ChangeNick(message.origin, message.arguments(0)))
+      case msg if isCTCPMessage(message) => onCTCPMessage(message)
       case "NOTICE" ⇒
+//        if (message.arguments.length > 1 && message.arguments(1).charAt(0) == 1)
+//          onCTCPMessage(message)
         val targets = Target.getTargets(message.arguments(0), server)
         val isAuth = targets(0) match {
           case Nick(n) ⇒ "AUTH".equals(n)
@@ -70,10 +79,31 @@ class MessageConverter(onMessage: (ServerMessage) ⇒ Unit, val server: IRCServe
         onMessage(new Ping(message.arguments(0)))
       case "QUIT" ⇒ onMessage(new Quit(message.origin, message.arguments(0)))
       case "PRIVMSG" ⇒
+//        if (message.arguments.length > 1 && message.arguments(1).charAt(0) == 1)
+//          onCTCPMessage(message)
         val targets = Target.getTargets(message.arguments(0), server)
         onMessage(new PrivateMessage(message.origin, targets, message.arguments(1)))
       case _ ⇒ onMessage(Unidentified(message))
     }
+  }
+
+  private def onCTCPMessage(message: LowLevelServerMessage) {
+
+    def removeFirstCharacter(s:String):String = s.substring(1)
+    def removeLastCharacter(s:String):String = s.substring(0,s.length-1)
+    def fixLastTokenOfArgumentsList(tokens:List[String]):List[String] = tokens match {
+      case Nil => Nil
+      case head::Nil => removeLastCharacter(head)::Nil
+      case head::tail => head :: fixLastTokenOfArgumentsList(tail)
+    }
+    def fixTokens(tokens:List[String]):List[String] = tokens match {
+      case head::tail => fixLastTokenOfArgumentsList(removeFirstCharacter(head)::tail)
+      case Nil => Nil
+    }
+//    println(s"CTCP message=${message.arguments.mkString("√")} arg2=${message.arguments(0)} FIRSTCHAR=${message.arguments(1).charAt(0).toInt}")
+    val target = message.arguments(0)
+    val arguments = fixTokens(message.arguments.tail.toList)
+    println(s"CTCP $target => ${arguments.mkString("√")}")
   }
 
   override def toString = "IRCServer"

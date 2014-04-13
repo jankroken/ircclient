@@ -5,7 +5,6 @@ import com.github.jankroken.ircclient.gui.{AddNetworkToTreeView, ChannelPane, Ni
 import com.github.jankroken.ircclient.domain.Init
 import com.github.jankroken.ircclient.commands._
 import com.github.jankroken.ircclient.commands.TextCommand
-import com.github.jankroken.ircclient.gui.AddNetworkToTreeView
 import com.github.jankroken.ircclient.commands.Server
 
 class MainActor extends Actor with ActorLogging {
@@ -13,11 +12,9 @@ class MainActor extends Actor with ActorLogging {
   import IRCActorSystem.system.actorOf
 
   val gui = IRCActorSystem.system.actorOf(Props(new GUIActor).withDispatcher("javafx-dispatcher"),"gui")
-//  val freenode = IRCActorSystem.system.actorOf(Props(new NetworkActor(gui,"freenode","irc.freenode.net")),"freenode")
   val target = IRCActorSystem.system.actorOf(Props(new TargetActor), name = "activeTarget")
   val script = IRCActorSystem.system.actorOf(Props(new ScriptActor), name = "script")
 
-//  freenode ! Init
   script ! "init"
   script ! "unload"
   script ! "init"
@@ -39,7 +36,10 @@ class MainActor extends Actor with ActorLogging {
         target ! identifiedCommand
     case Server(net) ⇒
       println("MainActor::server: $net")
-      val networkActor = actorOf(Props(new NetworkActor(gui,net.name,net.name)),net.name)
+      val networkActor = networks.get(net.name) match {
+        case Some(serverActor) => serverActor
+        case None => actorOf(Props(new NetworkActor(gui,net.name,net.name)),net.name)
+      }
       val newNet = networks + (net.name -> networkActor)
       gui ! AddNetworkToTreeView(net)
       networkActor ! Init
