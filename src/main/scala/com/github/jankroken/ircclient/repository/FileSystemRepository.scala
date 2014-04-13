@@ -16,6 +16,7 @@ object FileSystemRepository {
   }
 
   def getReaderFromClassPath(file:String):Option[Reader] = try {
+    println(s"getReaderFromClassPath($file)")
     val initScript = Thread.currentThread.getContextClassLoader.getResource(file)
     println(s"Loading $initScript")
     Some(new InputStreamReader(getClass.getClassLoader.getResourceAsStream(file)))

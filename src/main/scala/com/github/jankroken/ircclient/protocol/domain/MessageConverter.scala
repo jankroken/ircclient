@@ -88,6 +88,11 @@ class MessageConverter(onMessage: (ServerMessage) ⇒ Unit, val server: IRCServe
   }
 
   private def onCTCPMessage(message: LowLevelServerMessage) {
+    def splitOnFirstSpace(s:String):(String,String) = {
+      val firstSpace = s.indexOf(' ')
+      if (firstSpace < 0) (s,"")
+      else (s.substring(0,firstSpace),s.substring(firstSpace+1))
+    }
 
     def removeFirstCharacter(s:String):String = s.substring(1)
     def removeLastCharacter(s:String):String = s.substring(0,s.length-1)
@@ -102,8 +107,19 @@ class MessageConverter(onMessage: (ServerMessage) ⇒ Unit, val server: IRCServe
     }
 //    println(s"CTCP message=${message.arguments.mkString("√")} arg2=${message.arguments(0)} FIRSTCHAR=${message.arguments(1).charAt(0).toInt}")
     val target = message.arguments(0)
-    val arguments = fixTokens(message.arguments.tail.toList)
-    println(s"CTCP $target => ${arguments.mkString("√")}")
+    val commandArguments = fixTokens(message.arguments.tail.toList)
+    val (command,firstArgument) = splitOnFirstSpace(commandArguments(0))
+    val arguments = firstArgument::commandArguments.tail
+    println(s"CTCP ${message.origin} => $target :: ${arguments.mkString("√")}")
+    command match {
+      case "ACTION" =>
+        val action = new CTCPAction(message.origin,Target.getTargets(target,server),arguments(0))
+        println(s"sending CTCPAction $action")
+        onMessage(action)
+      case other =>
+        println(s"$this:Unhandled: $other")
+    }
+
   }
 
   override def toString = "IRCServer"

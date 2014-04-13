@@ -18,6 +18,7 @@ class NetworkActor(gui:ActorRef,network:String,server:String) extends Actor with
   val xeno = TestUser
 
   def onMessage(serverMessage:ServerMessage) = {
+    println(s"NetworkActor:onMessage $serverMessage")
     self ! serverMessage
   }
 
@@ -25,7 +26,7 @@ class NetworkActor(gui:ActorRef,network:String,server:String) extends Actor with
     ircServer.user = xeno
     ircServer.connect(Some(onMessage(_)))
     Thread.sleep(2000)
-    ircServer.setNick(xeno.xenobot7)
+    ircServer.setNick(xeno.nick)
     ircServer.logon
     Thread.sleep(2000)
     xenotest = ircServer.join("#xenotest")
@@ -123,7 +124,27 @@ class NetworkActor(gui:ActorRef,network:String,server:String) extends Actor with
             gui ! SimpleMessage(networkTarget,"",s"target=$target:${target.getClass.getSimpleName} origin=$origin message=$message")
         }
       }
+    case CTCPAction(origin,targets,message) =>
+      targets.foreach { target =>
+        target match {
+          case Nick(nick) =>
+            gui ! AddNetworkToTreeView(networkTarget)
+            gui ! SimpleMessage(networkTarget, "->target=$target", s"[${origin}] message")
+          case channel: Channel ⇒
+            val target = ChannelTarget(network, channel.name)
+            gui ! AddChannelToTreeView(target)
+            origin match {
+              case Some(nick: NickAndUserAtHost) ⇒
+                gui ! SimpleMessage(target, "*", s"${nick.nick} $message")
+              case Some(nick: NickAtHost) ⇒
+                gui ! SimpleMessage(target, "*", s"${nick.nick} $message")
+              case _ ⇒
+                gui ! SimpleMessage(target, "*", s"[${origin}] $message")
+            }
+        }
+      }
     case serverMessage:ServerMessage ⇒
+      println(s"NetworkActor.receive:serverMessage $serverMessage")
       gui ! AddNetworkToTreeView(networkTarget)
       gui ! SimpleMessage(networkTarget,"",s"${serverMessage.getClass.getSimpleName}${serverMessage.toString})")
 //    case text:IdentifiedCommand.Text ⇒
