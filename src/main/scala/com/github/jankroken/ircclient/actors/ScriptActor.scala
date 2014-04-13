@@ -3,11 +3,14 @@ package com.github.jankroken.ircclient.actors
 import akka.actor.{ActorLogging, Actor}
 import com.github.jankroken.ircclient.scripting.{ScriptEngine, ScriptEngineFactory}
 import com.github.jankroken.ircclient.repository.FileSystemRepository
+import com.github.jankroken.ircclient.commands.JoinCommand
+import com.github.jankroken.ircclient.domain.ChannelTarget
 
 class ScriptActor extends Actor with ActorLogging {
   class Callback {
     def sayHello { println("Hello, anyone?") }
     def sayHello(s:java.lang.String) { println(s"hello, $s")}
+    def join(network:java.lang.String,channel:java.lang.String) = IRCActorSystem.main ! JoinCommand(ChannelTarget(network,channel))
   }
 
   def runInitScript(engine:ScriptEngine) = {

@@ -5,10 +5,11 @@ import com.github.jankroken.ircclient.protocol.domain._
 import com.github.jankroken.ircclient.domain._
 import com.github.jankroken.ircclient.gui.{AddNetworkToTreeView, AddChannelToTreeView}
 import com.github.jankroken.ircclient.commands.{TextCommand, JoinCommand, IdentifiedCommand}
+import java.net.UnknownHostException
 
 class NetworkActor(gui:ActorRef,network:String,server:String) extends Actor with ActorLogging {
 
-  val nickAccumulator = IRCActorSystem.system.actorOf(Props(new NickAccumulatorActor),"nickAcc")
+  val nickAccumulator = IRCActorSystem.system.actorOf(Props(new NickAccumulatorActor),s"$server:nickAcc")
   val networkTarget = NetworkTarget(network)
   var ircServer = new IRCServer(server)
   var xenotest:Channel = null
@@ -34,7 +35,16 @@ class NetworkActor(gui:ActorRef,network:String,server:String) extends Actor with
 
   def receive = {
     case Init ⇒
-      connect()
+      try {
+        gui ! InfoBlock(networkTarget,"Client","Connecting...")
+        println(s"Connecting: $network $server")
+        connect()
+        gui ! InfoBlock(networkTarget,"Client","Connected")
+      } catch {
+        case e:UnknownHostException => gui ! InfoBlock(networkTarget,"Failed to connect", e.getMessage)
+        case e => gui ! InfoBlock(networkTarget,"Failed to connect",e.toString)
+        sender ! Disconnected
+      }
     case nameList: NameList ⇒
       nickAccumulator ! nameList
     case endOfNames: EndOfNames ⇒
@@ -49,17 +59,17 @@ class NetworkActor(gui:ActorRef,network:String,server:String) extends Actor with
       gui ! AddNetworkToTreeView(networkTarget)
       gui ! InfoBlock(networkTarget, "@Welcome Message", welcome.getText)
     case topic: Topic ⇒
-      val target = ChannelTarget("freenode", topic.channel.name)
+      val target = ChannelTarget(network, topic.channel.name)
       gui ! AddChannelToTreeView(target)
       gui ! InfoBlock(target, s"Topic", topic.topic)
     case nicksForChannel: NicksForChannel ⇒
       // gui ! InfoBlock(s"nicks for ${nicksForChannel.channel.name}",nicksForChannel.nicks.toString)
-      val target = ChannelTarget("freenode", nicksForChannel.channel.name)
+      val target = ChannelTarget(network, nicksForChannel.channel.name)
       gui ! AddChannelToTreeView(target)
       gui ! NickList(target, nicksForChannel.nicks)
     //      gui ! NickList(nicksForChannel.channel.)
     case join: Join ⇒
-      val target = ChannelTarget("freenode", join.channel.name)
+      val target = ChannelTarget(network, join.channel.name)
       val joiner: String = join.origin match {
         case None ⇒ "no one"
         case Some(nickUser: NickAndUserAtHost) ⇒ nickUser.nick
@@ -98,7 +108,7 @@ class NetworkActor(gui:ActorRef,network:String,server:String) extends Actor with
             gui ! AddNetworkToTreeView(networkTarget)
             gui ! SimpleMessage(networkTarget,"",s"target=$target origin=$origin message=$message")
           case channel:Channel ⇒
-            val target = ChannelTarget("freenode",channel.name)
+            val target = ChannelTarget(network,channel.name)
             gui ! AddChannelToTreeView(target)
             origin match {
               case Some(nick:NickAndUserAtHost) ⇒

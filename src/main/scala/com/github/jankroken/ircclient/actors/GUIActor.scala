@@ -8,7 +8,7 @@ import com.github.jankroken.ircclient.domain.NickList
 import com.github.jankroken.ircclient.gui.AddChannelToTreeView
 import scala.Some
 
-class GUIActor(server:String) extends Actor with ActorLogging {
+class GUIActor extends Actor with ActorLogging {
 
   var chatPanels:Option[ChatPanels] = None
   var nickPanels:Option[NickPanes] = None
@@ -22,7 +22,6 @@ class GUIActor(server:String) extends Actor with ActorLogging {
     case channelPane:ChannelPane ⇒
       this.channelPane = Some(channelPane)
     case info:InfoBlock ⇒
-//      println(s"thread=${Thread.currentThread()}")
       chatPanels match {
         case None ⇒
           println(s"onMessage: $info")

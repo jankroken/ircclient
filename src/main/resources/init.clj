@@ -1,9 +1,5 @@
 (ns ircclient)
 (defn initiate-callbacks [callbackObject]
-  (println callbackObject)
-  (.sayHello callbackObject)
-  (.sayHello callbackObject "world")
-  )
-
-; (initiate-callbacks "hello from resource")
-; (println "hello from resources")
+  (defn join [network channel] (.join callbackObject network channel))
+  (.sayHello callbackObject "World of Clojure")
+  (join "irc.freenode.org" "##programming"))
