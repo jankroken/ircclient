@@ -16,8 +16,8 @@ class MainActor extends Actor with ActorLogging {
   val script = IRCActorSystem.system.actorOf(Props(new ScriptActor), name = "script")
 
   script ! "init"
-  script ! "unload"
-  script ! "init"
+//  script ! "unload"
+//  script ! "init"
 
   def receive = {
     case msg =>
