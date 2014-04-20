@@ -147,10 +147,6 @@ class NetworkActor(gui:ActorRef,network:String,server:String) extends Actor with
       println(s"NetworkActor.receive:serverMessage $serverMessage")
       gui ! AddNetworkToTreeView(networkTarget)
       gui ! SimpleMessage(networkTarget,"",s"${serverMessage.getClass.getSimpleName}${serverMessage.toString})")
-//    case text:IdentifiedCommand.Text ⇒
-//      gui ! AddChannelToTreeView(ChannelTarget(network,fealdia.name))
-//      ircServer.message(fealdia,text.param)
-//      gui ! SimpleMessage(ChannelTarget(network,fealdia.name),xeno.nick,text.param)
     case Text(channelTarget,message) ⇒
       gui ! AddChannelToTreeView(channelTarget)
       ircServer.message(Channel(channelTarget.channel,ircServer),message)
@@ -162,6 +158,7 @@ class NetworkActor(gui:ActorRef,network:String,server:String) extends Actor with
       target match {
         case ChannelTarget(network, channelName) =>
           gui ! AddChannelToTreeView(target)
+          gui ! SimpleMessage(target,"·",s"${xeno.nick} $message")
           ircServer.ctcpAction(channelName,message)
       }
     case other ⇒

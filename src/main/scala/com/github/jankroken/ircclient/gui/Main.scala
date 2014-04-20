@@ -3,10 +3,11 @@ package com.github.jankroken.ircclient.gui
 import com.github.jankroken.ircclient.domain.{NetworkTarget, ChannelTarget, ChatTarget, EventListener}
 import javafx.application.Application
 import javafx.scene.control.SplitPane
-import javafx.stage.Stage
+import javafx.stage.{WindowEvent, Stage}
 import javafx.scene.Scene
 import javafx.scene.layout.BorderPane
 import com.github.jankroken.ircclient.actors.IRCActorSystem
+import javafx.event.EventHandler
 
 class Main extends Application {
 
@@ -34,6 +35,14 @@ class Main extends Application {
     primaryStage.setTitle("Glazed")
     primaryStage.setScene(new Scene(borderPane,1020,700))
     primaryStage.getScene.getStylesheets.add("ircclient.css");
+    primaryStage.setOnCloseRequest(new EventHandler[WindowEvent] {
+      @Override
+      def handle(event: WindowEvent) {
+        stop()
+        println("exiting")
+        System.exit(0)
+      }
+    })
 
 
     borderPane.setCenter(center)
