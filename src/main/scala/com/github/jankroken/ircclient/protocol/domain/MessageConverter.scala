@@ -105,7 +105,7 @@ class MessageConverter(onMessage: (ServerMessage) ⇒ Unit, val server: IRCServe
       case head::tail => fixLastTokenOfArgumentsList(removeFirstCharacter(head)::tail)
       case Nil => Nil
     }
-//    println(s"CTCP message=${message.arguments.mkString("√")} arg2=${message.arguments(0)} FIRSTCHAR=${message.arguments(1).charAt(0).toInt}")
+    println(s"CTCP message=${message.arguments.mkString("√")} arg2=${message.arguments(0)} FIRSTCHAR=${message.arguments(1).charAt(0).toInt}")
     val target = message.arguments(0)
     val commandArguments = fixTokens(message.arguments.tail.toList)
     val (command,firstArgument) = splitOnFirstSpace(commandArguments(0))

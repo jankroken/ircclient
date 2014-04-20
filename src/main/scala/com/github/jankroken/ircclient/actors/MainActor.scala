@@ -4,7 +4,7 @@ import akka.actor.{ActorRef, Props, Actor, ActorLogging}
 import com.github.jankroken.ircclient.gui.{AddNetworkToTreeView, ChannelPane, NickPanes, ChatPanels}
 import com.github.jankroken.ircclient.domain.Init
 import com.github.jankroken.ircclient.commands._
-import com.github.jankroken.ircclient.commands.TextCommand
+import com.github.jankroken.ircclient.commands.Text
 import com.github.jankroken.ircclient.commands.Server
 
 class MainActor extends Actor with ActorLogging {
@@ -16,8 +16,8 @@ class MainActor extends Actor with ActorLogging {
   val script = IRCActorSystem.system.actorOf(Props(new ScriptActor), name = "script")
 
   script ! "init"
-//  script ! "unload"
-//  script ! "init"
+  script ! "unload"
+  script ! "init"
 
   def receive = {
     case msg =>
@@ -38,14 +38,16 @@ class MainActor extends Actor with ActorLogging {
       println("MainActor::server: $net")
       val networkActor = networks.get(net.name) match {
         case Some(serverActor) => serverActor
-        case None => actorOf(Props(new NetworkActor(gui,net.name,net.name)),net.name)
+        case None =>
+          val network = actorOf(Props(new NetworkActor(gui,net.name,net.name)),net.name)
+          network ! Init
+          network
       }
       val newNet = networks + (net.name -> networkActor)
       gui ! AddNetworkToTreeView(net)
-      networkActor ! Init
       println(newNet)
       context.become(receiveCommands(newNet))
-    case command:TextCommand ⇒
+    case command:Text ⇒
       println(s"MainActor:command: $command ${command.getClass}")
       networks(command.target.network) ! command
     case command:JoinCommand ⇒

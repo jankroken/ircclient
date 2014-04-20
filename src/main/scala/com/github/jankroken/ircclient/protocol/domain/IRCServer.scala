@@ -75,6 +75,11 @@ class IRCServer(val name: String, val port: Int) {
 		messageService.sendMessage(ClientMessage.join(channel))
 		channel
 	}
+  def ctcpAction(channelName: String, message:String) = {
+    val channel = getChannel(channelName)
+    messageService.sendMessage(ClientMessage.ctcpAction(channelName,message))
+    channel
+  }
 
 	def getChannel(name: String):Channel =
 		channels.get(name) match {

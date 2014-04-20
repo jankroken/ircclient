@@ -1,4 +1,4 @@
-name := "scala-irc-client"
+name := "Glazed"
 
 version := "1.0-SNAPSHOT"
 
@@ -13,7 +13,8 @@ libraryDependencies ++= Seq(
   "org.scalatest" %% "scalatest" % "2.1.0" % "test",
   "com.typesafe.akka" %% "akka-actor" % "2.3.1",
   "junit" % "junit" % "4.11" % "test",
-  "org.parboiled" %% "parboiled-scala" % "1.1.6"
+  "org.parboiled" %% "parboiled-scala" % "1.1.6",
+  "org.clojure" % "clojure" % "1.6.0"
 )
 
 resolvers ++= Seq(
@@ -23,7 +24,8 @@ resolvers ++= Seq(
 
 // Sources should also be copied to output, so the sample code, for the viewer,
 // can be loaded from the same file that is used to execute the example
-unmanagedResourceDirectories in Compile <+= baseDirectory { _/"src/main/scala"}
+// jkr:
+// unmanagedResourceDirectories in Compile <+= baseDirectory { _/"src/main/scala"}
 
 // Set the prompt (for this build) to include the project id.
 shellPrompt := { state ⇒ System.getProperty("user.name") + ":" + Project.extract(state).currentRef.project + "> " }
@@ -37,4 +39,3 @@ fork := true
 fork in Test := true
 
 scalacOptions += "-feature"
-

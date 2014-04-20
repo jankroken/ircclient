@@ -33,6 +33,10 @@ object ClientMessage {
     new ClientMessage(s"QUIT :$message")
   }
 
+  def ctcpAction(channel: String, message:String) = {
+    new ClientMessage(s"PRIVMSG $channel :\u0001ACTION ${message}\u0001")
+  }
+
   def pong(server: String): ClientMessage = {
     new ClientMessage(s"PONG $server")
   }

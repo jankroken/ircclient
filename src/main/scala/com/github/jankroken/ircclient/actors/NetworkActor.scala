@@ -4,7 +4,7 @@ import akka.actor.{ActorRef, Props, Actor, ActorLogging}
 import com.github.jankroken.ircclient.protocol.domain._
 import com.github.jankroken.ircclient.domain._
 import com.github.jankroken.ircclient.gui.{AddNetworkToTreeView, AddChannelToTreeView}
-import com.github.jankroken.ircclient.commands.{TextCommand, JoinCommand, IdentifiedCommand}
+import com.github.jankroken.ircclient.commands.{CTCPActionCommand, Text, JoinCommand, IdentifiedCommand}
 import java.net.UnknownHostException
 
 class NetworkActor(gui:ActorRef,network:String,server:String) extends Actor with ActorLogging {
@@ -151,13 +151,19 @@ class NetworkActor(gui:ActorRef,network:String,server:String) extends Actor with
 //      gui ! AddChannelToTreeView(ChannelTarget(network,fealdia.name))
 //      ircServer.message(fealdia,text.param)
 //      gui ! SimpleMessage(ChannelTarget(network,fealdia.name),xeno.nick,text.param)
-    case TextCommand(channelTarget,message) ⇒
+    case Text(channelTarget,message) ⇒
       gui ! AddChannelToTreeView(channelTarget)
       ircServer.message(Channel(channelTarget.channel,ircServer),message)
       gui ! SimpleMessage(channelTarget,xeno.nick,message)
     case JoinCommand(channelTarget) ⇒
       gui ! AddChannelToTreeView(channelTarget)
       ircServer.join(channelTarget.channel)
+    case CTCPActionCommand(target,message) =>
+      target match {
+        case ChannelTarget(network, channelName) =>
+          gui ! AddChannelToTreeView(target)
+          ircServer.ctcpAction(channelName,message)
+      }
     case other ⇒
       println(s"NetworkActor: $other")
   }

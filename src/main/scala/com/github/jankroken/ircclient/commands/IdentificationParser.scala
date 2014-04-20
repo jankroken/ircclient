@@ -7,9 +7,10 @@ import scala.Some
 
 class IdentificationParser extends Parser {
 
-  def command: Rule1[ASTNode] = rule { join | server | text | help }
+  def command: Rule1[ASTNode] = rule { join | server | text | ctcpAction | help }
   def server: Rule1[ASTNode] = "/server" ~ whiteSpaceSeparator ~ serverName ~> ServerCommand
   def join: Rule1[ASTNode] = "/join" ~ whiteSpaceSeparator ~ channel ~> IdentificationParser.JoinCommand
+  def ctcpAction : Rule1[ASTNode] = "/me" ~ whiteSpaceSeparator  ~ zeroOrMore(ANY) ~> IdentificationParser.CTCPActionCommand
   def text: Rule1[ASTNode] = !("/") ~ zeroOrMore(ANY) ~> IdentificationParser.TextCommand
   def help :Rule1[ASTNode] = { topicHelp | globalHelp }
   def topicHelp = "/help" ~ whiteSpaceSeparator ~ topic ~> ((s:String) ⇒ IdentificationParser.HelpCommand(Some(s)))
@@ -42,5 +43,6 @@ object IdentificationParser {
   case class JoinCommand(channel:String) extends Command
   case class TextCommand(server:String) extends Command
   case class HelpCommand(topic:Option[String]) extends Command
+  case class CTCPActionCommand(string:String) extends Command
 
 }
