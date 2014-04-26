@@ -1,4 +1,4 @@
-name := "Glazed"
+name := "ircclient"
 
 version := "1.0-SNAPSHOT"
 
@@ -14,7 +14,8 @@ libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-actor" % "2.3.2",
   "junit" % "junit" % "4.11" % "test",
   "org.parboiled" %% "parboiled-scala" % "1.1.6",
-  "org.clojure" % "clojure" % "1.6.0"
+  "org.clojure" % "clojure" % "1.6.0",
+  "org.scala-lang.modules" %% "scala-xml" % "1.0.1"
 )
 
 resolvers ++= Seq(
