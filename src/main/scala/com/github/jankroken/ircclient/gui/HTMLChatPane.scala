@@ -85,10 +85,13 @@ class HTMLChatPane(eventListener: EventListener) extends ScrollPane {
           <td class="timestamp">TIME</td>
         </tr>
       val youtubeLink =
-        <tr><td colspan="3">
-          <iframe width="560" height="315" src="//www.youtube.com/embed/CevxZvSJLk8" frameborder="0" allowfullscreen="true">
+        <tr>
+          <td colspan="3">
+          <iframe width="560" height="315" src="https://www.youtube.com/embed/cShlNVmW7SA" frameborder="0" allowfullscreen="true">
+            youtube video here
           </iframe>
-        </td></tr>
+          </td>
+        </tr>
     if (document != null) {
       document.getElementById("content").appendChild(convertHTMLTree(document,nickMessageTime))
       if (message == "!!youtube")
