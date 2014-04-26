@@ -43,7 +43,7 @@ class NetworkActor(gui:ActorRef,network:String,server:String) extends Actor with
         gui ! InfoBlock(networkTarget,"Client","Connected")
       } catch {
         case e:UnknownHostException => gui ! InfoBlock(networkTarget,"Failed to connect", e.getMessage)
-        case e => gui ! InfoBlock(networkTarget,"Failed to connect",e.toString)
+        case e:Throwable => gui ! InfoBlock(networkTarget,"Failed to connect",e.toString)
         sender ! Disconnected
       }
     case nameList: NameList ⇒

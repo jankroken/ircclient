@@ -1,7 +1,7 @@
 package com.github.jankroken.ircclient.gui
 
 import com.github.jankroken.ircclient.domain.EventListener
-import javafx.scene.control.{Label, ScrollPane}
+import javafx.scene.control.{TextArea, TextField, Label, ScrollPane}
 import javafx.scene.layout.{VBox, GridPane}
 
 class ChatPane(eventListener: EventListener) extends ScrollPane {
@@ -39,6 +39,19 @@ class ChatPane(eventListener: EventListener) extends ScrollPane {
 
   def scrollToBottom = setVvalue(getVmax)
 
+  class Text(text:String) extends TextArea {
+    setText(text)
+    setEditable(false)
+    getStyleClass().add("copyable-label")
+  }
+
+  class TextL(text:String) extends Label {
+    setText(text)
+    getStyleClass().add("copyable-label")
+    setWrapText(true)
+  }
+
+
   def sendSimpleMessage(from:String,message:String) {
     val nick = new Label {
       setText(s"$from")
@@ -47,7 +60,13 @@ class ChatPane(eventListener: EventListener) extends ScrollPane {
       setPrefWidth(100)
     }
     val text = new VBox
-    message.split("\n").map(t ⇒ new Label { setText(t); setWrapText(true) }).foreach(text.getChildren.add)
+    message.split("\n").map(new TextL(_)
+//      new TextArea {
+//        setText(t)
+//        setEditable(false)
+//        getStyleClass().add("copyable-label")
+//      }
+    ).foreach(text.getChildren.add)
     chatPanel.add(nick,0,row)
     chatPanel.add(text,1,row)
     row = row + 1

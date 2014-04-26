@@ -21,19 +21,19 @@ object Target {
 		val ChannelMatch = "^([#&+!][^@.]*)$".r
 		val UserHostServerMatch = "^(..*)%(..*)@(.*$)".r
 		val UserNickHostMatch = "^..*!..*@.*$".r
-        val UserHost = "^.[^%!]*@.*$".r
-        val TargetMask = "[#$].*\\..*$".r
-        val Nickname = "^(.*$)".r
+    val UserHost = "^.[^%!]*@.*$".r
+    val TargetMask = "[#$].*\\..*$".r
+    val Nickname = "^(.*$)".r
 
-        targetString match {
-          case ChannelMatch(channelString) ⇒ println("match:ChannelMatch: "+targetString)
-          case UserHostServerMatch(user,host,nick) ⇒ println("match:UserHostServerMatch: "+targetString)
-          case UserNickHostMatch ⇒ println("match:UserNickHostMatch: "+targetString)
-          case UserHost ⇒ println("match:UserHost: "+targetString)
-          case TargetMask ⇒ println("match:TargetMatch: "+targetString)
-          case Nickname(nickname) ⇒ return new Nick(targetString)
-          case _ ⇒ println("match: no match: "+targetString)
-        }
+    targetString match {
+      case ChannelMatch(channelString) ⇒ println("match:ChannelMatch: "+targetString)
+      case UserHostServerMatch(user,host,nick) ⇒ println("match:UserHostServerMatch: "+targetString)
+      case UserNickHostMatch(userNickHost) ⇒ println("match:UserNickHostMatch: "+targetString)
+      case UserHost(userHost) ⇒ println("match:UserHost: "+targetString)
+      case TargetMask(mask) ⇒ println("match:TargetMatch: "+targetString)
+      case Nickname(nickname) ⇒ return new Nick(targetString)
+      case _ ⇒ println("match: no match: "+targetString)
+    }
           
           
           /*

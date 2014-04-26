@@ -116,6 +116,14 @@ class MessageConverter(onMessage: (ServerMessage) ⇒ Unit, val server: IRCServe
         val action = new CTCPAction(message.origin,Target.getTargets(target,server),arguments(0))
         println(s"sending CTCPAction $action")
         onMessage(action)
+      case "VERSION" if message.origin != None =>
+        if (message.command == "PRIVMSG") {
+          val origin = message.origin.get
+          val query = new CTCPVersionQuery(origin)
+          onMessage(query)
+        } else {
+          println(s"A CTCP version response....${message.origin} $message")
+        }
       case other =>
         println(s"$this:Unhandled: $other")
     }

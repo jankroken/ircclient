@@ -4,14 +4,14 @@ version := "1.0-SNAPSHOT"
 
 organization := "com.github.jankroken"
 
-scalaVersion := "2.10.4"
+scalaVersion := "2.11.0"
 
 // assemblySettings
 
 libraryDependencies ++= Seq(
 //   "org.scalafx" %% "scalafx" % "1.0.0-M7",
-  "org.scalatest" %% "scalatest" % "2.1.0" % "test",
-  "com.typesafe.akka" %% "akka-actor" % "2.3.1",
+  "org.scalatest" %% "scalatest" % "2.1.4" % "test",
+  "com.typesafe.akka" %% "akka-actor" % "2.3.2",
   "junit" % "junit" % "4.11" % "test",
   "org.parboiled" %% "parboiled-scala" % "1.1.6",
   "org.clojure" % "clojure" % "1.6.0"
