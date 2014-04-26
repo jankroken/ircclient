@@ -8,6 +8,7 @@ import javafx.beans.value.{ObservableValue, ChangeListener}
 import org.w3c.dom.{Element, Node, Document}
 import scala.collection.immutable.Queue
 import com.github.jankroken.ircclient.gui.support.{ElemExtras, NodeExtras}
+import scala.xml.Elem
 
 class HTMLChatPane(eventListener: EventListener) extends ScrollPane {
 
@@ -47,15 +48,14 @@ class HTMLChatPane(eventListener: EventListener) extends ScrollPane {
     println(s"Document: $document")
     if (document != null) {
       try {
-        val h1 = document.createElement("tr")
-        val td = document.createElement("td")
-        td.setAttribute("colspan","3")
-        h1.appendChild(td)
-        val label = document.createElement("div")
-        val text = document.createElement("div")
-        td.appendChild(label)
-        td.appendChild(text)
-        document.getElementById("content").appendChild(h1)
+        val infoBox =
+          <tr>
+            <td colspan="3">
+              <div class="textInfoLabel">{title}</div>
+              <div class="textInfoText">{message}</div>
+            </td>
+          </tr>
+        document.getElementById("content").appendChild(convertHTMLTree(document,infoBox))
       } catch {
         case t:Throwable => println(t)
       }
@@ -69,31 +69,20 @@ class HTMLChatPane(eventListener: EventListener) extends ScrollPane {
   def sendSimpleMessage(from:String,message:String) {
     val document = engine.getDocument
     if (document != null) {
-      if (message == "!!printsource") {
-        println(document)
-      }
-      val h1 = document.createElement("tr")
-      val nickTD = document.createElement("td")
-      nickTD.setTextContent(from)
-      val messageTD = document.createElement("td")
-      if (message == "!!html") {
-        messageTD.appendChild(convertHTMLTree(document))
-      } else {
-        messageTD.setTextContent(message)
-      }
-      val timeTD = document.createElement("td")
-      timeTD.setTextContent("HHMMSS")
-      h1.appendChild(nickTD)
-      h1.appendChild(messageTD)
-      h1.appendChild(timeTD)
-      document.getElementById("content").appendChild(h1)
+      val nickMessageTime =
+        <tr>
+          <td class="regularNick">{from}</td>
+          <td class="regularMessage">{message}</td>
+          <td class="timestamp">TIME</td>
+        </tr>
+      document.getElementById("content").appendChild(convertHTMLTree(document,nickMessageTime))
     } else {
       println("DOM is null")
     }
     scrollToBottom
   }
-  def convertHTMLTree(doc:Document) = {
-    val xml = <h1>test</h1>
+  def convertHTMLTree(doc:Document,xml:Elem) = {
+//    val xml =
     new ElemExtras(xml).toJdkNode(doc)
   }
 }
