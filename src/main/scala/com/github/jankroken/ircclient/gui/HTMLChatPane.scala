@@ -12,7 +12,7 @@ import scala.xml.Elem
 
 class HTMLChatPane(eventListener: EventListener) extends ScrollPane {
 
-  var bufferedLines:Queue[Node] = Queue()
+  var bufferedLines:Queue[Elem] = Queue()
 
   val webView = new WebView
   val engine = webView.getEngine
@@ -20,6 +20,16 @@ class HTMLChatPane(eventListener: EventListener) extends ScrollPane {
     new ChangeListener[Document] {
       override def changed(x:ObservableValue[_ <: Document],oldDoc:Document,newDoc:Document) {
         println(s"documentProperty:listener: $x $oldDoc $newDoc")
+        if (newDoc != null) {
+          val table = newDoc.getElementById("content")
+          if (table != null) {
+            bufferedLines.foreach {
+              line =>
+                table.appendChild(convertHTMLTree(newDoc, line))
+            }
+            bufferedLines = Queue()
+          }
+        }
       }
     })
   engine.loadContent("<body id='body'><table id='content'></table></body>")
@@ -46,21 +56,21 @@ class HTMLChatPane(eventListener: EventListener) extends ScrollPane {
 
     val document = engine.getDocument
     println(s"Document: $document")
-    if (document != null) {
-      try {
-        val infoBox =
-          <tr>
-            <td colspan="3">
-              <div class="textInfoLabel">{title}</div>
-              <div class="textInfoText">{message}</div>
-            </td>
-          </tr>
-        document.getElementById("content").appendChild(convertHTMLTree(document,infoBox))
-      } catch {
-        case t:Throwable => println(t)
+    try {
+      val infoBox =
+        <tr>
+          <td colspan="3">
+            <div class="textInfoLabel">{title}</div>
+            <div class="textInfoText">{message}</div>
+          </td>
+        </tr>
+      if (document != null) {
+        document.getElementById("content").appendChild(convertHTMLTree(document, infoBox))
+      } else {
+        bufferedLines = bufferedLines.+:(infoBox)
       }
-    } else {
-      println("DOM is null")
+    } catch {
+      case t:Throwable => println(t)
     }
   }
 
@@ -68,16 +78,26 @@ class HTMLChatPane(eventListener: EventListener) extends ScrollPane {
 
   def sendSimpleMessage(from:String,message:String) {
     val document = engine.getDocument
-    if (document != null) {
       val nickMessageTime =
         <tr>
           <td class="regularNick">{from}</td>
           <td class="regularMessage">{message}</td>
           <td class="timestamp">TIME</td>
         </tr>
+      val youtubeLink =
+        <tr><td colspan="3">
+          <iframe width="560" height="315" src="//www.youtube.com/embed/CevxZvSJLk8" frameborder="0" allowfullscreen="true">
+          </iframe>
+        </td></tr>
+    if (document != null) {
       document.getElementById("content").appendChild(convertHTMLTree(document,nickMessageTime))
+      if (message == "!!youtube")
+        document.getElementById("content").appendChild(convertHTMLTree(document,youtubeLink))
     } else {
-      println("DOM is null")
+      bufferedLines = bufferedLines.+:(nickMessageTime)
+      if (message == "!!youtube")
+        bufferedLines = bufferedLines.+:(youtubeLink)
+
     }
     scrollToBottom
   }

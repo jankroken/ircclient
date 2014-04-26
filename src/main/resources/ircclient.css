@@ -26,3 +26,29 @@
     -fx-background-insets: 0px ;
     -fx-border-width: 0px;
 }
+
+.textInfoLabel {
+    -fx-font: 10px Times-Roman;
+    -fx-text-fill: darkblue;
+}
+
+.textInfoText {
+    -fx-background-color: #dddddd;
+    -fx-border-radius: 10 10 10 10;
+    -fx-background-radius: 10 10 10 10;
+    -fx-padding: 5px;
+}
+
+.regularNick {
+    -fx-background-color: #dddddd;
+    -xfx-border-radius: 10 10 10 10;
+    -xfx-background-radius: 10 10 10 10;
+    -xfx-padding: 5px;
+}
+.regularMessage {
+
+}
+.timestamp {
+
+}
+                                                                                                  </tr>
