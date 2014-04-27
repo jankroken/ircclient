@@ -76,6 +76,22 @@ class HTMLChatPane(eventListener: EventListener) extends ScrollPane {
 
   def scrollToBottom = setVvalue(getVmax)
 
+  def makeYoutubeLink(url:String) = {
+    <tr>
+      <td colspan="3">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/cShlNVmW7SA" frameborder="0" allowfullscreen="true">
+          youtube video here
+        </iframe>
+      </td>
+    </tr>
+  }
+
+  def extractYoutubeLinks(message:String) = {
+    val YoutubeLink = """https?://www.youtube.com/[a-z]*(?:/|\?v=)([\w-]*)""".r
+    // (for (link <- YoutubeLink.findAllIn(message)) yield link).toList
+    YoutubeLink.findAllIn(message).flatMap(text => YoutubeLink.unapplySeq(text).get).toList
+  }
+
   def sendSimpleMessage(from:String,message:String) {
     val document = engine.getDocument
       val nickMessageTime =
@@ -84,22 +100,26 @@ class HTMLChatPane(eventListener: EventListener) extends ScrollPane {
           <td class="regularMessage">{message}</td>
           <td class="timestamp">TIME</td>
         </tr>
-      val youtubeLink =
-        <tr>
-          <td colspan="3">
-          <iframe width="560" height="315" src="https://www.youtube.com/embed/cShlNVmW7SA" frameborder="0" allowfullscreen="true">
-            youtube video here
-          </iframe>
-          </td>
-        </tr>
+      val youtubeLinks = extractYoutubeLinks(message).map(videoId =>
+          <tr>
+            <td colspan="3">
+            <iframe width="560" height="315" src={s"https://www.youtube.com/embed/$videoId"} frameborder="0" allowfullscreen="true">
+              youtube video here
+            </iframe>
+            </td>
+          </tr>)
     if (document != null) {
       document.getElementById("content").appendChild(convertHTMLTree(document,nickMessageTime))
-      if (message == "!!youtube")
-        document.getElementById("content").appendChild(convertHTMLTree(document,youtubeLink))
+      println(youtubeLinks)
+      youtubeLinks.foreach {
+        link =>
+          document.getElementById("content").appendChild(convertHTMLTree(document, link))
+      }
     } else {
       bufferedLines = bufferedLines.+:(nickMessageTime)
-      if (message == "!!youtube")
-        bufferedLines = bufferedLines.+:(youtubeLink)
+      youtubeLinks.foreach { link =>
+        bufferedLines = bufferedLines.+:(link)
+      }
 
     }
     scrollToBottom
