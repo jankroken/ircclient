@@ -1,6 +1,6 @@
 package com.github.jankroken.ircclient.gui
 
-import com.github.jankroken.ircclient.domain.EventListener
+import com.github.jankroken.ircclient.domain.{ExternalBrowser, EventListener}
 import javafx.scene.control.{Label, ScrollPane}
 import javafx.scene.layout.{VBox}
 import javafx.scene.web.{WebEvent, WebView}
@@ -11,6 +11,7 @@ import com.github.jankroken.ircclient.gui.support.{ElemExtras}
 import scala.xml.Elem
 import scala.io.Source
 import javafx.event.EventHandler
+import netscape.javascript.JSObject
 
 class HTMLChatPane(eventListener: EventListener) extends ScrollPane {
 
@@ -49,7 +50,7 @@ class HTMLChatPane(eventListener: EventListener) extends ScrollPane {
       </head>
       <body id="body">
       <table id="content">
-      <tr><td colspan="3"><a onclick="window.alert('test1');" href="">test</a></td></tr>
+      <tr><td colspan="3"><a onclick="window.externalBrowser.open('http://www.vg.no');" href="">test</a></td></tr>
       <tr><td colspan="3"><a onclick="application.getHostServices().showDocument('http://www.vg.no');" href="">test</a></td></tr>
       </table>
       </body>
@@ -60,6 +61,9 @@ class HTMLChatPane(eventListener: EventListener) extends ScrollPane {
 
   engine.documentProperty.addListener(new ChangeListener[Document] {
     override def changed(p1: ObservableValue[_ <: Document], p2: Document, p3: Document) {
+      val window = engine.executeScript("window").asInstanceOf[JSObject]
+      window.setMember("externalBrowser",ExternalBrowser)
+
       engine.executeScript("if (!document.getElementById('FirebugLite')){E = document['createElement' + 'NS'] && document.documentElement.namespaceURI;E = E ? document['createElement' + 'NS'](E, 'script') : document['createElement']('script');E['setAttribute']('id', 'FirebugLite');E['setAttribute']('src', 'https://getfirebug.com/' + 'firebug-lite.js' + '#startOpened');E['setAttribute']('FirebugLite', '4');(document['getElementsByTagName']('head')[0] || document['getElementsByTagName']('body')[0]).appendChild(E);E = new Image;E['setAttribute']('src', 'https://getfirebug.com/' + '#startOpened');}")
     }
   })

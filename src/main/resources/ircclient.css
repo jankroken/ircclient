@@ -40,14 +40,17 @@
 }
 
 .regularNick {
-    -fx-background-color: #dddddd;
-/*    -fx-border-radius: 10 10 10 10;
-    -fx-background-radius: 10 10 10 10;
-    -xfx-padding: 5px; */
+    color: #00008B;
+    font-size: 13px;
+    font-weight: bold;
+    vertical-align: top;
 }
 .regularMessage {
 
 }
 .timestamp {
-
+    font-family: verdana;
+    font-size: 10px;
+    color: lightgrey;
+    vertical-align: top;
 }

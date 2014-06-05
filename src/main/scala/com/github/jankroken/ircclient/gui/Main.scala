@@ -1,6 +1,6 @@
 package com.github.jankroken.ircclient.gui
 
-import com.github.jankroken.ircclient.domain.{NetworkTarget, ChannelTarget, ChatTarget, EventListener}
+import com.github.jankroken.ircclient.domain._
 import javafx.application.Application
 import javafx.scene.control.SplitPane
 import javafx.stage.{WindowEvent, Stage}
@@ -8,6 +8,8 @@ import javafx.scene.Scene
 import javafx.scene.layout.BorderPane
 import com.github.jankroken.ircclient.actors.IRCActorSystem
 import javafx.event.EventHandler
+import com.github.jankroken.ircclient.domain.ChannelTarget
+import com.github.jankroken.ircclient.domain.NetworkTarget
 
 class Main extends Application {
 
@@ -22,6 +24,8 @@ class Main extends Application {
   var sidePanel:SidePanel = null
   var testChatPane:ChannelPane = null
 
+
+  def openURL(url:String) = getHostServices.showDocument(url)
 
   def start(primaryStage:Stage) {
 
@@ -74,6 +78,7 @@ class Main extends Application {
     IRCActorSystem.main ! chatPanels
     IRCActorSystem.main ! nickPanes
     IRCActorSystem.main ! channelPane
+    ExternalBrowser.setOpenMethod(openURL)
   }
 
 }
