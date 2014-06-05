@@ -3,13 +3,14 @@ package com.github.jankroken.ircclient.gui
 import com.github.jankroken.ircclient.domain.EventListener
 import javafx.scene.control.{Label, ScrollPane}
 import javafx.scene.layout.{VBox}
-import javafx.scene.web.WebView
+import javafx.scene.web.{WebEvent, WebView}
 import javafx.beans.value.{ObservableValue, ChangeListener}
 import org.w3c.dom.{Document}
 import scala.collection.immutable.Queue
 import com.github.jankroken.ircclient.gui.support.{ElemExtras}
 import scala.xml.Elem
 import scala.io.Source
+import javafx.event.EventHandler
 
 class HTMLChatPane(eventListener: EventListener) extends ScrollPane {
 
@@ -55,6 +56,14 @@ class HTMLChatPane(eventListener: EventListener) extends ScrollPane {
       </html>"""
 
   engine.loadContent(initialHTMLContent)
+  engine.setOnAlert(new EventHandler[WebEvent[String]] { def handle(e: WebEvent[String]) { println(s"Alert: $e") }})
+
+  engine.documentProperty.addListener(new ChangeListener[Document] {
+    override def changed(p1: ObservableValue[_ <: Document], p2: Document, p3: Document) {
+      engine.executeScript("if (!document.getElementById('FirebugLite')){E = document['createElement' + 'NS'] && document.documentElement.namespaceURI;E = E ? document['createElement' + 'NS'](E, 'script') : document['createElement']('script');E['setAttribute']('id', 'FirebugLite');E['setAttribute']('src', 'https://getfirebug.com/' + 'firebug-lite.js' + '#startOpened');E['setAttribute']('FirebugLite', '4');(document['getElementsByTagName']('head')[0] || document['getElementsByTagName']('body')[0]).appendChild(E);E = new Image;E['setAttribute']('src', 'https://getfirebug.com/' + '#startOpened');}")
+    }
+  })
+
 
   println(initialHTMLContent)
 //  println(    s"""<html>
