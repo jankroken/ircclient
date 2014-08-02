@@ -3,16 +3,25 @@
     -fx-border-radius: 10 10 10 10;
     -fx-background-radius: 10 10 10 10;
     -fx-padding: 5px;
+    background-color: #dddddd;
+    padding: 5px;
+    background-radius: 10;
+    border-radius: 10;
 }
 
 .infomessageHeader {
     -fx-font: 10px Times-Roman;
     -fx-text-fill: darkblue;
+    font-size: 10px;
+    font-family: Times-Roman;
+    color: darkblue;
 }
 
 .infomessageLine {
     -fx-font-size: 12px;
     -fx-text-fill: #444444;
+    font-size: 12px;
+    color: #444444;
     /*-fx-background-color: #CCCCCC;*/t
     /*-fx-border-color: #FF0000;*/
     /*-fx-border-width: 1px;*/

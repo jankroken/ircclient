@@ -12,6 +12,7 @@ import scala.xml.Elem
 import scala.io.Source
 import javafx.event.EventHandler
 import netscape.javascript.JSObject
+import java.text.{SimpleDateFormat, DateFormat}
 
 class HTMLChatPane(eventListener: EventListener) extends ScrollPane {
 
@@ -49,9 +50,11 @@ class HTMLChatPane(eventListener: EventListener) extends ScrollPane {
         </style>
       </head>
       <body id="body">
-      <table id="content">
-      <tr><td colspan="3"><a onclick="window.externalBrowser.open('http://www.vg.no');" href="">test</a></td></tr>
-      <tr><td colspan="3"><a onclick="application.getHostServices().showDocument('http://www.vg.no');" href="">test</a></td></tr>
+      <table>
+        <tbody id="content">
+          <tr><td colspan="3"><a onclick="window.externalBrowser.open('http://www.vg.no');" href="">test</a></td></tr>
+          <tr><td colspan="3"><a onclick="application.getHostServices().showDocument('http://www.vg.no');" href="">test</a></td></tr>
+        </tbody>
       </table>
       </body>
       </html>"""
@@ -70,17 +73,6 @@ class HTMLChatPane(eventListener: EventListener) extends ScrollPane {
 
 
   println(initialHTMLContent)
-//  println(    s"""<html>
-//      <head>
-//      <link rel="stylesheet" type="text/css" href="$$ircclient_css">
-//      </head>
-//      <body id="body">
-//      <table id="content">
-//      <tr><td colspan="3" onclick="getHostServices().showDocument('http://www.vg.no');">test</td></tr>
-//      </table>
-//      </body>
-//      </html>""")
-
 
   setFitToWidth(true)
   setFitToHeight(true)
@@ -107,9 +99,9 @@ class HTMLChatPane(eventListener: EventListener) extends ScrollPane {
     try {
       val infoBox =
         <tr>
-          <td colspan="3">
-            <div class="textInfoLabel">{title}</div>
-            <div class="textInfoText">{message}</div>
+          <td colspan="3" class="infomessage">
+            <div class="infomessageHeader">{title}</div>
+            <div class="infomessageLine">{message}</div>
           </td>
         </tr>
       if (document != null) {
@@ -145,7 +137,7 @@ class HTMLChatPane(eventListener: EventListener) extends ScrollPane {
         <tr>
           <td class="regularNick">{from}</td>
           <td class="regularMessage">{message}</td>
-          <td class="timestamp">TIME</td>
+          <td class="timestamp">{new SimpleDateFormat("HH:mm:ss").format(System.currentTimeMillis)}</td>
         </tr>
       val youtubeLinks = extractYoutubeLinks(message).map(videoId =>
           <tr>
