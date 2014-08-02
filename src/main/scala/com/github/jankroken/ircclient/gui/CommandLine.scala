@@ -1,9 +1,12 @@
 package com.github.jankroken.ircclient.gui
 
-import com.github.jankroken.ircclient.domain.{CommandHistory, LineEntered, EventListener}
+import com.github.jankroken.ircclient.domain._
 import javafx.scene.control.TextField
 import javafx.event.EventHandler
 import javafx.scene.input.{KeyCode, KeyEvent}
+import com.github.jankroken.ircclient.domain.LineEntered
+import scala.Some
+import com.github.jankroken.ircclient.domain.InputFieldValue
 
 class CommandLine(eventListener:EventListener) extends TextField {
   setPromptText("Command line")
@@ -38,7 +41,15 @@ class CommandLine(eventListener:EventListener) extends TextField {
             case Some(text) ⇒ setText(text)
             case None ⇒
           }
-        case _ ⇒ // others are ignored
+        case KeyCode.TAB ⇒
+          val text = getText
+          val position = getCaretPosition
+          val field = InputFieldValue(text,position)
+          println(s"tab pressed nick:${field.potentialNickStart}")
+          field.findLongestSafeNickMatch(ActiveNicks.activeNicks)
+          println(s"# ${}")
+          e.consume
+        case other ⇒ // println(s"key pressed: $other") // others are ignored
       }
     }
   })

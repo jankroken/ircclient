@@ -2,9 +2,7 @@ package com.github.jankroken.ircclient.actors
 
 import akka.actor.{Actor, ActorLogging}
 import com.github.jankroken.ircclient.gui._
-import com.github.jankroken.ircclient.domain.InfoBlock
-import com.github.jankroken.ircclient.domain.SimpleMessage
-import com.github.jankroken.ircclient.domain.NickList
+import com.github.jankroken.ircclient.domain.{ActiveNicks, InfoBlock, SimpleMessage, NickList}
 import com.github.jankroken.ircclient.gui.AddChannelToTreeView
 import scala.Some
 
@@ -45,6 +43,7 @@ class GUIActor extends Actor with ActorLogging {
           println(s"onMessage: $nickList")
         case Some(cp) ⇒
           val panel = cp.getPanel(nickList.chatTarget)
+          ActiveNicks.activeNicks = nickList.nicks
           panel.setNicks(nickList.nicks)
       }
 
