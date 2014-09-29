@@ -10,12 +10,12 @@ scalaVersion := "2.11.0"
 
 libraryDependencies ++= Seq(
 //   "org.scalafx" %% "scalafx" % "1.0.0-M7",
-  "org.scalatest" %% "scalatest" % "2.1.4" % "test",
-  "com.typesafe.akka" %% "akka-actor" % "2.3.2",
+  "org.scalatest" %% "scalatest" % "2.2.1" % "test",
+  "com.typesafe.akka" %% "akka-actor" % "2.3.6",
   "junit" % "junit" % "4.11" % "test",
-  "org.parboiled" %% "parboiled-scala" % "1.1.6",
+  "org.parboiled" %% "parboiled" % "2.0.1",
   "org.clojure" % "clojure" % "1.6.0",
-  "org.scala-lang.modules" %% "scala-xml" % "1.0.1"
+  "org.scala-lang.modules" %% "scala-xml" % "1.0.2"
 )
 
 resolvers ++= Seq(
