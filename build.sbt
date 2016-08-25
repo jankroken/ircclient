@@ -9,12 +9,12 @@ scalaVersion := "2.11.8"
 // assemblySettings
 
 libraryDependencies ++= Seq(
-  "org.scalatest" %% "scalatest" % "2.2.6" % "test",
-  "com.typesafe.akka" %% "akka-actor" % "2.3.11",
+  "org.scalatest" %% "scalatest" % "3.0.0" % "test",
+  "com.typesafe.akka" %% "akka-actor" % "2.4.9",
   "junit" % "junit" % "4.12" % "test",
   "org.parboiled" %% "parboiled" % "1.1.7",
   "org.clojure" % "clojure" % "1.8.0",
-  "org.scala-lang.modules" %% "scala-xml" % "1.0.3"
+  "org.scala-lang.modules" %% "scala-xml" % "1.0.5"
 )
 
 resolvers ++= Seq(
